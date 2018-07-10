@@ -115,6 +115,10 @@
       <Project>{443c7dc5-2881-4772-b693-ee3f9a46e0a1}</Project>
       <Name>ProjectOnlineMobile2</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SpevoCore\SpevoCore.csproj">
+      <Project>{152c50ec-ff17-40fe-ad3b-470d8f58a33c}</Project>
+      <Name>SpevoCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.AppCenter, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">

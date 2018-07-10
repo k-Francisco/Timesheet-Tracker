@@ -1,21 +1,23 @@
-﻿using ProjectOnlineMobile2.Models;
-using ProjectOnlineMobile2.Models.PSPL;
-using ProjectOnlineMobile2.Services;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
+using ProjectsModel = ProjectOnlineMobile2.Models2.Projects.ProjectModel;
+using ProjectsRoot = ProjectOnlineMobile2.Models2.Projects.RootObject;
 
 namespace ProjectOnlineMobile2.ViewModels
 {
     public class ProjectPageViewModel : BaseViewModel
     {
-        private ObservableCollection<Result> _projectList;
-        public ObservableCollection<Result> ProjectList
+
+        private const string PROJECTS_LIST_GUID = "c04edc6b-c06e-479c-a11c-41f5aef38d16";
+
+        private ObservableCollection<ProjectsModel> _projectList = new ObservableCollection<ProjectsModel>();
+        public ObservableCollection<ProjectsModel> ProjectList
         {
             get { return _projectList; }
             set { SetProperty(ref _projectList, value); }
@@ -28,21 +30,21 @@ namespace ProjectOnlineMobile2.ViewModels
             set { SetProperty(ref _isRefreshing, value); }
         }
 
-        public ICommand RefreshProjects { get; set; }
+        public ICommand RefreshProjects { get { return new Command(ExecuteRefreshProjects); } }
 
         public ProjectPageViewModel()
         {
-            ProjectList = new ObservableCollection<Result>();
-            RefreshProjects = new Command(ExecuteRefreshProjects);
+            //empty constructor
+        }
 
-            var savedProjects = realm.All<Result>().ToList();
+        public void LoadProjectsFromDatabase()
+        {
+            var localProjects = realm.All<ProjectsModel>().ToList();
 
-            foreach (var item in savedProjects)
+            foreach (var item in localProjects)
             {
                 ProjectList.Add(item);
             }
-
-            SyncProjects(savedProjects);
         }
 
         private void ExecuteRefreshProjects()
@@ -52,13 +54,14 @@ namespace ProjectOnlineMobile2.ViewModels
                 IsRefreshing = true;
                 if (IsConnectedToInternet())
                 {
-                    realm.Write(() => {
-                        realm.RemoveAll<Result>();
+                    realm.Write(() =>
+                    {
+                        realm.RemoveAll<ProjectsModel>();
                     });
+
                     ProjectList.Clear();
 
-                    var savedProjects = realm.All<Result>().ToList();
-                    SyncProjects(savedProjects);
+                    SyncProjects();
                 }
                 else
                     IsRefreshing = false;
@@ -70,7 +73,7 @@ namespace ProjectOnlineMobile2.ViewModels
             }
         }
 
-        private async void SyncProjects(List<Result> savedProjects)
+        public async void SyncProjects()
         {
             try
             {
@@ -78,13 +81,34 @@ namespace ProjectOnlineMobile2.ViewModels
                 {
                     IsRefreshing = true;
 
-                    var projects = await PSapi.GetAllProjects();
+                    string query = "$select=ID," +
+                        "projectName," +
+                        "projectDescription," +
+                        "ProjectStartDate," +
+                        "projectFinishDate," +
+                        "projectDuration," +
+                        "projectPercentComplete," +
+                        "projectWork," +
+                        "projectActualWork," +
+                        "projectRemainingWork," +
+                        "projectStatus," +
+                        "projectOwnerName/Title&$expand=projectOwnerName/Title";
 
-                    syncDataService.SyncProjects(projects, savedProjects, ProjectList);
+                    var api = await SPapi.GetListItemsByListGuid(PROJECTS_LIST_GUID, query);
+
+                    if (api.IsSuccessStatusCode)
+                    {
+                        //projects from the local database
+                        var localProjects = realm.All<ProjectsModel>().ToList();
+                        
+                        //projects from the server
+                        var projectsList = JsonConvert.DeserializeObject<ProjectsRoot>(await api.Content.ReadAsStringAsync());
+
+                        //sync the two lists
+                        syncDataService.SyncProjects(projectsList, localProjects, ProjectList);
+                    }
 
                     IsRefreshing = false;
-
-                    IsUserAssignedToAProject(savedProjects);
                 }
             }
             catch (Exception e)
@@ -92,42 +116,7 @@ namespace ProjectOnlineMobile2.ViewModels
                 Debug.WriteLine("SyncProjects", e.Message);
                 IsRefreshing = false;
 
-                MessagingCenter.Instance.Send<String[]>(new string[] { "There was a problem syncing the projects. Please try again", "Close" }, "DisplayAlert");
-            }
-        }
-
-        private async void IsUserAssignedToAProject(List<Result> savedProjects)
-        {
-            try
-            {
-                var userInfo = realm.All<ProjectOnlineMobile2.Models.D_User>().FirstOrDefault();
-
-                foreach (var item in savedProjects)
-                {
-                    if (item.ProjectOwnerName.Equals(userInfo.Title))
-                    {
-                        realm.Write(() => {
-                            item.IsUserAssignedToThisProject = true;
-                        });
-                    }
-                    else
-                    {
-                        var isUserAssigned = await PSapi.IsUserAssignedToThisProject(item.ProjectId, userInfo.Title);
-                        if (isUserAssigned)
-                        {
-                            realm.Write(() => {
-                                item.IsUserAssignedToThisProject = true;
-                            });
-                        }
-
-                    }
-                }
-
-                MessagingCenter.Instance.Send<String>("", "AddAssignedProjects");
-            }
-            catch(Exception e)
-            {
-                Debug.WriteLine("IsUserAssignedToAProject", e.Message);
+                MessagingCenter.Instance.Send<string[]>(new string[] { "There was a problem syncing the projects. Please try again", "Close" }, "DisplayAlert");
             }
         }
     }

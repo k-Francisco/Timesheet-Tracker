@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectOnlineMobile2.iOS", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectOnlineMobile2.Droid", "ProjectOnlineMobile2.Droid\ProjectOnlineMobile2.Droid.csproj", "{09BE46ED-1102-43C4-96F4-BF8F336894BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpevoCore", "SpevoCore\SpevoCore.csproj", "{152C50EC-FF17-40FE-AD3B-470D8F58A33C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,18 @@ Global
 		{09BE46ED-1102-43C4-96F4-BF8F336894BA}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{09BE46ED-1102-43C4-96F4-BF8F336894BA}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{09BE46ED-1102-43C4-96F4-BF8F336894BA}.Release|iPhoneSimulator.Deploy.0 = Release|Any CPU
+		{152C50EC-FF17-40FE-AD3B-470D8F58A33C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{152C50EC-FF17-40FE-AD3B-470D8F58A33C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{152C50EC-FF17-40FE-AD3B-470D8F58A33C}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{152C50EC-FF17-40FE-AD3B-470D8F58A33C}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{152C50EC-FF17-40FE-AD3B-470D8F58A33C}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{152C50EC-FF17-40FE-AD3B-470D8F58A33C}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{152C50EC-FF17-40FE-AD3B-470D8F58A33C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{152C50EC-FF17-40FE-AD3B-470D8F58A33C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{152C50EC-FF17-40FE-AD3B-470D8F58A33C}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{152C50EC-FF17-40FE-AD3B-470D8F58A33C}.Release|iPhone.Build.0 = Release|Any CPU
+		{152C50EC-FF17-40FE-AD3B-470D8F58A33C}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{152C50EC-FF17-40FE-AD3B-470D8F58A33C}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

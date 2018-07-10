@@ -17,6 +17,7 @@ using ProjectOnlineMobile2.Models.TLL;
 using Newtonsoft.Json;
 using Android.Content.PM;
 using Android.Views.InputMethods;
+using System.Threading.Tasks;
 
 namespace ProjectOnlineMobile2.Droid
 {
@@ -48,9 +49,9 @@ namespace ProjectOnlineMobile2.Droid
                 DisplayAlert(s);
             });
 
-            MessagingCenter.Instance.Subscribe<ProjectOnlineMobile2.Models.D_User>(this, "UserInfo", (userInfo)=> {
-                UserName = userInfo.Title;
-                UserEmail = userInfo.Email;
+            MessagingCenter.Instance.Subscribe<ProjectOnlineMobile2.Models2.UserModel>(this, "UserInfo", (userInfo)=> {
+                UserName = userInfo.UserName;
+                UserEmail = userInfo.UserEmail;
             });
 
             MessagingCenter.Instance.Subscribe<String>(this, "TimesheetPeriod", (tsp) => {
@@ -80,7 +81,6 @@ namespace ProjectOnlineMobile2.Droid
                 SupportActionBar.SetDisplayHomeAsUpEnabled(false);
                 SupportActionBar.SetHomeButtonEnabled(false);
                 toolbar.NavigationClick += (sender,e) => { exitWorkPage(); };
-
             }
 
             bottomNavigation = FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
@@ -88,7 +88,7 @@ namespace ProjectOnlineMobile2.Droid
             bottomNavigation.NavigationItemSelected += BottomNavigation_NavigationItemSelected;
 
             _homepageFragment = new HomePage().CreateSupportFragment(this);
-            _timesheetWorkFragment = new TimesheetWorkPage().CreateSupportFragment(this);
+            //_timesheetWorkFragment = new TimesheetWorkPage().CreateSupportFragment(this);
             _projectsFragment = new ProjectPage().CreateSupportFragment(this);
             _tasksFragment = new TasksPage().CreateSupportFragment(this);
             _timesheetFragment = new TimesheetPage().CreateSupportFragment(this);
@@ -285,6 +285,127 @@ namespace ProjectOnlineMobile2.Droid
             return true;
         }
 
+        private async void doDummyFunc()
+        {
+            
+            try
+            {
+
+                const string PROJECT_LIST_GUID = "c04edc6b-c06e-479c-a11c-41f5aef38d16";
+                //const string TIMESHEET_PERIODS_ID = "d2c6bb8d-490e-4d27-a9cf-bed646b7d28a";
+
+                var core = new SpevoCore.Services.SharepointApiWrapper();
+
+                //var body = "{'__metadata':{'type':'SP.Data.TimesheetPeriodsListItem'},'Title':'" + "1" + "'," +
+                //           "'Period_x0020_Id':'" + Guid.NewGuid().ToString() + "'," +
+                //           "'Start':'" + DateTime.Now.Date + "'," +
+                //           "'End':'" + DateTime.Now.AddDays(1).Date + "'}";
+
+                //var contents = new System.Net.Http.StringContent(body);
+                //contents.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json;odata=verbose");
+
+                //var formDigest = await core.GetFormDigest();
+
+                //var getList = await core.GetListByTitle("Projects");
+                //string query = "projectName,projectDescription,ProjectStartDate,projectFinishDate,projectDuration,projectPercentComplete,projectWork,projectActualWork,projectRemainingWork,projectStatus,projectOwnerName/Name&$expand=projectOwnerName/Name";
+                string query = "items?$select=projectName,projectDescription,ProjectStartDate,projectFinishDate,projectDuration,projectPercentComplete,projectWork,projectActualWork,projectRemainingWork,projectStatus,projectOwnerName/Name&$expand=projectOwnerName/Name";
+                var getListItems = await core.GetListItemsByListGuid(PROJECT_LIST_GUID,query);
+                System.Diagnostics.Debug.WriteLine("",getListItems.RequestMessage.RequestUri.ToString());
+                //var add = await core.AddListItemByListGuid(formDigest.D.GetContextWebInformation.FormDigestValue, TIMESHEET_PERIODS_ID, contents);
+                ////var updated = await core.UpdateListItemByListGuid(formDigest.D.GetContextWebInformation.FormDigestValue, PROJECT_LIST_GUID, contents, "4");
+                ////var deleted = await core.DeleteListItemByListGuid(formDigest.D.GetContextWebInformation.FormDigestValue, PROJECT_LIST_GUID, "4");
+
+                if (getListItems.IsSuccessStatusCode)
+                    System.Diagnostics.Debug.WriteLine("doDummyFunc", await getListItems.Content.ReadAsStringAsync());
+                else
+                    System.Diagnostics.Debug.WriteLine("doDummyFunc", getListItems.StatusCode + " ang status code");
+
+                //DateTime date = new DateTime(2018, 12, 23, 0, 0, 0);
+                //DateTime end = new DateTime(2018, 12, 31, 23, 59, 59);
+                //int weekNumber = 52;
+                //var formDigest = await core.GetFormDigest();
+                //while (DateTime.Compare(date, end) <= 0)
+                //{
+                //    if (weekNumber < 52)
+                //    {
+                //        //System.Diagnostics.Debug.WriteLine("start of week " + weekNumber.ToString(), date.ToLongDateString() + " " + date.ToLongTimeString());
+                //        var startDate = date;
+
+                //        if (date.DayOfWeek.ToString().Equals("Sunday"))
+                //            date = date.AddDays(6);
+                //        else if (date.DayOfWeek.ToString().Equals("Monday"))
+                //            date = date.AddDays(5);
+                //        else if (date.DayOfWeek.ToString().Equals("Tuesday"))
+                //            date = date.AddDays(4);
+                //        else if (date.DayOfWeek.ToString().Equals("Wednesday"))
+                //            date = date.AddDays(3);
+                //        else if (date.DayOfWeek.ToString().Equals("Thursday"))
+                //            date = date.AddDays(2);
+                //        else if (date.DayOfWeek.ToString().Equals("Friday"))
+                //            date = date.AddDays(1);
+
+                //        date = date.AddHours(23);
+                //        date = date.AddMinutes(59);
+                //        date = date.AddSeconds(59);
+                //        //System.Diagnostics.Debug.WriteLine("end of week " + weekNumber.ToString(), date.ToLongDateString() + " " + date.ToLongTimeString());
+                //        var endDate = date;
+
+                //        var body = "{'__metadata':{'type':'SP.Data.TimesheetPeriodsListItem'},'Title':'" + weekNumber.ToString() + "'," +
+                //                   "'Period_x0020_Id':'" + Guid.NewGuid().ToString() + "'," +
+                //                   "'Start':'" + startDate + "'," +
+                //                   "'End':'" + endDate + "'}";
+
+                //        var contents = new System.Net.Http.StringContent(body);
+                //        contents.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json;odata=verbose");
+
+                //        var add = await core.AddListItemByListGuid(formDigest.D.GetContextWebInformation.FormDigestValue, TIMESHEET_PERIODS_ID, contents);
+
+                //        if (add.IsSuccessStatusCode)
+                //            System.Diagnostics.Debug.WriteLine("doDummyFunc", "success ang week " + weekNumber.ToString());
+                //        else
+                //            System.Diagnostics.Debug.WriteLine("doDummyFunc", "failed ang week " + weekNumber.ToString() + " :" + add.StatusCode);
+
+                //        date = date.AddSeconds(1);
+                //        weekNumber += 1;
+                //    }
+                //    else
+                //    {
+                //        var difference = end.Date - date.Date;
+                //        int days = (int)difference.TotalDays;
+                //        //System.Diagnostics.Debug.WriteLine("start of week " + weekNumber.ToString(), date.ToLongDateString() + " " + date.ToLongTimeString());
+                //        var startDate = date;
+                //        date = date.AddDays(days);
+                //        date = date.AddHours(23);
+                //        date = date.AddMinutes(59);
+                //        date = date.AddSeconds(59);
+                //        //System.Diagnostics.Debug.WriteLine("end of week " + weekNumber.ToString(), date.ToLongDateString() + " " + date.ToLongTimeString());
+                //        var endDate = date;
+
+                //        var body = "{'__metadata':{'type':'SP.Data.TimesheetPeriodsListItem'},'Title':'" + weekNumber.ToString() + "'," +
+                //                   "'Period_x0020_Id':'" + Guid.NewGuid().ToString() + "'," +
+                //                   "'Start':'" + startDate + "'," +
+                //                   "'End':'" + endDate + "'}";
+
+                //        var contents = new System.Net.Http.StringContent(body);
+                //        contents.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json;odata=verbose");
+
+                //        var add = await core.AddListItemByListGuid(formDigest.D.GetContextWebInformation.FormDigestValue, TIMESHEET_PERIODS_ID, contents);
+
+                //        if (add.IsSuccessStatusCode)
+                //            System.Diagnostics.Debug.WriteLine("doDummyFunc", "success ang week " + weekNumber.ToString());
+                //        else
+                //            System.Diagnostics.Debug.WriteLine("doDummyFunc", "failed ang week " + weekNumber.ToString() + " :" + add.StatusCode);
+
+                //        break;
+                //    }
+                //}
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("doDummyFunc", e.Message);
+            }
+            
+        }
     }
 }
 

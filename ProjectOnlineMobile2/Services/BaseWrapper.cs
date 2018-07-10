@@ -11,22 +11,21 @@ namespace ProjectOnlineMobile2.Services
 {
     public class BaseWrapper
     {
-        protected TokenService tokenService { get; private set; }
         protected HttpClientHandler handler { get; private set; }
         protected MediaTypeWithQualityHeaderValue mediaType { get; private set; }
 
         public BaseWrapper()
         {
-            if (tokenService == null)
-                tokenService = new TokenService();
+            //if (tokenService == null)
+            //    tokenService = new TokenService();
 
-            if(handler == null)
-            {
-                handler = new HttpClientHandler();
-                handler.CookieContainer = new CookieContainer();
-                handler.CookieContainer.Add(new Cookie("rtFa", tokenService.ExtractRtFa(), "/", "sharepointevo.sharepoint.com"));
-                handler.CookieContainer.Add(new Cookie("FedAuth", tokenService.ExtractFedAuth(), "/", "sharepointevo.sharepoint.com"));
-            }
+            //if(handler == null)
+            //{
+            //    handler = new HttpClientHandler();
+            //    handler.CookieContainer = new CookieContainer();
+            //    handler.CookieContainer.Add(new Cookie("rtFa", tokenService.ExtractRtFa(), "/", "sharepointevo.sharepoint.com"));
+            //    handler.CookieContainer.Add(new Cookie("FedAuth", tokenService.ExtractFedAuth(), "/", "sharepointevo.sharepoint.com"));
+            //}
 
             if(mediaType == null)
             {

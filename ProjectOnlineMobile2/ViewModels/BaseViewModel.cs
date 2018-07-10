@@ -1,15 +1,10 @@
 ﻿using Plugin.Connectivity;
-using ProjectOnlineMobile2.Models.PSPL;
 using ProjectOnlineMobile2.Services;
 using Realms;
-using System;
+using SpevoCore.Services;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Text;
-using Xamarin.Forms;
 
 namespace ProjectOnlineMobile2.ViewModels
 {
@@ -17,7 +12,6 @@ namespace ProjectOnlineMobile2.ViewModels
     {
 
         protected SharepointApiWrapper SPapi { get; private set; }
-        protected ProjectOnlineApiWrapper PSapi { get; private set; }
         protected Realm realm { get; set; }
 
         protected SyncDataService syncDataService { get; set; }
@@ -26,11 +20,11 @@ namespace ProjectOnlineMobile2.ViewModels
             if (SPapi == null)
                 SPapi = new SharepointApiWrapper();
 
-            if (PSapi == null)
-                PSapi = new ProjectOnlineApiWrapper();
-
             if (realm == null)
+            {
+                RealmConfiguration.DefaultConfiguration.SchemaVersion = 2;
                 realm = Realm.GetInstance();
+            }
 
             if (syncDataService == null)
                 syncDataService = new SyncDataService();

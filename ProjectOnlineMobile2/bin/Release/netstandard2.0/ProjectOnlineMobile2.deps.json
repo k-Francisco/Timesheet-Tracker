@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETStandard,Version=v2.0/",
-    "signature": "ccde942b33363c32c33dc88d343dafb0ebc425f2"
+    "signature": "b9fe47d433a95af9b7d9f33d58da6142d68abe5b"
   },
   "compilationOptions": {},
   "targets": {
@@ -14,6 +14,7 @@
           "NETStandard.Library": "2.0.1",
           "Newtonsoft.Json": "11.0.2",
           "Realm": "3.0.0",
+          "SpevoCore": "1.0.0",
           "Xam.Plugin.Connectivity": "3.1.1",
           "Xam.Plugins.Settings": "3.1.1",
           "Xamarin.Forms": "3.0.0.482510"
@@ -81,6 +82,14 @@
       "Realm.DataBinding/1.2.0": {
         "runtime": {
           "lib/netstandard1.0/Realm.DataBinding.dll": {}
+        }
+      },
+      "Refit/4.5.6": {
+        "dependencies": {
+          "Newtonsoft.Json": "11.0.2"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Refit.dll": {}
         }
       },
       "Remotion.Linq/2.1.2": {
@@ -334,6 +343,16 @@
           "lib/netstandard2.0/Xamarin.Forms.Platform.dll": {},
           "lib/netstandard2.0/Xamarin.Forms.Xaml.dll": {}
         }
+      },
+      "SpevoCore/1.0.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "11.0.2",
+          "Refit": "4.5.6",
+          "Xam.Plugins.Settings": "3.1.1"
+        },
+        "runtime": {
+          "SpevoCore.dll": {}
+        }
       }
     }
   },
@@ -419,6 +438,13 @@
       "sha512": "sha512-hdbC5HsVITz5gwFvVaq9uAGZHugkODE44fVvenjULNSOlYuB06JydCiwjChsqSLfJ28qPK7Qt3U2Cb6a4yfAFg==",
       "path": "realm.databinding/1.2.0",
       "hashPath": "realm.databinding.1.2.0.nupkg.sha512"
+    },
+    "Refit/4.5.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-YJCKmbt/scLyuT25zvONFr/1GJJwEOV44ojJ85Etys1EvwB8O79CZZTkBafRVO1BFgVdC1VDmI0hZNy6v3CoLg==",
+      "path": "refit/4.5.6",
+      "hashPath": "refit.4.5.6.nupkg.sha512"
     },
     "Remotion.Linq/2.1.2": {
       "type": "package",
@@ -601,6 +627,11 @@
       "sha512": "sha512-kq209d8qVvulrY3o+nGirENZ3kaZpEN7VWRErWcW1M+ahtDgm4BUXQJ5s9hnp1SAGxQMTMhDAVI3uk5g9NV7hA==",
       "path": "xamarin.forms/3.0.0.482510",
       "hashPath": "xamarin.forms.3.0.0.482510.nupkg.sha512"
+    },
+    "SpevoCore/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

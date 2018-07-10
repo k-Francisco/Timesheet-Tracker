@@ -1,9 +1,10 @@
 ﻿using ProjectOnlineMobile2.Models;
 using ProjectOnlineMobile2.Models.PSPL;
 using ProjectOnlineMobile2.Models.TLWM;
-using ProjectsResult = ProjectOnlineMobile2.Models.PSPL.Result;
-using AssignmentResult = ProjectOnlineMobile2.Models.ResourceAssignmentModel.AssignmentResult;
-using TimesheetPeriodsResult = ProjectOnlineMobile2.Models.TSPL.TimesheetPeriodResult;
+using ProjectsModel = ProjectOnlineMobile2.Models2.Projects.ProjectModel;
+using ProjectsRoot = ProjectOnlineMobile2.Models2.Projects.RootObject;
+using AssignmentsModel = ProjectOnlineMobile2.Models2.Assignments.AssignmentModel;
+using PeriodsModel = ProjectOnlineMobile2.Models2.TimesheetPeriodsModel.PeriodsModel;
 using LineResult = ProjectOnlineMobile2.Models.TLL.TimesheetLineResult;
 using Realms;
 using System;
@@ -25,58 +26,67 @@ namespace ProjectOnlineMobile2.Services
                 realm = Realm.GetInstance();
         }
 
-        public bool SyncProjects(ProjectServerProjectList projects, List<ProjectsResult> savedProjects, ObservableCollection<ProjectsResult> displayedProjects)
+        public bool SyncProjects(ProjectsRoot projects, List<ProjectsModel> localProjects, ObservableCollection<ProjectsModel> displayedProjects)
         {
             try
             {
-                var savedProjectsClone = savedProjects;
-                foreach (var item in savedProjectsClone)
+                //PARTS:
+                //1.remove the projects that are deleted/removed form the server on the local database
+                //2.add the projects that are added from the server on the local database
+                //3.sync the changes that are made to the server on the local database
+
+                //*Part 1
+                var localProjectsClone = localProjects;
+                foreach (var item in localProjectsClone)
                 {
                     var temp = projects.D.Results
-                        .Where(p => p.ProjectId.Equals(item.ProjectId))
+                        .Where(p => p.ID.Equals(item.ID))
                         .FirstOrDefault();
 
-                    if(temp == null)
+                    if (temp == null)
                     {
-                        realm.Write(()=> {
+                        realm.Write(() =>
+                        {
                             realm.Remove(item);
+                            displayedProjects.Remove(item);
+                            localProjects.Remove(item);
                         });
-                        displayedProjects.Remove(item);
-                        savedProjects.Remove(item);
                     }
                 }
-
                 realm.Refresh();
 
                 foreach (var item in projects.D.Results)
                 {
-                    var temp = savedProjects
-                        .Where(p => p.ProjectId.Equals(item.ProjectId))
+                    var temp = localProjects
+                        .Where(p => p.ID.Equals(item.ID))
                         .FirstOrDefault();
 
-                    if(temp == null)
+                    if (temp == null)
                     {
-                        realm.Write(()=> {
+                        //*Part 2
+                        realm.Write(() =>
+                        {
                             realm.Add(item);
                             displayedProjects.Add(item);
-                            savedProjects.Add(item);
+                            localProjects.Add(item);
                         });
                     }
                     else
                     {
-                        realm.Write(()=> {
-                            temp.ProjectActualWork = item.ProjectActualWork;
-                            temp.ProjectCreatedDate = item.ProjectCreatedDate;
-                            temp.ProjectDescription = item.ProjectDescription;
-                            temp.ProjectDuration = item.ProjectDuration;
-                            temp.ProjectFinishDate = item.ProjectFinishDate;
-                            temp.ProjectLastPublishedDate = item.ProjectLastPublishedDate;
+                        //*Part 3
+                        realm.Write(() =>
+                        {
                             temp.ProjectName = item.ProjectName;
+                            temp.ProjectDescription = item.ProjectDescription;
+                            temp.ProjectStartDate = item.ProjectStartDate;
+                            temp.ProjectFinishDate = item.ProjectFinishDate;
+                            temp.ProjectDuration = item.ProjectDuration;
+                            temp.ProjectPercentComplete = item.ProjectPercentComplete;
+                            temp.ProjectWork = item.ProjectWork;
+                            temp.ProjectActualWork = item.ProjectActualWork;
+                            temp.ProjectRemainingWork = item.ProjectRemainingWork;
+                            temp.ProjectStatus = item.ProjectStatus;
                             temp.ProjectOwnerName = item.ProjectOwnerName;
-                            temp.ProjectPercentCompleted = item.ProjectPercentCompleted;
-                            temp.ProjectPercentWorkCompleted = item.ProjectPercentWorkCompleted;
-                            temp.ProjectTitle = item.ProjectTitle;
-                            temp.ProjectType = item.ProjectType;
                         });
                     }
                 }
@@ -87,170 +97,137 @@ namespace ProjectOnlineMobile2.Services
             }
             catch (Exception e)
             {
-                Debug.WriteLine("SyncProjects", e.Message);
+                Debug.WriteLine("SyncProjectsService", e.Message);
                 return false;
             }
         }
 
-        public bool SyncUserTasks(List<AssignmentResult> savedTasks, List<AssignmentResult> tasksFromServer, ObservableCollection<AssignmentResult> displayedTasks)
+        public bool SyncUserTasks(List<AssignmentsModel> localTasks, List<AssignmentsModel> tasksFromServer, ObservableCollection<AssignmentsModel> displayedTasks)
         {
+            //PARTS
+            //1. Remove the tasks that were deleted/removed in the server on the local database
+            //2. add the tasks that are added from the server on the local database
+            //3. sync the changes that are made to the server on the local database
+
             try
             {
-                var savedTasksClone = savedTasks;
-                foreach (var item in savedTasksClone)
+                //PART 1
+                var localTasksClone = localTasks;
+                foreach (var item in localTasksClone)
                 {
                     var temp = tasksFromServer
-                        .Where(p => p.AssignmentId.Equals(item.AssignmentId) &&
-                                    p.TaskId.Equals(item.TaskId) &&
-                                    p.ProjectId.Equals(item.ProjectId))
+                        .Where(p => p.ID.Equals(item.ID))
                         .FirstOrDefault();
 
-                    if(temp == null)
+                    if (temp == null)
                     {
-                        realm.Write(()=> {
+                        realm.Write(() =>
+                        {
                             realm.Remove(item);
+                            localTasks.Remove(item);
+                            displayedTasks.Remove(item);
                         });
-                        displayedTasks.Remove(item);
-                        savedTasks.Remove(item);
                     }
                 }
-
                 realm.Refresh();
 
                 foreach (var item in tasksFromServer)
                 {
-                    var temp = savedTasks
-                        .Where(p=> p.AssignmentId.Equals(item.AssignmentId) &&
-                                   p.TaskId.Equals(item.TaskId) &&
-                                   p.ProjectId.Equals(item.ProjectId))
+                    var temp = localTasks
+                        .Where(p => p.ID.Equals(item.ID))
                         .FirstOrDefault();
 
-                    if(temp == null)
+                    //PART 2 
+                    if (temp == null)
                     {
-                        realm.Write(()=> {
+                        realm.Write(() =>
+                        {
                             realm.Add(item);
+                            localTasks.Add(item);
                             displayedTasks.Add(item);
-                            savedTasks.Add(item);
                         });
                     }
                     else
                     {
-                        realm.Write(() => {
-                            temp.AssignmentActualCost = item.AssignmentActualCost;
-                            temp.AssignmentActualOvertimeCost = item.AssignmentActualOvertimeCost;
-                            temp.AssignmentActualOvertimeWork = item.AssignmentActualOvertimeWork;
-                            temp.AssignmentActualRegularCost = item.AssignmentActualRegularCost;
-                            temp.AssignmentActualRegularWork = item.AssignmentActualRegularWork;
-                            temp.AssignmentActualWork = item.AssignmentActualWork;
-                            temp.AssignmentACWP = item.AssignmentACWP;
-                            temp.AssignmentBCWP = item.AssignmentBCWP;
-                            temp.AssignmentBCWS = item.AssignmentBCWS;
-                            temp.AssignmentBookingDescription = item.AssignmentBookingDescription;
-                            temp.AssignmentBookingId = item.AssignmentBookingId;
-                            temp.AssignmentBookingName = item.AssignmentBookingName;
-                            temp.AssignmentBudgetCost = item.AssignmentBudgetCost;
-                            temp.AssignmentBudgetMaterialWork = item.AssignmentBudgetMaterialWork;
-                            temp.AssignmentBudgetWork = item.AssignmentBudgetWork;
-                            temp.AssignmentCost = item.AssignmentCost;
-                            temp.AssignmentCostVariance = item.AssignmentCostVariance;
-                            temp.AssignmentCreatedDate = item.AssignmentCreatedDate;
-                            temp.AssignmentCreatedRevisionCounter = item.AssignmentCreatedRevisionCounter;
-                            temp.AssignmentCV = item.AssignmentCV;
-                            temp.AssignmentDelay = item.AssignmentDelay;
-                            temp.AssignmentFinishDate = item.AssignmentFinishDate;
-                            temp.AssignmentFinishVariance = item.AssignmentFinishVariance;
-                            temp.AssignmentIsOverallocated = item.AssignmentIsOverallocated;
-                            temp.AssignmentIsPublished = item.AssignmentIsPublished;
-                            temp.AssignmentMaterialActualWork = item.AssignmentMaterialActualWork;
-                            temp.AssignmentMaterialWork = item.AssignmentMaterialWork;
-                            temp.AssignmentModifiedDate = item.AssignmentModifiedDate;
-                            temp.AssignmentModifiedRevisionCounter = item.AssignmentModifiedRevisionCounter;
-                            temp.AssignmentOvertimeCost = item.AssignmentOvertimeCost;
-                            temp.AssignmentOvertimeWork = item.AssignmentOvertimeWork;
-                            temp.AssignmentPeakUnits = item.AssignmentPeakUnits;
-                            temp.AssignmentPercentWorkCompleted = item.AssignmentPercentWorkCompleted;
-                            temp.AssignmentRegularCost = item.AssignmentRegularCost;
-                            temp.AssignmentRegularWork = item.AssignmentRegularWork;
-                            temp.AssignmentRemainingCost = item.AssignmentRemainingCost;
-                            temp.AssignmentRemainingOvertimeCost = item.AssignmentRemainingOvertimeCost;
-                            temp.AssignmentRemainingOvertimeWork = item.AssignmentRemainingOvertimeWork;
-                            temp.AssignmentRemainingRegularCost = item.AssignmentRemainingRegularCost;
-                            temp.AssignmentRemainingRegularWork = item.AssignmentRemainingRegularWork;
-                            temp.AssignmentRemainingWork = item.AssignmentRemainingWork;
-                            temp.AssignmentResourcePlanWork = item.AssignmentResourcePlanWork;
-                            temp.AssignmentResourceType = item.AssignmentResourceType;
-                            temp.AssignmentStartDate = item.AssignmentStartDate;
-                            temp.AssignmentStartVariance = item.AssignmentStartVariance;
-                            temp.AssignmentSV = item.AssignmentSV;
-                            temp.AssignmentType = item.AssignmentType;
-                            temp.AssignmentVAC = item.AssignmentVAC;
-                            temp.AssignmentWork = item.AssignmentWork;
-                            temp.AssignmentWorkVariance = item.AssignmentWorkVariance;
-                            temp.IsPublic = item.IsPublic;
-                            temp.ProjectName = item.ProjectName;
-                            temp.ResourceId = item.ResourceId;
+                        //PART 3
+                        realm.Write(() =>
+                        {
+                            temp.ActualWork = item.ActualWork;
+                            temp.Description = item.Description;
+                            temp.EndDate = item.EndDate;
+                            temp.PercentCompleted = item.PercentCompleted;
+                            temp.ProjectId = item.ProjectId;
+                            temp.RemainingWork = item.RemainingWork;
                             temp.ResourceName = item.ResourceName;
-                            temp.TaskIsActive = item.TaskIsActive;
+                            temp.StartDate = item.StartDate;
                             temp.TaskName = item.TaskName;
-                            temp.TimesheetClassId = item.TimesheetClassId;
-                            temp.TypeDescription = item.TypeDescription;
-                            temp.TypeName = item.TypeName;
-                            
+                            temp.Work = item.Work;
                         });
                     }
                 }
-
                 realm.Refresh();
+
                 return true;
             }
             catch(Exception e)
             {
-                Debug.WriteLine("SyncUserTasks", e.Message);
+                Debug.WriteLine("SyncUserTasksService", e.Message);
                 return false;
             }
         }
 
-        public bool SyncTimesheetPeriods(List<TimesheetPeriodsResult> savedPeriods, List<TimesheetPeriodsResult> periodsFromServer, ObservableCollection<TimesheetPeriodsResult> displayedPeriods)
+        public bool SyncTimesheetPeriods(List<PeriodsModel> localPeriods, List<PeriodsModel> periodsFromServer, ObservableCollection<PeriodsModel> displayedPeriods)
         {
             try
             {
-                var savedPeriodsClone = savedPeriods;
-                foreach (var item in savedPeriodsClone)
+                //PARTS
+                //1. Remove the periods that were deleted/removed in the server on the local database
+                //2. add the periods that are added from the server on the local database
+                //3. sync the changes that are made to the server on the local database
+
+                //PART 1
+                var localPeriodsClone = localPeriods;
+                foreach (var item in localPeriods)
                 {
                     var temp = periodsFromServer
-                        .Where(p => p.Id.Equals(item.Id))
+                        .Where(p => p.ID.Equals(item.ID))
                         .FirstOrDefault();
 
-                    if(temp == null)
+                    if (temp == null)
                     {
-                        realm.Write(()=> {
+                        realm.Write(() =>
+                        {
                             realm.Remove(item);
+                            localPeriods.Remove(item);
+                            displayedPeriods.Remove(item);
                         });
-                        displayedPeriods.Remove(item);
-                        savedPeriods.Remove(item);
                     }
                 }
-
                 realm.Refresh();
 
                 foreach (var item in periodsFromServer)
                 {
-                    var temp = savedPeriods
-                        .Where(p => p.Id.Equals(item.Id))
+                    var temp = localPeriods
+                        .Where(p => p.ID.Equals(item.ID))
                         .FirstOrDefault();
 
-                    if(temp == null)
+                    //PART 2
+                    if (temp == null)
                     {
-                        realm.Write(()=> {
+                        realm.Write(() =>
+                        {
                             realm.Add(item);
+                            localPeriods.Add(item);
                             displayedPeriods.Add(item);
                         });
                     }
                     else
                     {
-                        realm.Write(() => {
+                        //PART 3
+                        realm.Write(() =>
+                        {
                             temp.End = item.End;
-                            temp.Name = item.Name;
+                            temp.PeriodName = item.PeriodName;
                             temp.Start = item.Start;
                         });
                     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectOnlineMobile2.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +13,13 @@ namespace ProjectOnlineMobile2.Pages
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class TimesheetPage : ContentPage
 	{
+        TimesheetPageViewModel viewModel;
+
 		public TimesheetPage ()
 		{
 			InitializeComponent ();
+
+            viewModel = this.BindingContext as TimesheetPageViewModel;
 
             MessagingCenter.Instance.Subscribe<String>(this,"OpenPeriodPicker",(s)=> {
                 periodPicker.Focus();
@@ -29,5 +34,10 @@ namespace ProjectOnlineMobile2.Pages
             });
 
 		}
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+        }
     }
 }

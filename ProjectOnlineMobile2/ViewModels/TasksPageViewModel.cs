@@ -1,23 +1,24 @@
-﻿using Result = ProjectOnlineMobile2.Models.ResourceAssignmentModel.AssignmentResult;
-using ProjectOnlineMobile2.Models.ResourceAssignmentModel;
-using ProjectOnlineMobile2.Models.TaskModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Text;
 using Xamarin.Forms;
 using System.Linq;
-using ProjectOnlineMobile2.Models.PSPL;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using AssignmentsRoot = ProjectOnlineMobile2.Models2.Assignments.RootObject;
+using AssignmentsModel = ProjectOnlineMobile2.Models2.Assignments.AssignmentModel;
+using UserModel = ProjectOnlineMobile2.Models2.UserModel;
+using Newtonsoft.Json;
 
 namespace ProjectOnlineMobile2.ViewModels
 {
     public class TasksPageViewModel : BaseViewModel
     {
-        private ObservableCollection<Result> _tasks;
-        public ObservableCollection<Result> Tasks
+        const string ASSIGNMENTS_LIST_GUID = "550ab747-a01c-4d2a-9263-f2e3fe4c895e";
+
+        private ObservableCollection<AssignmentsModel> _tasks = new ObservableCollection<AssignmentsModel>();
+        public ObservableCollection<AssignmentsModel> Tasks
         {
             get { return _tasks; }
             set { SetProperty(ref _tasks, value); }
@@ -30,60 +31,73 @@ namespace ProjectOnlineMobile2.ViewModels
             set { SetProperty(ref _isRefreshing, value); }
         }
 
-        public ICommand RefreshTasksCommand { get; set; }
+        public ICommand RefreshTasksCommand { get { return new Command(ExecuteRefreshTasksCommand); } }
 
         public TasksPageViewModel()
         {
-            var savedTasks = realm.All<Result>().ToList();
-
-            MessagingCenter.Instance.Subscribe<String>(this, "SortTasks", (sortReference) => {
-                ExecuteSortTasks(sortReference, savedTasks);
+            MessagingCenter.Instance.Subscribe<String>(this, "SortTasks", (sortReference) =>
+            {
+                ExecuteSortTasks(sortReference);
             });
+        }
 
-            MessagingCenter.Instance.Subscribe<String>(this, "SyncUserTasks", (s) => {
-                ExecuteSynceUserTasks(savedTasks);
-            });
+        public void LoadAssignmentsFromDatabase()
+        {
+            var localAssignments = realm.All<AssignmentsModel>().ToList();
 
-            Tasks = new ObservableCollection<Result>();
-
-            RefreshTasksCommand = new Command(ExecuteRefreshTasksCommand);
-
-            foreach (var item in savedTasks)
+            foreach (var item in localAssignments)
             {
                 Tasks.Add(item);
             }
         }
 
-        private void ExecuteSortTasks(string sort, List<Result> savedTasks)
+        public async void SyncUserTasks()
         {
-            Tasks.Clear();
-            if (sort.Equals("All"))
+            try
             {
-                foreach (var item in savedTasks)
+                if (IsConnectedToInternet())
                 {
-                    Tasks.Add(item);
-                }
-            }
-            else if (sort.Equals("In Progress"))
-            {
-                foreach (var item in savedTasks)
-                {
-                    if(item.AssignmentPercentWorkCompleted != 100)
+                    IsRefreshing = true;
+
+                    var user = realm.All<UserModel>().FirstOrDefault();
+
+                    string query = "$select=taskName," +
+                        "description," +
+                        "startDate," +
+                        "endDate," +
+                        "percentCompleted," +
+                        "work," +
+                        "actualWork," +
+                        "remainingWork," +
+                        "ID," +
+                        "projectId/projectName," +
+                        "resourceName/Title" +
+                        "&$expand=projectId,resourceName" +
+                        "&$filter=resourceNameStringId eq " + user.UserId.ToString();
+
+                    var api = await SPapi.GetListItemsByListGuid(ASSIGNMENTS_LIST_GUID, query);
+
+                    if (api.IsSuccessStatusCode)
                     {
-                        Tasks.Add(item);
+                        //tasks from the local database
+                        var localAssignments = realm.All<AssignmentsModel>().ToList();
+
+                        //tasks from the server
+                        var assignmentsList = JsonConvert.DeserializeObject<AssignmentsRoot>(await api.Content.ReadAsStringAsync());
+
+                        //sync the two lists
+                        syncDataService.SyncUserTasks(localAssignments, assignmentsList.D.Results, Tasks);
                     }
+
+                    IsRefreshing = false;
                 }
             }
-            else if (sort.Equals("Completed"))
+            catch(Exception e)
             {
-                foreach (var item in savedTasks)
-                {
-                    if (item.AssignmentPercentWorkCompleted == 100)
-                    {
-                        Tasks.Add(item);
-                    }
-                }
+                Debug.WriteLine("SyncUserTasks", e.Message);
+                IsRefreshing = false;
             }
+            
         }
 
         private void ExecuteRefreshTasksCommand()
@@ -95,12 +109,12 @@ namespace ProjectOnlineMobile2.ViewModels
                 {
                     realm.Write(() =>
                     {
-                        realm.RemoveAll<Result>();
+                        realm.RemoveAll<AssignmentsModel>();
                     });
+
                     Tasks.Clear();
 
-                    var savedTasks = realm.All<Result>().ToList();
-                    ExecuteSynceUserTasks(savedTasks);
+                    SyncUserTasks();
                 }
                 else
                     IsRefreshing = false;
@@ -110,43 +124,38 @@ namespace ProjectOnlineMobile2.ViewModels
                 Debug.WriteLine("ExecuteRefreshTasksCommand", e.Message);
                 IsRefreshing = false;
             }
-            
+
         }
 
-        private async void ExecuteSynceUserTasks(List<Result> savedTasks)
+        private void ExecuteSortTasks(string sort)
         {
-            try
+            Tasks.Clear();
+
+            var localTasks = realm.All<AssignmentsModel>().ToList();
+
+            foreach (var item in localTasks)
             {
-                var savedProjects = realm.All<ProjectOnlineMobile2.Models.PSPL.Result>().ToList();
-                var userInfo = realm.All<ProjectOnlineMobile2.Models.D_User>().FirstOrDefault();
-                List<Result> tempCollection = new List<Result>();
-
-                if (IsConnectedToInternet())
+                if (sort.Equals("All"))
                 {
-                    IsRefreshing = true;
-
-                    foreach (var item in savedProjects)
+                    Tasks.Add(item);
+                }
+                else if (sort.Equals("In Progress"))
+                {
+                    if (!item.PercentCompleted.Equals("100%"))
                     {
-                        var assignment = await PSapi.GetResourceAssignment(item.ProjectId, userInfo.Title);
-                        foreach (var item2 in assignment.D.Results)
-                        {
-                            tempCollection.Add(item2);
-                        }
+                        Tasks.Add(item);
                     }
-
-                    syncDataService.SyncUserTasks(savedTasks, tempCollection, Tasks);
-
-                    IsRefreshing = false;
+                }
+                else if (sort.Equals("Completed"))
+                {
+                    if (!item.PercentCompleted.Equals("100%"))
+                    {
+                        Tasks.Add(item);
+                    }
                 }
             }
-            catch (Exception e)
-            {
-                Debug.WriteLine("SyncUserTasks", e.Message);
-                IsRefreshing = false;
-
-                MessagingCenter.Instance.Send<String[]>(new string[] { "There was a problem syncing your tasks. Please try again", "Close"}, "DisplayAlert");
-            }
         }
-        
+
+
     }
 }

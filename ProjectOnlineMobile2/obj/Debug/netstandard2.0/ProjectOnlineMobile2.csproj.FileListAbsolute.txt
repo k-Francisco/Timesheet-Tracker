@@ -1,9 +1,12 @@
 D:\Xamarin Projects\ProjectOnlineMobile2\ProjectOnlineMobile2\bin\Debug\netstandard2.0\ProjectOnlineMobile2.deps.json
 D:\Xamarin Projects\ProjectOnlineMobile2\ProjectOnlineMobile2\bin\Debug\netstandard2.0\ProjectOnlineMobile2.dll
 D:\Xamarin Projects\ProjectOnlineMobile2\ProjectOnlineMobile2\bin\Debug\netstandard2.0\ProjectOnlineMobile2.pdb
+D:\Xamarin Projects\ProjectOnlineMobile2\ProjectOnlineMobile2\bin\Debug\netstandard2.0\SpevoCore.dll
+D:\Xamarin Projects\ProjectOnlineMobile2\ProjectOnlineMobile2\bin\Debug\netstandard2.0\SpevoCore.pdb
+D:\Xamarin Projects\ProjectOnlineMobile2\ProjectOnlineMobile2\obj\Debug\netstandard2.0\ProjectOnlineMobile2.csprojAssemblyReference.cache
 D:\Xamarin Projects\ProjectOnlineMobile2\ProjectOnlineMobile2\obj\Debug\netstandard2.0\ProjectOnlineMobile2.csproj.CoreCompileInputs.cache
 D:\Xamarin Projects\ProjectOnlineMobile2\ProjectOnlineMobile2\obj\Debug\netstandard2.0\ProjectOnlineMobile2.AssemblyInfoInputs.cache
 D:\Xamarin Projects\ProjectOnlineMobile2\ProjectOnlineMobile2\obj\Debug\netstandard2.0\ProjectOnlineMobile2.AssemblyInfo.cs
+D:\Xamarin Projects\ProjectOnlineMobile2\ProjectOnlineMobile2\obj\Debug\netstandard2.0\ProjectOnlineMobile2.csproj.CopyComplete
 D:\Xamarin Projects\ProjectOnlineMobile2\ProjectOnlineMobile2\obj\Debug\netstandard2.0\ProjectOnlineMobile2.dll
 D:\Xamarin Projects\ProjectOnlineMobile2\ProjectOnlineMobile2\obj\Debug\netstandard2.0\ProjectOnlineMobile2.pdb
-D:\Xamarin Projects\ProjectOnlineMobile2\ProjectOnlineMobile2\obj\Debug\netstandard2.0\ProjectOnlineMobile2.csprojAssemblyReference.cache

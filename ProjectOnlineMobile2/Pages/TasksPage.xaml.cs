@@ -14,8 +14,8 @@ namespace ProjectOnlineMobile2.Pages
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class TasksPage : ContentPage
 	{
-        private bool didAppear;
-        private TasksPageViewModel viewModel;
+        bool didAppear;
+        TasksPageViewModel viewModel;
 
 		public TasksPage ()
 		{
@@ -29,7 +29,12 @@ namespace ProjectOnlineMobile2.Pages
 
             if (!didAppear)
             {
-                MessagingCenter.Instance.Send<String>("", "SyncUserTasks");
+                //1. Load user tasks from the local database
+                //2. Sync user tasks
+                viewModel.LoadAssignmentsFromDatabase();
+                viewModel.SyncUserTasks();
+
+                //to prevent from syncing the next time this page appears
                 didAppear = true;
             }
         }

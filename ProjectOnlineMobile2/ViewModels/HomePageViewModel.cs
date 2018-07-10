@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using ProjectResult = ProjectOnlineMobile2.Models.PSPL.Result;
-using System.Windows.Input;
 using Xamarin.Forms;
-using ProjectOnlineMobile2.Models;
 using ProjectOnlineMobile2.Services;
 using Plugin.Connectivity;
+using ProjectOnlineMobile2.Models2;
+using SpevoCore.Services.Token_Service;
+using Realms;
 
 namespace ProjectOnlineMobile2.ViewModels
 {
@@ -50,7 +48,7 @@ namespace ProjectOnlineMobile2.ViewModels
         {
             try
             {
-                var userInfo = realm.All<ProjectOnlineMobile2.Models.D_User>();
+                var userInfo = realm.All<UserModel>();
 
                 if (IsConnectedToInternet())
                 {
@@ -59,27 +57,35 @@ namespace ProjectOnlineMobile2.ViewModels
                         var user = await SPapi.GetCurrentUser();
                         UserName = user.D.Title;
                         UserEmail = user.D.Email;
+
+                        var userModel = new UserModel()
+                        {
+                            UserName = user.D.Title,
+                            UserEmail = user.D.Email,
+                            UserId = user.D.Id,
+                        };
+
                         realm.Write(()=> {
-                            realm.Add<ProjectOnlineMobile2.Models.D_User>(user.D);
+                            realm.Add<UserModel>(userModel);
                         });
-                        MessagingCenter.Instance.Send<ProjectOnlineMobile2.Models.D_User>(user.D, "UserInfo");
+                        MessagingCenter.Instance.Send<UserModel>(userModel, "UserInfo");
                     }
                     else
                     {
                         var user = userInfo.First();
-                        MessagingCenter.Instance.Send<ProjectOnlineMobile2.Models.D_User>(user, "UserInfo");
+                        MessagingCenter.Instance.Send<UserModel>(user, "UserInfo");
 
-                        UserName = userInfo.First().Title;
-                        UserEmail = userInfo.First().Email;
+                        UserName = userInfo.First().UserName;
+                        UserEmail = userInfo.First().UserEmail;
                     }
                 }
                 else
                 {
                     if(userInfo != null)
                     {
-                        UserName = userInfo.First().Title;
-                        UserEmail = userInfo.First().Email;
-                        MessagingCenter.Instance.Send<ProjectOnlineMobile2.Models.D_User>(userInfo.First(), "UserInfo");
+                        UserName = userInfo.First().UserName;
+                        UserEmail = userInfo.First().UserEmail;
+                        MessagingCenter.Instance.Send<UserModel>(userInfo.First(), "UserInfo");
                     }
                 }
 

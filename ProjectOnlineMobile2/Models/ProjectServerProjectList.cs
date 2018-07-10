@@ -16,7 +16,7 @@ namespace ProjectOnlineMobile2.Models.PSPL
         [JsonProperty("results")]
         public List<Result> Results { get; set; }
     }
-    public class Result : RealmObject
+    public class Result
     {
         //[JsonProperty("__metadata")]
         //public Metadata Metadata { get; set; }

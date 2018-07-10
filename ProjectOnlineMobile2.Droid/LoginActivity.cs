@@ -9,7 +9,7 @@ using Java.Lang;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
-using ProjectOnlineMobile2.Services;
+using SpevoCore.Services;
 
 namespace ProjectOnlineMobile2.Droid
 {

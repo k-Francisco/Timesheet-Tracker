@@ -79,7 +79,7 @@
                                         </controls:CustomProgressBar.VerticalOptions>
                                     </controls:CustomProgressBar>
 
-                                    <Label Text="{Binding ProjectPercentCompleted, StringFormat='{0}%'}"
+                                    <Label Text="{Binding ProjectPercentComplete}"
                                            HorizontalOptions="Center"
                                            FontSize="Medium"
                                            TextColor="White"
@@ -102,7 +102,7 @@
                                            TextColor="LightSlateGray"
                                            Grid.Row="0"/>
 
-                                    <Label Text="{Binding ProjectOwnerName}"
+                                    <Label Text="{Binding OwnerName}"
                                            FontSize="Medium"
                                            TextColor="Black"
                                            Grid.Row="1"/>
@@ -119,35 +119,12 @@
                                         <RowDefinition Height="22"/>
                                     </Grid.RowDefinitions>
 
-                                    <Label Text="Last published"
+                                    <Label Text="Status"
                                            TextColor="LightSlateGray"
                                            FontSize="Micro"
                                            Grid.Row="0"/>
 
-                                    <Label Text="{Binding ProjectLastPublishedDate, StringFormat='{0:MMM dd, yyyy}'}}"
-                                           FontSize="Medium"
-                                           TextColor="Black"
-                                           Grid.Row="1"/>
-
-                                </Grid>
-
-                                <Grid RowSpacing="0"
-                                      ColumnSpacing="0"
-                                      IsVisible="False"
-                                      CompressedLayout.IsHeadless="True"
-                                      Margin="0">
-
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="12"/>
-                                        <RowDefinition Height="22"/>
-                                    </Grid.RowDefinitions>
-
-                                    <Label Text="Checked out to"
-                                           TextColor="LightSlateGray"
-                                           FontSize="Micro"
-                                           Grid.Row="0"/>
-
-                                    <Label Text="Alan Parsons"
+                                    <Label Text="{Binding ProjectStatus}"
                                            FontSize="Medium"
                                            TextColor="Black"
                                            Grid.Row="1"/>

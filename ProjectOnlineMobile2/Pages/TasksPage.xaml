@@ -45,7 +45,7 @@
                                              HorizontalOptions="Center"
                                              VerticalOptions="Center">
 
-                                    <Label Text="{Binding AssignmentPercentWorkCompleted, StringFormat='{0}%'}"
+                                    <Label Text="{Binding PercentCompleted}"
                                            FontAttributes="Bold"
                                            FontSize="Large"
                                            TextColor="Black"
@@ -58,7 +58,7 @@
                                            HorizontalOptions="Center"
                                            Margin="0,0,0,16"/>
 
-                                    <Label Text="{Binding FormattedAssignmentRemainingWork}"
+                                    <Label Text="{Binding RemainingWork}"
                                            FontAttributes="Bold"
                                            FontSize="Large"
                                            TextColor="Black"
@@ -109,7 +109,7 @@
                                                HeightRequest="16"
                                                Aspect="AspectFit"/>
 
-                                        <Label Text="{Binding AssignmentStartDate, StringFormat='{0:MMMM dd, yyyy}'}}"
+                                        <Label Text="{Binding StartDate, StringFormat='{0:MMMM dd, yyyy}'}}"
                                                FontAttributes="Bold"
                                                FontSize="18"
                                                TextColor="Black"
@@ -125,7 +125,7 @@
                                                HeightRequest="16"
                                                Aspect="AspectFit"/>
 
-                                        <Label Text="{Binding AssignmentFinishDate, StringFormat='{0:MMMM dd, yyyy}'}}"
+                                        <Label Text="{Binding EndDate, StringFormat='{0:MMMM dd, yyyy}'}}"
                                                FontAttributes="Bold"
                                                FontSize="18"
                                                TextColor="Black"
