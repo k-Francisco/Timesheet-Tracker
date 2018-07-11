@@ -5,7 +5,7 @@ using ProjectsModel = ProjectOnlineMobile2.Models2.Projects.ProjectModel;
 using ProjectsRoot = ProjectOnlineMobile2.Models2.Projects.RootObject;
 using AssignmentsModel = ProjectOnlineMobile2.Models2.Assignments.AssignmentModel;
 using PeriodsModel = ProjectOnlineMobile2.Models2.TimesheetPeriodsModel.PeriodsModel;
-using LineResult = ProjectOnlineMobile2.Models.TLL.TimesheetLineResult;
+using LineModel = ProjectOnlineMobile2.Models2.LineModel.LineModel;
 using Realms;
 using System;
 using System.Collections.Generic;
@@ -40,7 +40,7 @@ namespace ProjectOnlineMobile2.Services
                 foreach (var item in localProjectsClone)
                 {
                     var temp = projects.D.Results
-                        .Where(p => p.ID.Equals(item.ID))
+                        .Where(p => p.ID == item.ID)
                         .FirstOrDefault();
 
                     if (temp == null)
@@ -58,7 +58,7 @@ namespace ProjectOnlineMobile2.Services
                 foreach (var item in projects.D.Results)
                 {
                     var temp = localProjects
-                        .Where(p => p.ID.Equals(item.ID))
+                        .Where(p => p.ID == item.ID)
                         .FirstOrDefault();
 
                     if (temp == null)
@@ -116,7 +116,7 @@ namespace ProjectOnlineMobile2.Services
                 foreach (var item in localTasksClone)
                 {
                     var temp = tasksFromServer
-                        .Where(p => p.ID.Equals(item.ID))
+                        .Where(p => p.ID == item.ID)
                         .FirstOrDefault();
 
                     if (temp == null)
@@ -134,7 +134,7 @@ namespace ProjectOnlineMobile2.Services
                 foreach (var item in tasksFromServer)
                 {
                     var temp = localTasks
-                        .Where(p => p.ID.Equals(item.ID))
+                        .Where(p => p.ID == item.ID)
                         .FirstOrDefault();
 
                     //PART 2 
@@ -190,7 +190,7 @@ namespace ProjectOnlineMobile2.Services
                 foreach (var item in localPeriods)
                 {
                     var temp = periodsFromServer
-                        .Where(p => p.ID.Equals(item.ID))
+                        .Where(p => p.ID == item.ID)
                         .FirstOrDefault();
 
                     if (temp == null)
@@ -208,7 +208,7 @@ namespace ProjectOnlineMobile2.Services
                 foreach (var item in periodsFromServer)
                 {
                     var temp = localPeriods
-                        .Where(p => p.ID.Equals(item.ID))
+                        .Where(p => p.ID == item.ID)
                         .FirstOrDefault();
 
                     //PART 2
@@ -242,47 +242,58 @@ namespace ProjectOnlineMobile2.Services
             }
         }
 
-        public bool SyncTimesheetLines(List<SavedLinesModel> savedLines, List<LineResult> linesFromServer, ObservableCollection<LineResult> displayedLines, string periodId)
+        public bool SyncTimesheetLines(List<LineModel> localLines, List<LineModel> linesFromServer, ObservableCollection<LineModel> displayedLines)
         {
             try
             {
-
-                foreach (var item in linesFromServer)
+                var localLinesClone = localLines;
+                foreach (var item in localLinesClone)
                 {
-                    var temp = savedLines
-                        .Where(p => p.LineModel.Id.Equals(item.Id))
+                    var temp = linesFromServer
+                        .Where(p => p.ID == item.ID)
                         .FirstOrDefault();
 
                     if(temp == null)
                     {
                         realm.Write(()=> {
-                            realm.Add(new SavedLinesModel() {
-                                LineModel = item,
-                                PeriodId = periodId
-                            });
+                            realm.Remove(item);
+                            localLines.Remove(item);
+                            displayedLines.Remove(item);
+                        });
+                    }
+                }
+
+                foreach (var item in linesFromServer)
+                {
+                    var temp = localLines
+                        .Where(p=>p.ID == item.ID)
+                        .FirstOrDefault();
+
+                    if(temp == null)
+                    {
+                        realm.Write(()=> {
+                            realm.Add(item);
+                            localLines.Add(item);
                             displayedLines.Add(item);
                         });
                     }
                     else
                     {
                         realm.Write(() => {
-                            temp.LineModel.Comment = item.Comment;
-                            temp.LineModel.LineClass = item.LineClass;
-                            temp.LineModel.ProjectName = item.ProjectName;
-                            temp.LineModel.Status = item.Status;
-                            temp.LineModel.TaskName = item.TaskName;
-                            temp.LineModel.TotalWork = item.TotalWork;
-                            temp.LineModel.TotalWorkMilliseconds = item.TotalWorkMilliseconds;
-                            temp.LineModel.TotalWorkTimeSpan = item.TotalWorkTimeSpan;
-                            temp.LineModel.ValidationType = item.ValidationType;
+                            temp.Comment = item.Comment;
+                            temp.ProjectId = item.ProjectId;
+                            temp.Status = item.Status;
+                            temp.TaskName = item.TaskName;
+                            temp.TotalWork = item.TotalWork;
                         });
                     }
                 }
+
                 return true;
             }
             catch(Exception e)
             {
-                Debug.WriteLine("SyncTimesheetLines", e.Message);
+                Debug.WriteLine("SyncTimesheetLinesServer", e.Message);
                 return false;
             }
         }

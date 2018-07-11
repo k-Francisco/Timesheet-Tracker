@@ -96,7 +96,7 @@
 
                                 </StackLayout>
 
-                                <Label Text="{Binding StatusTranslation}"
+                                <Label Text="{Binding Status}"
                                        FontAttributes="None"
                                        FontSize="Micro"
                                        TextColor="Red"

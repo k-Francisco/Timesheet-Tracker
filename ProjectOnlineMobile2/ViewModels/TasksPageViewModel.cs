@@ -39,9 +39,12 @@ namespace ProjectOnlineMobile2.ViewModels
             {
                 ExecuteSortTasks(sortReference);
             });
+
+            LoadAssignmentsFromDatabase();
+            SyncUserTasks();
         }
 
-        public void LoadAssignmentsFromDatabase()
+        private void LoadAssignmentsFromDatabase()
         {
             var localAssignments = realm.All<AssignmentsModel>().ToList();
 
@@ -51,7 +54,7 @@ namespace ProjectOnlineMobile2.ViewModels
             }
         }
 
-        public async void SyncUserTasks()
+        private async void SyncUserTasks()
         {
             try
             {
