@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectOnlineMobile2.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -13,19 +14,25 @@ namespace ProjectOnlineMobile2.Pages
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class TimesheetWorkPage : ContentPage
 	{
+        TimesheetWorkPageViewModel viewModel;
+
 		public TimesheetWorkPage ()
 		{
 			InitializeComponent ();
+            viewModel = this.BindingContext as TimesheetWorkPageViewModel;
 		}
 
         protected override void OnAppearing()
         {
-            MessagingCenter.Instance.Send<String>("", "WorkPagePushed");
+            //MessagingCenter.Instance.Send<String>("", "WorkPagePushed");
+            //viewModel.LoadWorkFromDatabase();
+            viewModel.SyncTimesheetLineWork();
         }
 
         protected override void OnDisappearing()
         {
-            MessagingCenter.Instance.Send<String>("", "ClearEntries");
+            //MessagingCenter.Instance.Send<String>("", "ClearEntries");
+            viewModel.OnExitPage();
         }
     }
 }

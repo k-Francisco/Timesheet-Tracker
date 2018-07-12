@@ -42,7 +42,6 @@ namespace ProjectOnlineMobile2.Pages
             if (!didAppear)
             {
                 viewModel.SyncTimesheetLines();
-
                 didAppear = true;
             }
         }

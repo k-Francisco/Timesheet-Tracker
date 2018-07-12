@@ -57,7 +57,7 @@
                                      WidthRequest="1"
                                      Grid.Column="1"/>
 
-                            <Label Text="{Binding Start, StringFormat='{0:ddd, MM/dd}'}}"
+                            <Label Text="{Binding WorkDate, StringFormat='{0:ddd, MM/dd}'}}"
                                    FontSize="Medium"
                                    TextColor="Black"
                                    Grid.Column="0"
@@ -152,7 +152,7 @@
                       IsRefreshing="{Binding IsRefreshing}"
                       RefreshCommand="{Binding RefreshLineWork}"
                       IsPullToRefreshEnabled="True"
-                      ItemsSource="{Binding LineWork}"
+                      ItemsSource="{Binding LineWorkList}"
                       ItemTemplate="{StaticResource TimesheetWorkTemplate}">
                 <x:Arguments>
                     <ListViewCachingStrategy>RecycleElementAndDataTemplate</ListViewCachingStrategy>

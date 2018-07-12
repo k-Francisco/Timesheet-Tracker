@@ -62,7 +62,7 @@ namespace ProjectOnlineMobile2.Droid
                 SetTimesheetStatus(status);
             });
 
-            MessagingCenter.Instance.Subscribe<ProjectOnlineMobile2.Models.TLL.TimesheetLineResult>(this, "PushTimesheetWorkPage", (timesheetLine) => {
+            MessagingCenter.Instance.Subscribe<ProjectOnlineMobile2.Models2.LineModel.LineModel>(this, "PushTimesheetWorkPage", (timesheetLine) => {
                 PushTimesheetWorkPage(timesheetLine);
             });
 
@@ -88,7 +88,7 @@ namespace ProjectOnlineMobile2.Droid
             bottomNavigation.NavigationItemSelected += BottomNavigation_NavigationItemSelected;
 
             _homepageFragment = new HomePage().CreateSupportFragment(this);
-            //_timesheetWorkFragment = new TimesheetWorkPage().CreateSupportFragment(this);
+            _timesheetWorkFragment = new TimesheetWorkPage().CreateSupportFragment(this);
             _projectsFragment = new ProjectPage().CreateSupportFragment(this);
             _tasksFragment = new TasksPage().CreateSupportFragment(this);
             _timesheetFragment = new TimesheetPage().CreateSupportFragment(this);
@@ -154,7 +154,7 @@ namespace ProjectOnlineMobile2.Droid
             LoadFragment(Resource.Id.menu_timesheets);
         }
 
-        private void PushTimesheetWorkPage(TimesheetLineResult timesheetLine)
+        private void PushTimesheetWorkPage(ProjectOnlineMobile2.Models2.LineModel.LineModel timesheetLine)
         {
             TimesheetLineComment = timesheetLine.Comment;
 

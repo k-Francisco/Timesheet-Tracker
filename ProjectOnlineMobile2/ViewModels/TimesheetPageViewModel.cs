@@ -6,7 +6,6 @@ using System;
 using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
-using System.Threading;
 using Newtonsoft.Json;
 using PeriodsRoot = ProjectOnlineMobile2.Models2.TimesheetPeriodsModel.RootObject;
 using PeriodsModel = ProjectOnlineMobile2.Models2.TimesheetPeriodsModel.PeriodsModel;
@@ -14,6 +13,7 @@ using CompositeRoot = ProjectOnlineMobile2.Models2.CompositeModel.RootObject;
 using LineRoot = ProjectOnlineMobile2.Models2.LineModel.RootObject;
 using LineModel = ProjectOnlineMobile2.Models2.LineModel.LineModel;
 using ProjectOnlineMobile2.Models2;
+using System.Threading.Tasks;
 
 namespace ProjectOnlineMobile2.ViewModels
 {
@@ -70,16 +70,13 @@ namespace ProjectOnlineMobile2.ViewModels
             set { SetProperty(ref _openPicker, value); }
         }
 
-        public ICommand SelectedItemChangedCommand { get { return new Command(ExecuteSelectedItemChangedCommand); } }
         public ICommand SelectedProjectChangedCommand { get; set; }
-        public ICommand TimesheetLineClicked { get; set; }
-        public ICommand RefreshLinesCommand { get; set; }
 
         CompositeRoot compositeList;
         const string TIMESHEET_PERIODS_LIST_GUID = "cf39e6af-a8a6-47ca-b8bc-f1fdf6cf03a4";
         const string TIMESHEET_LINES_LIST_GUID = "f8097a6d-3d12-49a2-948a-91c1273e41e1";
         const string COMPOSITE_LIST_GUID = "7077d713-c414-4201-9587-f6707b049e71";
-        int periodId, lineId;
+        int lineId;
 
         public TimesheetPageViewModel()
         {
@@ -119,18 +116,6 @@ namespace ProjectOnlineMobile2.ViewModels
 
             //SelectedProjectChangedCommand = new Command(ExecuteSelectedProjectChangedCommand);
             //TimesheetLineClicked = new Command<LineResult>(ExecuteTimesheetLineClicked);
-            //RefreshLinesCommand = new Command(ExecuteRefreshLinesCommand);
-
-            //var savedPeriods = realm.All<TimesheetPeriodsResult>().ToList();
-            //foreach (var item in savedPeriods)
-            //{
-            //    PeriodList.Add(item);
-            //}
-
-            //FindTodaysPeriod();
-
-            //SyncTimesheetPeriods(savedPeriods);
-
         }
 
         private void LoadPeriodsFromLocalDatabase()
@@ -140,7 +125,6 @@ namespace ProjectOnlineMobile2.ViewModels
             foreach (var item in localPeriods)
             {
                 PeriodList.Add(item);
-                MessagingCenter.Instance.Send<String>(PeriodList[SelectedIndex].ToString(), "TimesheetPeriod");
             }
         }
 
@@ -156,6 +140,7 @@ namespace ProjectOnlineMobile2.ViewModels
                     break;
                 }
             }
+            MessagingCenter.Instance.Send<String>(PeriodList[SelectedIndex].ToString(), "TimesheetPeriod");
         }
 
         private async void SyncPeriods()
@@ -187,12 +172,21 @@ namespace ProjectOnlineMobile2.ViewModels
             }
         }
 
+        public ICommand SelectedItemChangedCommand { get { return new Command(ExecuteSelectedItemChangedCommand); } }
         private void ExecuteSelectedItemChangedCommand()
         {
-            //TODO:
-            //1. Load timesheet lines from local database
-            //2. sync timesheet lines
-            //SyncTimesheetLines();
+            PeriodLines.Clear();
+
+            var periodId = PeriodList[SelectedIndex].ID;
+
+            var localLines = realm.All<LineModel>()
+                .Where(p => p.PeriodId == periodId)
+                .ToList();
+
+            foreach (var item in localLines)
+            {
+                PeriodLines.Add(item);
+            }
         }
 
         public async void SyncTimesheetLines()
@@ -201,43 +195,71 @@ namespace ProjectOnlineMobile2.ViewModels
             {
                 if (IsConnectedToInternet())
                 {
+                    IsRefreshing = true;
+
+                    var localLines = realm.All<LineModel>().ToList();
+
                     string query = "$select=ID," +
                         "taskName," +
                         "comment," +
                         "status," +
                         "totalWork," +
-                        "projectId" +
-                        "&$filter=periodId eq " + PeriodList[SelectedIndex].ID;
+                        "projectId," +
+                        "periodId" +
+                        "&$filter=";
 
-                    var apiResponse = await SPapi.GetListItemsByListGuid(TIMESHEET_LINES_LIST_GUID,query);
+                    StringBuilder sb = new StringBuilder(query);
 
+                    foreach (var item in compositeList.D.Results)
+                    {
+                        sb.Append("(ID eq "+ item.TimesheetLindIdId +") or ");
+                    }
+                    //remove the last or in the query
+                    sb.Remove((sb.Length-4),4);
+
+                    var apiResponse = await SPapi.GetListItemsByListGuid(TIMESHEET_LINES_LIST_GUID, sb.ToString());
                     if (apiResponse.IsSuccessStatusCode)
                     {
                         var lineList = JsonConvert.DeserializeObject<LineRoot>(await apiResponse.Content.ReadAsStringAsync());
 
-                        var localLines = realm.All<LineModel>().ToList();
-                        var tempLineList = new List<LineModel>();
-
-                        foreach (var compositeItem in compositeList.D.Results)
-                        {
-                            foreach (var lineItem in lineList.D.Results)
-                            {
-                                if(lineItem.ID == compositeItem.TimesheetLindIdId)
-                                {
-                                    tempLineList.Add(lineItem);
-                                    break;
-                                }
-                            }
-                        }
-
-                        syncDataService.SyncTimesheetLines(localLines, tempLineList, PeriodLines);
+                        syncDataService.SyncTimesheetLines(localLines, lineList.D.Results, PeriodLines, PeriodList[SelectedIndex].ID);
                     }
+
+                    IsRefreshing = false;
+                }
+                else
+                {
+                    ExecuteSelectedItemChangedCommand();
                 }
             }
             catch(Exception e)
             {
                 Debug.WriteLine("SyncTimesheetLines", e.Message);
+                IsRefreshing = false;
             }
+        }
+
+        public ICommand RefreshLinesCommand { get { return new Command(ExecuteRefreshLinesCommand); } }
+        private void ExecuteRefreshLinesCommand()
+        {
+            GetCompositeListFromServer();
+            Task.Delay(1500);
+            ExecuteSelectedItemChangedCommand();
+        }
+
+        public ICommand TimesheetLineClicked { get { return new Command<LineModel>(ExecuteTimesheetLineClicked); } }
+        private void ExecuteTimesheetLineClicked(LineModel line)
+        {
+            MessagingCenter.Instance.Send<LineModel>(line, "PushTimesheetWorkPage");
+            MessagingCenter.Instance.Send<string>(PeriodList[SelectedIndex].ID.ToString(), "SendPeriodIdToWorkPage");
+            MessagingCenter.Instance.Send<string>(line.ID.ToString(), "SendCurrentLineIdToWorkPage");
+
+            var completeLineIds = new List<int>();
+            foreach (var item in compositeList.D.Results)
+            {
+                completeLineIds.Add(item.TimesheetLindIdId);
+            }
+            MessagingCenter.Instance.Send<List<int>>(completeLineIds, "SendLineIdsToWorkPage");
         }
 
         private async void GetCompositeListFromServer()
@@ -267,6 +289,15 @@ namespace ProjectOnlineMobile2.ViewModels
                 Debug.WriteLine("GetCompositeListFromServer", e.Message);
             }
         }
+
+        //private void ExecuteTimesheetLineClicked(LineResult timesheetLine)
+        //{
+        //    lineId = timesheetLine.Id;
+        //    string[] ids = { _periodList[SelectedIndex].Id, timesheetLine.Id };
+        //    MessagingCenter.Send<LineResult>(timesheetLine, "PushTimesheetWorkPage");
+        //    MessagingCenter.Send<String[]>(ids, "TimesheetWork");
+
+        //}
 
         //private void ExecuteAddAssignedProjects()
         //{
@@ -495,15 +526,6 @@ namespace ProjectOnlineMobile2.ViewModels
         //        string[] alertStrings = { "The device is not connected to the internet", "Close" };
         //        MessagingCenter.Instance.Send<String[]>(alertStrings, "DisplayAlert");
         //    }
-        //}
-
-        //private void ExecuteTimesheetLineClicked(LineResult timesheetLine)
-        //{
-        //    lineId = timesheetLine.Id;
-        //    string[] ids = { _periodList[SelectedIndex].Id, timesheetLine.Id };
-        //    MessagingCenter.Send<LineResult>(timesheetLine, "PushTimesheetWorkPage");
-        //    MessagingCenter.Send<String[]>(ids, "TimesheetWork");
-
         //}
 
         //private void ExecuteSelectedItemChangedCommand()

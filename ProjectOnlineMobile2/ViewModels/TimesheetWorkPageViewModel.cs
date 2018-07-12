@@ -1,5 +1,4 @@
 ﻿using System;
-using LineWorkResult = ProjectOnlineMobile2.Models.TLWM.WorkResult;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
@@ -7,17 +6,20 @@ using System.Diagnostics;
 using System.Windows.Input;
 using ProjectOnlineMobile2.Models;
 using System.Linq;
-using ProjectOnlineMobile2.Models.TSPL;
+using System.Text;
+using Newtonsoft.Json;
+using WorkRoot = ProjectOnlineMobile2.Models2.LineWorkModel.RootObject;
+using LineWorkModel = ProjectOnlineMobile2.Models2.LineWorkModel.LineWorkModel;
 
 namespace ProjectOnlineMobile2.ViewModels
 {
     public class TimesheetWorkPageViewModel : BaseViewModel
     {
-        private ObservableCollection<LineWorkResult> _lineWork; 
-        public ObservableCollection<LineWorkResult> LineWork
+        private ObservableCollection<LineWorkModel> _lineWorkList = new ObservableCollection<LineWorkModel>(); 
+        public ObservableCollection<LineWorkModel> LineWorkList
         {
-            get { return _lineWork; }
-            set { SetProperty(ref _lineWork, value); }
+            get { return _lineWorkList; }
+            set { SetProperty(ref _lineWorkList, value); }
         }
 
         private bool _headerVisibility = false;
@@ -34,31 +36,30 @@ namespace ProjectOnlineMobile2.ViewModels
             set { SetProperty(ref _isRefreshing, value); }
         }
 
-        private string _periodId { get; set; }
-        private string _lineId { get; set; }
-
-        public IOrderedEnumerable<SavedTimesheetLineWork> savedLineWork { get; set; }
+        const string TIMESHEETWORK_LIST_GUID = "d87fa340-2484-4a71-9a66-b8e8982405cb";
+        int _periodId, _lineId;
+        private List<int> _completeLineIds { get; set; }
 
         public ICommand RefreshLineWork { get; set; }
 
         public TimesheetWorkPageViewModel()
         {
-            //LineWork = new ObservableCollection<LineWorkResult>();
-
             //RefreshLineWork = new Command(ExecuteRefreshLineWork);
+
+            MessagingCenter.Instance.Subscribe<string>(this, "SendPeriodIdToWorkPage", (periodId)=> {
+                _periodId = Convert.ToInt32(periodId);
+            });
+
+            MessagingCenter.Instance.Subscribe<string>(this, "SendCurrentLineIdToWorkPage", (lineid) => {
+                _lineId = Convert.ToInt32(lineid);
+            });
+
+            MessagingCenter.Instance.Subscribe<List<int>>(this, "SendLineIdsToWorkPage", (lineIds) => {
+                _completeLineIds = lineIds;
+            });
 
             //MessagingCenter.Instance.Subscribe<String>(this, "SaveOfflineWorkChanges", (s)=> {
             //    SaveOfflineWorkChanges();
-            //});
-
-            //MessagingCenter.Instance.Subscribe<String[]>(this, "TimesheetWork", (ids) =>
-            //{
-            //    _periodId = ids[0];
-            //    _lineId = ids[1];
-            //});
-
-            //MessagingCenter.Instance.Subscribe<String>(this, "WorkPagePushed", (s)=> {
-            //    ExecuteWorkPagePushed();
             //});
 
             //MessagingCenter.Instance.Subscribe<String>(this, "SaveTimesheetWorkChanges", (s) =>
@@ -83,6 +84,87 @@ namespace ProjectOnlineMobile2.ViewModels
             //    ExecuteSendProgress(comment);
             //});
 
+        }
+
+        public void LoadWorkFromDatabase()
+        {
+            var localWorkModel = realm.All<LineWorkModel>()
+                .Where(p=> p.PeriodIdId == _periodId && p.LineIdId == _lineId)
+                .ToList();
+
+            foreach (var item in localWorkModel)
+            {
+                LineWorkList.Add(item);
+            }
+        }
+
+        public async void SyncTimesheetLineWork()
+        {
+            try
+            {
+                if (IsConnectedToInternet())
+                {
+                    IsRefreshing = true;
+                    HeaderVisibility = false;
+
+                    var query = "$select=workDate," +
+                        "actualWork," +
+                        "plannedWork," +
+                        "lineIdId," +
+                        "periodIdId," +
+                        "ID" +
+                        "&$filter=";
+
+                    StringBuilder sb = new StringBuilder(query);
+
+                    foreach (var item in _completeLineIds)
+                    {
+                        sb.Append("(lineIdId eq "+ item.ToString() +") or ");
+                    }
+                    //remove the last or in the query
+                    sb.Remove((sb.Length - 4), 4);
+
+                    var apiResponse = await SPapi.GetListItemsByListGuid(TIMESHEETWORK_LIST_GUID, sb.ToString());
+
+                    if (apiResponse.IsSuccessStatusCode)
+                    {
+                        var localLineWorkModels = realm.All<LineWorkModel>().ToList();
+                        var workList = JsonConvert.DeserializeObject<WorkRoot>(await apiResponse.Content.ReadAsStringAsync());
+
+                        syncDataService.SyncTimesheetLineWork(localLineWorkModels, workList.D.Results, LineWorkList, _periodId, _lineId);
+                    }
+
+                    IsRefreshing = false;
+                    HeaderVisibility = true;
+                }
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine("SyncTimesheetLineWork", e.Message);
+            }
+        }
+
+        public void OnExitPage()
+        {
+            var localWorkModel = realm.All<LineWorkModel>()
+                .Where(p => p.PeriodIdId == _periodId && p.LineIdId == _lineId)
+                .ToList();
+
+            foreach (var item in localWorkModel)
+            {
+                if (item.isNotSaved != true)
+                {
+                    realm.Write(() =>
+                    {
+                        item.EntryTextActualHours = string.Empty;
+                        item.EntryTextPlannedHours = string.Empty;
+                    });
+                }
+            }
+
+            LineWorkList.Clear();
+
+            HeaderVisibility = false;
         }
 
         //private async void ExecuteSendProgress(string comment)
@@ -244,7 +326,7 @@ namespace ProjectOnlineMobile2.ViewModels
         //        if (IsConnectedToInternet())
         //        {
         //            var formDigest = await SPapi.GetFormDigest();
-                    
+
         //            var allSavedLineWork = realm.All<SavedTimesheetLineWork>()
         //                .ToList();
 

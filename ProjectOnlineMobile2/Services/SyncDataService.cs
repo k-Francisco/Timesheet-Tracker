@@ -1,18 +1,15 @@
-﻿using ProjectOnlineMobile2.Models;
-using ProjectOnlineMobile2.Models.PSPL;
-using ProjectOnlineMobile2.Models.TLWM;
-using ProjectsModel = ProjectOnlineMobile2.Models2.Projects.ProjectModel;
+﻿using ProjectsModel = ProjectOnlineMobile2.Models2.Projects.ProjectModel;
 using ProjectsRoot = ProjectOnlineMobile2.Models2.Projects.RootObject;
 using AssignmentsModel = ProjectOnlineMobile2.Models2.Assignments.AssignmentModel;
 using PeriodsModel = ProjectOnlineMobile2.Models2.TimesheetPeriodsModel.PeriodsModel;
 using LineModel = ProjectOnlineMobile2.Models2.LineModel.LineModel;
+using LineWorkModel = ProjectOnlineMobile2.Models2.LineWorkModel.LineWorkModel;
 using Realms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace ProjectOnlineMobile2.Services
 {
@@ -242,7 +239,7 @@ namespace ProjectOnlineMobile2.Services
             }
         }
 
-        public bool SyncTimesheetLines(List<LineModel> localLines, List<LineModel> linesFromServer, ObservableCollection<LineModel> displayedLines)
+        public bool SyncTimesheetLines(List<LineModel> localLines, List<LineModel> linesFromServer, ObservableCollection<LineModel> displayedLines, int periodId)
         {
             try
             {
@@ -258,10 +255,10 @@ namespace ProjectOnlineMobile2.Services
                         realm.Write(()=> {
                             realm.Remove(item);
                             localLines.Remove(item);
-                            displayedLines.Remove(item);
                         });
                     }
                 }
+                realm.Refresh();
 
                 foreach (var item in linesFromServer)
                 {
@@ -274,7 +271,6 @@ namespace ProjectOnlineMobile2.Services
                         realm.Write(()=> {
                             realm.Add(item);
                             localLines.Add(item);
-                            displayedLines.Add(item);
                         });
                     }
                     else
@@ -285,7 +281,36 @@ namespace ProjectOnlineMobile2.Services
                             temp.Status = item.Status;
                             temp.TaskName = item.TaskName;
                             temp.TotalWork = item.TotalWork;
+                            temp.PeriodId = item.PeriodId;
                         });
+                    }
+                }
+                realm.Refresh();
+
+                //for displayed timesheet lines
+                foreach (var item in localLines)
+                {
+                    if (item.PeriodId == periodId)
+                    {
+                        var temp = displayedLines
+                            .Where(p => p.ID == item.ID)
+                            .FirstOrDefault();
+
+                        if(temp == null)
+                        {
+                            displayedLines.Add(item);
+                        }
+                        else
+                        {
+                            realm.Write(() => {
+                                temp.Comment = item.Comment;
+                                temp.ProjectId = item.ProjectId;
+                                temp.Status = item.Status;
+                                temp.TaskName = item.TaskName;
+                                temp.TotalWork = item.TotalWork;
+                                temp.PeriodId = item.PeriodId;
+                            });
+                        }
                     }
                 }
 
@@ -298,49 +323,80 @@ namespace ProjectOnlineMobile2.Services
             }
         }
 
-        public bool SyncTimesheetLineWork(TimesheetLineWorkModel lineWorkHoursFromServer, IOrderedEnumerable<SavedTimesheetLineWork> savedWork)
+        public bool SyncTimesheetLineWork(List<LineWorkModel> localLineWorkModels, List<LineWorkModel> lineWorkModelsFromServer, ObservableCollection<LineWorkModel> displayedLines, int periodId, int lineId)
         {
             try
             {
-                foreach (var item in savedWork)
+                var localLineWorkModelsClone = localLineWorkModels;
+                foreach (var item in localLineWorkModelsClone)
                 {
-                    var temp = lineWorkHoursFromServer.D.Results
-                        .Where(p => p.Start.DateTime.ToShortDateString().Equals(item.WorkModel.Start.DateTime.ToShortDateString()))
+                    var temp = lineWorkModelsFromServer
+                        .Where(p => p.ID == item.ID)
                         .FirstOrDefault();
 
-                    if(temp != null)
+                    if(temp == null)
                     {
-                        realm.Write(() => {
-                            item.WorkModel.ActualWork = temp.ActualWork;
-                            item.WorkModel.ActualWorkMilliseconds = temp.ActualWorkMilliseconds;
-                            item.WorkModel.ActualWorkTimeSpan = temp.ActualWorkTimeSpan;
-                            item.WorkModel.End = temp.End;
-                            item.WorkModel.ActualWorkMilliseconds = temp.ActualWorkMilliseconds;
-                            item.WorkModel.ActualWorkTimeSpan = temp.ActualWorkTimeSpan;
-                            item.WorkModel.Comment = temp.Comment;
-                            item.WorkModel.Id = temp.Id;
-                            item.WorkModel.NonBillableOvertimeWork = temp.NonBillableOvertimeWork;
-                            item.WorkModel.NonBillableOvertimeWorkMilliseconds = temp.NonBillableOvertimeWorkMilliseconds;
-                            item.WorkModel.NonBillableOvertimeWorkTimeSpan = temp.NonBillableOvertimeWorkTimeSpan;
-                            item.WorkModel.NonBillableWork = temp.NonBillableWork;
-                            item.WorkModel.NonBillableWorkMilliseconds = temp.NonBillableWorkMilliseconds;
-                            item.WorkModel.NonBillableWorkTimeSpan = temp.NonBillableWorkTimeSpan;
-                            item.WorkModel.OvertimeWork = temp.OvertimeWork;
-                            item.WorkModel.OvertimeWorkMilliseconds = temp.OvertimeWorkMilliseconds;
-                            item.WorkModel.OvertimeWorkTimeSpan = temp.OvertimeWorkTimeSpan;
-                            item.WorkModel.PlannedWork = temp.PlannedWork;
-                            item.WorkModel.PlannedWorkMilliseconds = temp.PlannedWorkMilliseconds;
-                            item.WorkModel.PlannedWorkTimeSpan = temp.PlannedWorkTimeSpan;
+                        realm.Write(()=> {
+                            realm.Remove(item);
+                            localLineWorkModels.Remove(item);
                         });
                     }
-                    
+                }
+                realm.Refresh();
+
+                foreach (var item in lineWorkModelsFromServer)
+                {
+                    var temp = localLineWorkModels
+                        .Where(p => p.ID == item.ID)
+                        .FirstOrDefault();
+
+                    if(temp == null)
+                    {
+                        realm.Write(()=> {
+                            realm.Add(item);
+                            localLineWorkModels.Add(item);
+                        });
+                    }
+                    else
+                    {
+                        realm.Write(()=> {
+                            temp.ActualWork = item.ActualWork;
+                            temp.LineIdId = item.LineIdId;
+                            temp.PeriodIdId = item.PeriodIdId;
+                            temp.PlannedWork = item.PlannedWork;
+                            temp.WorkDate = item.WorkDate;
+                        });
+                    }
+                }
+                realm.Refresh();
+
+                foreach (var item in localLineWorkModels)
+                {
+                    var temp = displayedLines
+                        .Where(p => p.PeriodIdId == periodId && p.LineIdId == lineId)
+                        .FirstOrDefault();
+
+                    if(temp == null)
+                    {
+                        displayedLines.Add(item);
+                    }
+                    else
+                    {
+                        realm.Write(() => {
+                            temp.ActualWork = item.ActualWork;
+                            temp.LineIdId = item.LineIdId;
+                            temp.PeriodIdId = item.PeriodIdId;
+                            temp.PlannedWork = item.PlannedWork;
+                            temp.WorkDate = item.WorkDate;
+                        });
+                    }
                 }
 
                 return true;
             }
             catch(Exception e)
             {
-                Debug.WriteLine("SyncTimesheetLineWork", e.Message);
+                Debug.WriteLine("SyncTimesheetLineWorkServer", e.Message);
                 return false;
             }
         }

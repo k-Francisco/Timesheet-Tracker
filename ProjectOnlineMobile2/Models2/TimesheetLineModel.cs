@@ -30,6 +30,8 @@ namespace ProjectOnlineMobile2.Models2.LineModel
         public int ProjectId { get; set; }
         [JsonProperty("ID")]
         public int ID { get; set; }
+        [JsonProperty("periodId")]
+        public int PeriodId { get; set; }
 
         public string ProjectName { get { return "Project Name"; } }
     }
