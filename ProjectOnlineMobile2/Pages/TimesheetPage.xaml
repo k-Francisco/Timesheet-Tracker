@@ -50,7 +50,7 @@
                                              HorizontalOptions="FillAndExpand"
                                              VerticalOptions="Center">
 
-                                    <Label Text="{Binding TotalWork}"
+                                    <Label Text="{Binding TotalWork, StringFormat='{0}h'}"
                                            FontAttributes="Bold"
                                            FontSize="Large"
                                            TextColor="Black"

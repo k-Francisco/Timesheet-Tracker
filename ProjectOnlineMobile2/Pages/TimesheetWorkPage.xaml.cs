@@ -25,7 +25,7 @@ namespace ProjectOnlineMobile2.Pages
         protected override void OnAppearing()
         {
             //MessagingCenter.Instance.Send<String>("", "WorkPagePushed");
-            //viewModel.LoadWorkFromDatabase();
+            viewModel.LoadWorkFromDatabase();
             viewModel.SyncTimesheetLineWork();
         }
 

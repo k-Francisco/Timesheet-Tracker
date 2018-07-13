@@ -65,7 +65,7 @@
                                    VerticalOptions="Center"/>
 
                             <controls:BorderlessEntry Text="{Binding EntryTextActualHours}"
-                                   Placeholder="{Binding ActualWork}"
+                                   Placeholder="{Binding ActualWork, StringFormat='{0}h'}"
                                    Keyboard="Numeric"
                                    FontSize="Medium"
                                    TextColor="Black"
@@ -84,7 +84,7 @@
 
 
                             <controls:BorderlessEntry Text="{Binding EntryTextPlannedHours}"
-                                   Placeholder="{Binding PlannedWork}"
+                                   Placeholder="{Binding PlannedWork, StringFormat='{0}h'}"
                                    Keyboard="Numeric"
                                    FontSize="Medium"
                                    HorizontalTextAlignment="Center"

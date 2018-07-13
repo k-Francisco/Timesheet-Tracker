@@ -76,7 +76,6 @@ namespace ProjectOnlineMobile2.ViewModels
         const string TIMESHEET_PERIODS_LIST_GUID = "cf39e6af-a8a6-47ca-b8bc-f1fdf6cf03a4";
         const string TIMESHEET_LINES_LIST_GUID = "f8097a6d-3d12-49a2-948a-91c1273e41e1";
         const string COMPOSITE_LIST_GUID = "7077d713-c414-4201-9587-f6707b049e71";
-        int lineId;
 
         public TimesheetPageViewModel()
         {
@@ -222,6 +221,14 @@ namespace ProjectOnlineMobile2.ViewModels
                     {
                         var lineList = JsonConvert.DeserializeObject<LineRoot>(await apiResponse.Content.ReadAsStringAsync());
 
+                        foreach (var item in lineList.D.Results)
+                        {
+                            if (!string.IsNullOrWhiteSpace(item.Comment))
+                            {
+                                item.Comment = item.Comment.Remove(0, 62).Replace("<br>", "").Replace("</p>", "").Replace("</div>", "");
+                            }
+                        }
+
                         syncDataService.SyncTimesheetLines(localLines, lineList.D.Results, PeriodLines, PeriodList[SelectedIndex].ID);
                     }
 
@@ -230,6 +237,7 @@ namespace ProjectOnlineMobile2.ViewModels
                 else
                 {
                     ExecuteSelectedItemChangedCommand();
+                    IsRefreshing = false;
                 }
             }
             catch(Exception e)
@@ -244,7 +252,7 @@ namespace ProjectOnlineMobile2.ViewModels
         {
             GetCompositeListFromServer();
             Task.Delay(1500);
-            ExecuteSelectedItemChangedCommand();
+            SyncTimesheetLines();
         }
 
         public ICommand TimesheetLineClicked { get { return new Command<LineModel>(ExecuteTimesheetLineClicked); } }

@@ -370,28 +370,6 @@ namespace ProjectOnlineMobile2.Services
                 }
                 realm.Refresh();
 
-                foreach (var item in localLineWorkModels)
-                {
-                    var temp = displayedLines
-                        .Where(p => p.PeriodIdId == periodId && p.LineIdId == lineId)
-                        .FirstOrDefault();
-
-                    if(temp == null)
-                    {
-                        displayedLines.Add(item);
-                    }
-                    else
-                    {
-                        realm.Write(() => {
-                            temp.ActualWork = item.ActualWork;
-                            temp.LineIdId = item.LineIdId;
-                            temp.PeriodIdId = item.PeriodIdId;
-                            temp.PlannedWork = item.PlannedWork;
-                            temp.WorkDate = item.WorkDate;
-                        });
-                    }
-                }
-
                 return true;
             }
             catch(Exception e)
