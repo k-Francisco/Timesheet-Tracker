@@ -4,6 +4,7 @@ using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using ProjectOnlineMobile2.Pages;
 using ProjectOnlineMobile2.Services;
+using SpevoCore.Services.Token_Service;
 using System;
 using UIKit;
 using Xamarin.Forms;
@@ -47,9 +48,9 @@ namespace ProjectOnlineMobile2.iOS
             UINavigationBar.Appearance.BarTintColor = UIColor.FromRGBA(49, 117, 47, 1);
             UINavigationBar.Appearance.BackgroundColor = UIColor.FromRGBA(49, 117, 47, 1);
 
-            MessagingCenter.Instance.Subscribe<ProjectOnlineMobile2.Models.D_User>(this, "UserInfo", (user)=> {
-                UserName = user.Title;
-                UserEmail = user.Email;
+            MessagingCenter.Instance.Subscribe<ProjectOnlineMobile2.Models2.UserModel>(this, "UserInfo", (user)=> {
+                UserName = user.UserName;
+                UserEmail = user.UserEmail;
             });
 
             MessagingCenter.Instance.Subscribe<String>(this, "TimesheetPeriod", (tsp) => {

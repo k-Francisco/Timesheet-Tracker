@@ -2657,11 +2657,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Xamarin Projects\\ProjectOnlineMobile2\\ProjectOnlineMobile2\\ProjectOnlineMobile2.csproj",
+      "projectUniqueName": "D:\\Xamarin Projects\\Timesheet-Tracker\\ProjectOnlineMobile2\\ProjectOnlineMobile2.csproj",
       "projectName": "ProjectOnlineMobile2",
-      "projectPath": "D:\\Xamarin Projects\\ProjectOnlineMobile2\\ProjectOnlineMobile2\\ProjectOnlineMobile2.csproj",
+      "projectPath": "D:\\Xamarin Projects\\Timesheet-Tracker\\ProjectOnlineMobile2\\ProjectOnlineMobile2.csproj",
       "packagesPath": "C:\\Users\\ksfgh\\.nuget\\packages\\",
-      "outputPath": "D:\\Xamarin Projects\\ProjectOnlineMobile2\\ProjectOnlineMobile2\\obj\\",
+      "outputPath": "D:\\Xamarin Projects\\Timesheet-Tracker\\ProjectOnlineMobile2\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -2680,8 +2680,8 @@
       "frameworks": {
         "netstandard2.0": {
           "projectReferences": {
-            "D:\\Xamarin Projects\\ProjectOnlineMobile2\\SpevoCore\\SpevoCore.csproj": {
-              "projectPath": "D:\\Xamarin Projects\\ProjectOnlineMobile2\\SpevoCore\\SpevoCore.csproj"
+            "D:\\Xamarin Projects\\Timesheet-Tracker\\SpevoCore\\SpevoCore.csproj": {
+              "projectPath": "D:\\Xamarin Projects\\Timesheet-Tracker\\SpevoCore\\SpevoCore.csproj"
             }
           }
         }

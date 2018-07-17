@@ -171,13 +171,18 @@ namespace ProjectOnlineMobile2.ViewModels
                     .Where(p => p.PeriodIdId == _periodId && p.LineIdId == _lineId)
                     .ToList();
 
+            if(IsConnectedToInternet())
+                MessagingCenter.Instance.Send<String[]>(new string[] { "Saving progress...", "Close" }, "DisplayAlert");
+            else
+                MessagingCenter.Instance.Send<String[]>(new string[] { "The changes that were made will be saved when the device is connected to the internet", "Close" }, "DisplayAlert");
+
+
             foreach (var item in localWorkModel)
             {
                 try
                 {
                     if (IsConnectedToInternet())
                     {
-                        MessagingCenter.Instance.Send<String[]>(new string[] { "Saving progress...", "Close" }, "DisplayAlert");
                         var formDigest = await SPapi.GetFormDigest();
 
                         if (!string.IsNullOrWhiteSpace(item.EntryTextActualHours) || !string.IsNullOrWhiteSpace(item.EntryTextPlannedHours))
@@ -211,8 +216,6 @@ namespace ProjectOnlineMobile2.ViewModels
                             }
                             else
                             {
-                                Debug.WriteLine("ExecuteSaveTimesheetWorkChanges", apiResponse.StatusCode.ToString());
-
                                 realm.Write(() => {
                                     item.isNotSaved = true;
                                 });
@@ -225,8 +228,6 @@ namespace ProjectOnlineMobile2.ViewModels
                     {
                         if (!string.IsNullOrWhiteSpace(item.EntryTextActualHours) || !string.IsNullOrWhiteSpace(item.EntryTextPlannedHours))
                         {
-                            MessagingCenter.Instance.Send<String[]>(new string[] { "The changes that were made will be saved when the device is connected to the internet", "Close" }, "DisplayAlert");
-
                             realm.Write(() => {
                                 item.isNotSaved = true;
                             });

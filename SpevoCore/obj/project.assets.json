@@ -393,11 +393,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Xamarin Projects\\ProjectOnlineMobile2\\SpevoCore\\SpevoCore.csproj",
+      "projectUniqueName": "D:\\Xamarin Projects\\Timesheet-Tracker\\SpevoCore\\SpevoCore.csproj",
       "projectName": "SpevoCore",
-      "projectPath": "D:\\Xamarin Projects\\ProjectOnlineMobile2\\SpevoCore\\SpevoCore.csproj",
+      "projectPath": "D:\\Xamarin Projects\\Timesheet-Tracker\\SpevoCore\\SpevoCore.csproj",
       "packagesPath": "C:\\Users\\ksfgh\\.nuget\\packages\\",
-      "outputPath": "D:\\Xamarin Projects\\ProjectOnlineMobile2\\SpevoCore\\obj\\",
+      "outputPath": "D:\\Xamarin Projects\\Timesheet-Tracker\\SpevoCore\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

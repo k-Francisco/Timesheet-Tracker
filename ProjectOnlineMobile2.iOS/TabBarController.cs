@@ -1,5 +1,5 @@
 ﻿using Foundation;
-using LineResult = ProjectOnlineMobile2.Models.TLL.TimesheetLineResult;
+using LineModel = ProjectOnlineMobile2.Models2.LineModel.LineModel;
 using ProjectOnlineMobile2.Pages;
 using System;
 using UIKit;
@@ -18,7 +18,7 @@ namespace ProjectOnlineMobile2.iOS
 
         public TabBarController (IntPtr handle) : base (handle)
         {
-            MessagingCenter.Instance.Subscribe<LineResult>(this, "PushTimesheetWorkPage", (line)=> {
+            MessagingCenter.Instance.Subscribe<LineModel>(this, "PushTimesheetWorkPage", (line)=> {
                 ExecutePushTimesheetWorkPage(line);
             });
 
@@ -165,7 +165,7 @@ namespace ProjectOnlineMobile2.iOS
             currentAlertView = alertController2;
         }
 
-        private void ExecutePushTimesheetWorkPage(LineResult line)
+        private void ExecutePushTimesheetWorkPage(LineModel line)
         {
             _timesheetWorkPageController.Title = line.TaskName;
             _timesheetNavController.PushViewController(_timesheetWorkPageController, true);

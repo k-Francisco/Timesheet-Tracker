@@ -42,7 +42,7 @@ namespace ProjectOnlineMobile2.ViewModels
             set { SetProperty(ref _projectsAssigned, value); }
         }
 
-        private int _selectedIndex;
+        private int _selectedIndex = -1;
         public int SelectedIndex
         {
             get { return _selectedIndex; }
@@ -109,8 +109,8 @@ namespace ProjectOnlineMobile2.ViewModels
             //});
 
             LoadPeriodsFromLocalDatabase();
-            FindTodaysPeriod();
             SyncPeriods();
+            FindTodaysPeriod();
             GetCompositeListFromServer();
 
             //SelectedProjectChangedCommand = new Command(ExecuteSelectedProjectChangedCommand);
@@ -129,17 +129,20 @@ namespace ProjectOnlineMobile2.ViewModels
 
         private void FindTodaysPeriod()
         {
-            for (int i = 0; i < PeriodList.Count; i++)
+            if (PeriodList.Any())
             {
-                if (DateTime.Compare(DateTime.Now, PeriodList[i].Start.DateTime) >= 0 &&
-                        DateTime.Compare(DateTime.Now, PeriodList[i].End.DateTime) < 0)
+                for (int i = 0; i < PeriodList.Count; i++)
                 {
-                    SelectedIndex = i;
-                    ExecuteSelectedItemChangedCommand();
-                    break;
+                    if (DateTime.Compare(DateTime.Now, PeriodList[i].Start.DateTime) >= 0 &&
+                            DateTime.Compare(DateTime.Now, PeriodList[i].End.DateTime) < 0)
+                    {
+                        SelectedIndex = i;
+                        ExecuteSelectedItemChangedCommand();
+                        break;
+                    }
                 }
+                MessagingCenter.Instance.Send<String>(PeriodList[SelectedIndex].ToString(), "TimesheetPeriod");
             }
-            MessagingCenter.Instance.Send<String>(PeriodList[SelectedIndex].ToString(), "TimesheetPeriod");
         }
 
         private async void SyncPeriods()
@@ -161,6 +164,9 @@ namespace ProjectOnlineMobile2.ViewModels
                     {
                         var periodsList = JsonConvert.DeserializeObject<PeriodsRoot>(await apiResponse.Content.ReadAsStringAsync());
                         syncDataService.SyncTimesheetPeriods(localPeriods, periodsList.D.Results, PeriodList);
+
+                        if (SelectedIndex < 0)
+                            FindTodaysPeriod();
                     }
                     
                 }
