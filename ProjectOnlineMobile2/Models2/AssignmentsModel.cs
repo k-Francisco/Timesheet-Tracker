@@ -18,41 +18,41 @@ namespace ProjectOnlineMobile2.Models2.Assignments
     }
     public class AssignmentModel : RealmObject
     {
-        [JsonProperty("projectId")]
-        public ProjectId ProjectId { get; set; }
-        [JsonProperty("resourceName")]
+        [JsonProperty("ProjectName")]
+        public ProjectName ProjectDetails { get; set; }
+        [JsonProperty("ResourceName")]
         public ResourceName ResourceName { get; set; }
-        [JsonProperty("taskName")]
+        [JsonProperty("Id")]
+        public int Id { get; set; }
+        [JsonProperty("TaskName")]
         public string TaskName { get; set; }
-        [JsonProperty("description")]
-        public string Description { get; set; }
-        [JsonProperty("work")]
-        public int Work { get; set; }
-        [JsonProperty("startDate")]
-        public DateTimeOffset StartDate { get; set; }
-        [JsonProperty("endDate")]
-        public DateTimeOffset EndDate { get; set; }
-        [JsonProperty("actualWork")]
-        public int ActualWork { get; set; }
-        [JsonProperty("remainingWork")]
-        public string RemainingWork { get; set; }
-        [JsonProperty("percentCompleted")]
-        public string PercentCompleted { get; set; }
+        [JsonProperty("TaskStartDate")]
+        public DateTimeOffset TaskStartDate { get; set; }
+        [JsonProperty("TaskWork")]
+        public double TaskWork { get; set; }
+        [JsonProperty("TaskFinishDate")]
+        public DateTimeOffset TaskFinishDate { get; set; }
+        [JsonProperty("TaskActualWork")]
+        public double TaskActualWork { get; set; }
+        [JsonProperty("TaskRemainingWork")]
+        public string TaskRemainingWork { get; set; }
+        [JsonProperty("TaskPercentComplete")]
+        public string TaskPercentComplete { get; set; }
         [JsonProperty("ID")]
         public int ID { get; set; }
 
-        public string ProjectName
+        public string Project
         {
-            get { return ProjectId.ProjectName; }
+            get { return ProjectDetails.Name; }
         }
     }
 
-    public class ProjectId : RealmObject
+    public class ProjectName : RealmObject
     {
-        [JsonProperty("projectName")]
-        public string ProjectName { get; set; }
+        [JsonProperty("ProjectName")]
+        public string Name { get; set; }
     }
-   
+    
     public class ResourceName : RealmObject
     {
         [JsonProperty("Title")]

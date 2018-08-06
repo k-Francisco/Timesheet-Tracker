@@ -16,9 +16,15 @@ D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2\bin\Debug\netstandard
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2\bin\Debug\netstandard2.0\SpevoCore.dll
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2\bin\Debug\netstandard2.0\SpevoCore.pdb
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2\obj\Debug\netstandard2.0\ProjectOnlineMobile2.csprojAssemblyReference.cache
+D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2\obj\Debug\netstandard2.0\Pages\HomePage.xaml.g.cs
+D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2\obj\Debug\netstandard2.0\Pages\ProjectPage.xaml.g.cs
+D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2\obj\Debug\netstandard2.0\Pages\TasksPage.xaml.g.cs
+D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2\obj\Debug\netstandard2.0\Pages\TimesheetPage.xaml.g.cs
+D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2\obj\Debug\netstandard2.0\Pages\TimesheetWorkPage.xaml.g.cs
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2\obj\Debug\netstandard2.0\ProjectOnlineMobile2.csproj.CoreCompileInputs.cache
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2\obj\Debug\netstandard2.0\ProjectOnlineMobile2.AssemblyInfoInputs.cache
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2\obj\Debug\netstandard2.0\ProjectOnlineMobile2.AssemblyInfo.cs
+D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2\obj\Debug\netstandard2.0\XamlC.stamp
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2\obj\Debug\netstandard2.0\ProjectOnlineMobile2.csproj.CopyComplete
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2\obj\Debug\netstandard2.0\ProjectOnlineMobile2.dll
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2\obj\Debug\netstandard2.0\ProjectOnlineMobile2.pdb

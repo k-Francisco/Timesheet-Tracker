@@ -120,6 +120,7 @@ D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.iOS\obj\iPhone\Debug\
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.iOS\obj\iPhone\Debug\optimized\
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.iOS\obj\iPhone\Debug\ProjectOnlineMobile2.iOS.csprojAssemblyReference.cache
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.iOS\obj\iPhone\Debug\ProjectOnlineMobile2.iOS.csproj.CoreCompileInputs.cache
+D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.iOS\obj\iPhone\Debug\XamlC.stamp
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.iOS\obj\iPhone\Debug\ProjectOnlineMobile2.iOS.csproj.CopyComplete
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.iOS\obj\iPhone\Debug\ProjectOnlineMobile2.iOS.exe
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.iOS\obj\iPhone\Debug\ProjectOnlineMobile2.iOS.pdb

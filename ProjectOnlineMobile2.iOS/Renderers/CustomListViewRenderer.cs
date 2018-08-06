@@ -21,7 +21,7 @@ namespace ProjectOnlineMobile2.iOS.Renderers
 
             var vc = ((UITableViewController)ViewController);
 
-            if(vc?.RefreshControl != null)
+            if (vc?.RefreshControl != null)
             {
                 vc.RefreshControl.TintColor = UIColor.FromRGB(49, 117, 47);
             }

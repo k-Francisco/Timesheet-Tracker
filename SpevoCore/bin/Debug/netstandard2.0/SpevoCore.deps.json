@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETStandard,Version=v2.0/",
-    "signature": "e1d65c6c0131ef9bd30d8e805c514455fee30aa7"
+    "signature": "a88b3da279bfc7dc7e20a9613954052fbf085245"
   },
   "compilationOptions": {},
   "targets": {
@@ -11,7 +11,7 @@
         "dependencies": {
           "NETStandard.Library": "2.0.3",
           "Newtonsoft.Json": "11.0.2",
-          "Refit": "4.5.6",
+          "Refit": "4.6.30",
           "Xam.Plugins.Settings": "3.1.1"
         },
         "runtime": {
@@ -29,7 +29,7 @@
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
-      "Refit/4.5.6": {
+      "Refit/4.6.30": {
         "dependencies": {
           "Newtonsoft.Json": "11.0.2"
         },
@@ -75,12 +75,12 @@
       "path": "newtonsoft.json/11.0.2",
       "hashPath": "newtonsoft.json.11.0.2.nupkg.sha512"
     },
-    "Refit/4.5.6": {
+    "Refit/4.6.30": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-YJCKmbt/scLyuT25zvONFr/1GJJwEOV44ojJ85Etys1EvwB8O79CZZTkBafRVO1BFgVdC1VDmI0hZNy6v3CoLg==",
-      "path": "refit/4.5.6",
-      "hashPath": "refit.4.5.6.nupkg.sha512"
+      "sha512": "sha512-rl/zMFd4sZqQSERIFi3qMVPShQoB9FUfsO9gq+JUK7jNdbYmTH1xjB7W7TBAFbC+lgZEbLHG4NJ8FR5x0VRW+g==",
+      "path": "refit/4.6.30",
+      "hashPath": "refit.4.6.30.nupkg.sha512"
     },
     "Xam.Plugins.Settings/3.1.1": {
       "type": "package",

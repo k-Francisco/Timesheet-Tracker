@@ -2,8 +2,6 @@
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
-using ProjectOnlineMobile2.Pages;
-using ProjectOnlineMobile2.Services;
 using SpevoCore.Services.Token_Service;
 using System;
 using UIKit;

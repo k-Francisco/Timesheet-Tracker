@@ -167,7 +167,7 @@ namespace ProjectOnlineMobile2.iOS
 
         private void ExecutePushTimesheetWorkPage(LineModel line)
         {
-            _timesheetWorkPageController.Title = line.TaskName;
+            _timesheetWorkPageController.Title = line.Task;
             _timesheetNavController.PushViewController(_timesheetWorkPageController, true);
         }
 

@@ -72,14 +72,14 @@
                                              VerticalOptions="Center"
                                              Margin="0,6,0,0">
 
-                                    <Label Text="{Binding TaskName}"
+                                    <Label Text="{Binding Task}"
                                            FontAttributes="Bold"
                                            FontSize="Large"
                                            TextColor="Black"
                                            LineBreakMode="TailTruncation"
                                            HorizontalOptions="Start"/>
 
-                                    <Label Text="{Binding ProjectName}"
+                                    <Label Text="{Binding Project}"
                                            FontAttributes="None"
                                            FontSize="Micro"
                                            TextColor="LightSlateGray"
@@ -96,7 +96,7 @@
 
                                 </StackLayout>
 
-                                <Label Text="{Binding Status}"
+                                <Label Text="{Binding StatusTranslation}"
                                        FontAttributes="None"
                                        FontSize="Micro"
                                        TextColor="Red"

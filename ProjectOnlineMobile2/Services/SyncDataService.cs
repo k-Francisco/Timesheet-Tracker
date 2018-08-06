@@ -83,7 +83,7 @@ namespace ProjectOnlineMobile2.Services
                             temp.ProjectActualWork = item.ProjectActualWork;
                             temp.ProjectRemainingWork = item.ProjectRemainingWork;
                             temp.ProjectStatus = item.ProjectStatus;
-                            temp.ProjectOwnerName = item.ProjectOwnerName;
+                            temp.ProjectOwner = item.ProjectOwner;
                         });
                     }
                 }
@@ -149,16 +149,15 @@ namespace ProjectOnlineMobile2.Services
                         //PART 3
                         realm.Write(() =>
                         {
-                            temp.ActualWork = item.ActualWork;
-                            temp.Description = item.Description;
-                            temp.EndDate = item.EndDate;
-                            temp.PercentCompleted = item.PercentCompleted;
-                            temp.ProjectId = item.ProjectId;
-                            temp.RemainingWork = item.RemainingWork;
+                            temp.TaskActualWork = item.TaskActualWork;
+                            temp.TaskFinishDate = item.TaskFinishDate;
+                            temp.TaskPercentComplete = item.TaskPercentComplete;
+                            temp.ProjectDetails = item.ProjectDetails;
+                            temp.TaskRemainingWork = item.TaskRemainingWork;
                             temp.ResourceName = item.ResourceName;
-                            temp.StartDate = item.StartDate;
+                            temp.TaskStartDate = item.TaskStartDate;
                             temp.TaskName = item.TaskName;
-                            temp.Work = item.Work;
+                            temp.TaskWork = item.TaskWork;
                         });
                     }
                 }
@@ -277,11 +276,11 @@ namespace ProjectOnlineMobile2.Services
                     {
                         realm.Write(() => {
                             temp.Comment = item.Comment;
-                            temp.ProjectId = item.ProjectId;
+                            temp.ProjectDetails = item.ProjectDetails;
                             temp.Status = item.Status;
-                            temp.TaskName = item.TaskName;
+                            temp.TaskDetails = item.TaskDetails;
                             temp.TotalWork = item.TotalWork;
-                            temp.PeriodId = item.PeriodId;
+                            temp.LinePeriodId = item.LinePeriodId;
                         });
                     }
                 }
@@ -290,7 +289,7 @@ namespace ProjectOnlineMobile2.Services
                 //for displayed timesheet lines
                 foreach (var item in localLines)
                 {
-                    if (item.PeriodId == periodId)
+                    if (item.LinePeriodId == periodId)
                     {
                         var temp = displayedLines
                             .Where(p => p.ID == item.ID)
@@ -304,11 +303,11 @@ namespace ProjectOnlineMobile2.Services
                         {
                             realm.Write(() => {
                                 temp.Comment = item.Comment;
-                                temp.ProjectId = item.ProjectId;
+                                temp.ProjectDetails = item.ProjectDetails;
                                 temp.Status = item.Status;
-                                temp.TaskName = item.TaskName;
+                                temp.TaskDetails = item.TaskDetails;
                                 temp.TotalWork = item.TotalWork;
-                                temp.PeriodId = item.PeriodId;
+                                temp.LinePeriodId = item.LinePeriodId;
                             });
                         }
                     }
@@ -361,8 +360,8 @@ namespace ProjectOnlineMobile2.Services
                     {
                         realm.Write(()=> {
                             temp.ActualWork = item.ActualWork;
-                            temp.LineIdId = item.LineIdId;
-                            temp.PeriodIdId = item.PeriodIdId;
+                            temp.TimesheetLineId = item.TimesheetLineId;
+                            temp.TimesheetPeriodId = item.TimesheetPeriodId;
                             temp.PlannedWork = item.PlannedWork;
                             temp.WorkDate = item.WorkDate;
                         });

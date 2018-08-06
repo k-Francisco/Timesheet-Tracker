@@ -35,7 +35,7 @@
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
-      "Refit/4.5.6": {
+      "Refit/4.6.30": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "11.0.2"
@@ -235,10 +235,10 @@
         "newtonsoft.json.nuspec"
       ]
     },
-    "Refit/4.5.6": {
-      "sha512": "YJCKmbt/scLyuT25zvONFr/1GJJwEOV44ojJ85Etys1EvwB8O79CZZTkBafRVO1BFgVdC1VDmI0hZNy6v3CoLg==",
+    "Refit/4.6.30": {
+      "sha512": "rl/zMFd4sZqQSERIFi3qMVPShQoB9FUfsO9gq+JUK7jNdbYmTH1xjB7W7TBAFbC+lgZEbLHG4NJ8FR5x0VRW+g==",
       "type": "package",
-      "path": "refit/4.5.6",
+      "path": "refit/4.6.30",
       "files": [
         ".signature.p7s",
         "build/MSBuildCore20/GeneratedInterfaceStubTemplate.mustache",
@@ -305,7 +305,7 @@
         "lib/netstandard1.4/Refit.xml",
         "lib/netstandard2.0/Refit.dll",
         "lib/netstandard2.0/Refit.xml",
-        "refit.4.5.6.nupkg.sha512",
+        "refit.4.6.30.nupkg.sha512",
         "refit.nuspec"
       ]
     },
@@ -382,7 +382,7 @@
     ".NETStandard,Version=v2.0": [
       "NETStandard.Library >= 2.0.3",
       "Newtonsoft.Json >= 11.0.2",
-      "Refit >= 4.5.6",
+      "Refit >= 4.6.30",
       "Xam.Plugins.Settings >= 3.1.1"
     ]
   },
@@ -439,7 +439,7 @@
           },
           "Refit": {
             "target": "Package",
-            "version": "[4.5.6, )"
+            "version": "[4.6.30, )"
           },
           "Xam.Plugins.Settings": {
             "target": "Package",

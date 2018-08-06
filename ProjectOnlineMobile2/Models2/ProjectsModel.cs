@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace ProjectOnlineMobile2.Models2.Projects
 {
+
     public class RootObject
     {
         [JsonProperty("d")]
@@ -17,45 +18,48 @@ namespace ProjectOnlineMobile2.Models2.Projects
     }
     public class ProjectModel : RealmObject
     {
-        [JsonProperty("projectOwnerName")]
-        public ProjectOwnerName ProjectOwnerName { get; set; }
-        [JsonProperty("projectActualWork")]
-        public int ProjectActualWork { get; set; }
-        [JsonProperty("projectDescription")]
+        [JsonProperty("ProjectOwner")]
+        public ProjectOwner ProjectOwner { get; set; }
+        [JsonProperty("Id")]
+        public int Id { get; set; }
+        [JsonProperty("ProjectName")]
+        public string ProjectName { get; set; }
+        [JsonProperty("ProjectDescription")]
         public string ProjectDescription { get; set; }
-        [JsonProperty("projectWork")]
-        public int ProjectWork { get; set; }
-        [JsonProperty("projectDuration")]
-        public string ProjectDuration { get; set; }
         [JsonProperty("ProjectStartDate")]
         public DateTimeOffset ProjectStartDate { get; set; }
-        [JsonProperty("projectRemainingWork")]
-        public string ProjectRemainingWork { get; set; }
-        [JsonProperty("projectFinishDate")]
-        public DateTimeOffset ProjectFinishDate { get; set; }
-        [JsonProperty("projectName")]
-        public string ProjectName { get; set; }
-        [JsonProperty("projectPercentComplete")]
+        [JsonProperty("ProjectWork")]
+        public int ProjectWork { get; set; }
+        [JsonProperty("ProjectDuration")]
+        public string ProjectDuration { get; set; }
+        [JsonProperty("ProjectActualWork")]
+        public int ProjectActualWork { get; set; }
+        [JsonProperty("ProjectPercentComplete")]
         public string ProjectPercentComplete { get; set; }
-        [JsonProperty("projectStatus")]
+        [JsonProperty("ProjectRemainingWork")]
+        public string ProjectRemainingWork { get; set; }
+        [JsonProperty("ProjectStatus")]
         public string ProjectStatus { get; set; }
+        [JsonProperty("ProjectFinishDate")]
+        public DateTimeOffset ProjectFinishDate { get; set; }
         [JsonProperty("ID")]
         public int ID { get; set; }
 
-
         public double PercentCompletedInDecimal
         {
-            get { return Convert.ToDouble((Convert.ToDouble(ProjectPercentComplete.Replace("%","")) / 100)); }
+            get { return Convert.ToDouble((Convert.ToDouble(ProjectPercentComplete.Replace("%", "")) / 100)); }
         }
 
         public string OwnerName
         {
-            get { return ProjectOwnerName.Title; }
+            get { return ProjectOwner.Title; }
         }
     }
-    public class ProjectOwnerName : RealmObject
+
+    public class ProjectOwner : RealmObject
     {
         [JsonProperty("Title")]
         public string Title { get; set; }
     }
+
 }

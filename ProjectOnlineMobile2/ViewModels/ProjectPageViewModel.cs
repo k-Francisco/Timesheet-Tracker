@@ -14,7 +14,7 @@ namespace ProjectOnlineMobile2.ViewModels
     public class ProjectPageViewModel : BaseViewModel
     {
 
-        private const string PROJECTS_LIST_GUID = "c04edc6b-c06e-479c-a11c-41f5aef38d16";
+        private const string PROJECTS_LIST_GUID = "248a4da4-f54a-4ebf-9193-2fe4bd13a517";
 
         private ObservableCollection<ProjectsModel> _projectList = new ObservableCollection<ProjectsModel>();
         public ObservableCollection<ProjectsModel> ProjectList
@@ -82,17 +82,17 @@ namespace ProjectOnlineMobile2.ViewModels
                     IsRefreshing = true;
 
                     string query = "$select=ID," +
-                        "projectName," +
-                        "projectDescription," +
+                        "ProjectName," +
+                        "ProjectDescription," +
                         "ProjectStartDate," +
-                        "projectFinishDate," +
-                        "projectDuration," +
-                        "projectPercentComplete," +
-                        "projectWork," +
-                        "projectActualWork," +
-                        "projectRemainingWork," +
-                        "projectStatus," +
-                        "projectOwnerName/Title&$expand=projectOwnerName/Title";
+                        "ProjectFinishDate," +
+                        "ProjectDuration," +
+                        "ProjectPercentComplete," +
+                        "ProjectWork," +
+                        "ProjectActualWork," +
+                        "ProjectRemainingWork," +
+                        "ProjectStatus," +
+                        "ProjectOwner/Title&$expand=ProjectOwner/Title";
 
                     var api = await SPapi.GetListItemsByListGuid(PROJECTS_LIST_GUID, query);
 
@@ -100,7 +100,7 @@ namespace ProjectOnlineMobile2.ViewModels
                     {
                         //projects from the local database
                         var localProjects = realm.All<ProjectsModel>().ToList();
-                        
+
                         //projects from the server
                         var projectsList = JsonConvert.DeserializeObject<ProjectsRoot>(await api.Content.ReadAsStringAsync());
 

@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETStandard,Version=v2.0/",
-    "signature": "58f2392ccee7d5ac3e1d3fb7a041dfc3766160c8"
+    "signature": "5b7ed23fc6e3f0a36135ffbead1f54f1ba53c520"
   },
   "compilationOptions": {},
   "targets": {
@@ -9,37 +9,37 @@
     ".NETStandard,Version=v2.0/": {
       "ProjectOnlineMobile2/1.0.0": {
         "dependencies": {
-          "Microsoft.AppCenter.Analytics": "1.6.1",
-          "Microsoft.AppCenter.Crashes": "1.6.1",
+          "Microsoft.AppCenter.Analytics": "1.8.0",
+          "Microsoft.AppCenter.Crashes": "1.8.0",
           "NETStandard.Library": "2.0.3",
           "Newtonsoft.Json": "11.0.2",
-          "Realm": "3.0.0",
+          "Realm": "3.1.0",
           "SpevoCore": "1.0.0",
-          "Xam.Plugin.Connectivity": "3.1.1",
+          "Xam.Plugin.Connectivity": "3.2.0",
           "Xam.Plugins.Settings": "3.1.1",
-          "Xamarin.Forms": "3.0.0.482510"
+          "Xamarin.Forms": "3.1.0.697729"
         },
         "runtime": {
           "ProjectOnlineMobile2.dll": {}
         }
       },
-      "Fody/2.4.6": {},
-      "Microsoft.AppCenter/1.6.1": {
+      "Fody/3.0.3": {},
+      "Microsoft.AppCenter/1.8.0": {
         "runtime": {
           "lib/netstandard1.0/Microsoft.AppCenter.dll": {}
         }
       },
-      "Microsoft.AppCenter.Analytics/1.6.1": {
+      "Microsoft.AppCenter.Analytics/1.8.0": {
         "dependencies": {
-          "Microsoft.AppCenter": "1.6.1"
+          "Microsoft.AppCenter": "1.8.0"
         },
         "runtime": {
           "lib/netstandard1.0/Microsoft.AppCenter.Analytics.dll": {}
         }
       },
-      "Microsoft.AppCenter.Crashes/1.6.1": {
+      "Microsoft.AppCenter.Crashes/1.8.0": {
         "dependencies": {
-          "Microsoft.AppCenter": "1.6.1"
+          "Microsoft.AppCenter": "1.8.0"
         },
         "runtime": {
           "lib/netstandard1.0/Microsoft.AppCenter.Crashes.dll": {}
@@ -57,18 +57,18 @@
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
-      "Realm/3.0.0": {
+      "Realm/3.1.0": {
         "dependencies": {
           "Newtonsoft.Json": "11.0.2",
-          "Realm.Database": "3.0.0"
+          "Realm.Database": "3.1.0"
         },
         "runtime": {
           "lib/netstandard1.4/Realm.Sync.dll": {}
         }
       },
-      "Realm.Database/3.0.0": {
+      "Realm.Database/3.1.0": {
         "dependencies": {
-          "Fody": "2.4.6",
+          "Fody": "3.0.3",
           "NETStandard.Library": "2.0.3",
           "Realm.DataBinding": "1.2.0",
           "Remotion.Linq": "2.1.2",
@@ -84,7 +84,7 @@
           "lib/netstandard1.0/Realm.DataBinding.dll": {}
         }
       },
-      "Refit/4.5.6": {
+      "Refit/4.6.30": {
         "dependencies": {
           "Newtonsoft.Json": "11.0.2"
         },
@@ -319,7 +319,7 @@
           "System.Runtime": "4.3.0"
         }
       },
-      "Xam.Plugin.Connectivity/3.1.1": {
+      "Xam.Plugin.Connectivity/3.2.0": {
         "dependencies": {
           "NETStandard.Library": "2.0.3"
         },
@@ -337,7 +337,7 @@
           "lib/netstandard1.0/Plugin.Settings.dll": {}
         }
       },
-      "Xamarin.Forms/3.0.0.482510": {
+      "Xamarin.Forms/3.1.0.697729": {
         "runtime": {
           "lib/netstandard2.0/Xamarin.Forms.Core.dll": {},
           "lib/netstandard2.0/Xamarin.Forms.Platform.dll": {},
@@ -347,7 +347,7 @@
       "SpevoCore/1.0.0": {
         "dependencies": {
           "Newtonsoft.Json": "11.0.2",
-          "Refit": "4.5.6",
+          "Refit": "4.6.30",
           "Xam.Plugins.Settings": "3.1.1"
         },
         "runtime": {
@@ -362,33 +362,33 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Fody/2.4.6": {
+    "Fody/3.0.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-aCmPhhBV4IpuK0+ChDvteplDWre/zDcgENLUMPjT83QWcKppg3UNSoQTgbzt16JlpTjaBkEzH6a3F5YZWiL9Nw==",
-      "path": "fody/2.4.6",
-      "hashPath": "fody.2.4.6.nupkg.sha512"
+      "sha512": "sha512-jjc1i8AX9/NIfVgRAZpCw1uKpkaMQrXFYWlMnQ6zjr0l+Or56DaIq0xA+EcQzYrfg6KrF03ybynpotd1UlAHcA==",
+      "path": "fody/3.0.3",
+      "hashPath": "fody.3.0.3.nupkg.sha512"
     },
-    "Microsoft.AppCenter/1.6.1": {
+    "Microsoft.AppCenter/1.8.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Ly1R8HcB5zbp8J2/F3eVXVK1ThnSmVrjsANnGG9hwtvjhI/oO+jvnKsdY91VwKVReSuXi52bLtemGydKhiv8Dg==",
-      "path": "microsoft.appcenter/1.6.1",
-      "hashPath": "microsoft.appcenter.1.6.1.nupkg.sha512"
+      "sha512": "sha512-V9ZPAVnnv8gTSxp2N1Wb39pbd5nSSuCvjpruFq27r0azRkhqLhOu+2mNgGOoX9LP/UiOrtoy3PY/y4LNAoI76g==",
+      "path": "microsoft.appcenter/1.8.0",
+      "hashPath": "microsoft.appcenter.1.8.0.nupkg.sha512"
     },
-    "Microsoft.AppCenter.Analytics/1.6.1": {
+    "Microsoft.AppCenter.Analytics/1.8.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-KWwIMJJjpu7gcElpXx+xe0aa+szbtE6DeW82e6qBRZY1BwKh3OMxjP5I0Yh/beeigVOsOW0MBaR6Bnyr2zG7gg==",
-      "path": "microsoft.appcenter.analytics/1.6.1",
-      "hashPath": "microsoft.appcenter.analytics.1.6.1.nupkg.sha512"
+      "sha512": "sha512-uj6b7qxKyONSZmqjgryApE4Sq23DC1j8wPJc1QA7BF1Nfa/e92bnKP497bs31xugjBSGwtSMH8hUhi/vH+tukA==",
+      "path": "microsoft.appcenter.analytics/1.8.0",
+      "hashPath": "microsoft.appcenter.analytics.1.8.0.nupkg.sha512"
     },
-    "Microsoft.AppCenter.Crashes/1.6.1": {
+    "Microsoft.AppCenter.Crashes/1.8.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-2K/ZwzBDRB5xevOPu1bNJ7f0GWGidCk8HSGC2eRhQp0Ry06/HNCbSa/b6KXLVjzTRt5Hn7f9nIEeoQ9i9PzMTg==",
-      "path": "microsoft.appcenter.crashes/1.6.1",
-      "hashPath": "microsoft.appcenter.crashes.1.6.1.nupkg.sha512"
+      "sha512": "sha512-paVrOYaErMz9+k6wQvW9m8TEauARlVW7iX9y/QGm1f6PIHiezPNWkzLhMsnpbbWZBk+wv/H296jW/BoAxOEbzg==",
+      "path": "microsoft.appcenter.crashes/1.8.0",
+      "hashPath": "microsoft.appcenter.crashes.1.8.0.nupkg.sha512"
     },
     "Microsoft.NETCore.Platforms/1.1.0": {
       "type": "package",
@@ -418,19 +418,19 @@
       "path": "newtonsoft.json/11.0.2",
       "hashPath": "newtonsoft.json.11.0.2.nupkg.sha512"
     },
-    "Realm/3.0.0": {
+    "Realm/3.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-SkSVCQdh5QgZaxDF4fJwX6FM3Fy4NQ41YD8tOQxxbDvF7AKHPSZ3pCy6ULxibJZZAOO+pdKDQwx3KKiuxruIgA==",
-      "path": "realm/3.0.0",
-      "hashPath": "realm.3.0.0.nupkg.sha512"
+      "sha512": "sha512-WGRHxqD7YQimdLEt62I91wv+3m7WYEsGWxY6vRqKJ2yFif3usKG027GxxJrSI74wqra1zIdXYXXAc0hZWKvrZg==",
+      "path": "realm/3.1.0",
+      "hashPath": "realm.3.1.0.nupkg.sha512"
     },
-    "Realm.Database/3.0.0": {
+    "Realm.Database/3.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-D+r/c59+SNUujkC+eLfcUkyeQfP9DUTGY7RuTBm3eDhb58ZQhWUdyz1wBxO1uTiA4nn72e8GasBi6PQetUWDtw==",
-      "path": "realm.database/3.0.0",
-      "hashPath": "realm.database.3.0.0.nupkg.sha512"
+      "sha512": "sha512-GwNf4cezisWcpzu/GG8qfKmVYYpZOpBqeS7UCSzXOTla3gYNko4xuIMkX1z40td3jMNkfXNxnaB9tHd5zAZR5Q==",
+      "path": "realm.database/3.1.0",
+      "hashPath": "realm.database.3.1.0.nupkg.sha512"
     },
     "Realm.DataBinding/1.2.0": {
       "type": "package",
@@ -439,12 +439,12 @@
       "path": "realm.databinding/1.2.0",
       "hashPath": "realm.databinding.1.2.0.nupkg.sha512"
     },
-    "Refit/4.5.6": {
+    "Refit/4.6.30": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-YJCKmbt/scLyuT25zvONFr/1GJJwEOV44ojJ85Etys1EvwB8O79CZZTkBafRVO1BFgVdC1VDmI0hZNy6v3CoLg==",
-      "path": "refit/4.5.6",
-      "hashPath": "refit.4.5.6.nupkg.sha512"
+      "sha512": "sha512-rl/zMFd4sZqQSERIFi3qMVPShQoB9FUfsO9gq+JUK7jNdbYmTH1xjB7W7TBAFbC+lgZEbLHG4NJ8FR5x0VRW+g==",
+      "path": "refit/4.6.30",
+      "hashPath": "refit.4.6.30.nupkg.sha512"
     },
     "Remotion.Linq/2.1.2": {
       "type": "package",
@@ -607,12 +607,12 @@
       "path": "system.threading.tasks/4.3.0",
       "hashPath": "system.threading.tasks.4.3.0.nupkg.sha512"
     },
-    "Xam.Plugin.Connectivity/3.1.1": {
+    "Xam.Plugin.Connectivity/3.2.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-X92JJFbVT8TRVaikzqjonP766jU1xeP6UgvDwu+aWA6Ll00Zjz0S/WevmzzxuPREbsYt//DdLWocy3lbbaJHPA==",
-      "path": "xam.plugin.connectivity/3.1.1",
-      "hashPath": "xam.plugin.connectivity.3.1.1.nupkg.sha512"
+      "sha512": "sha512-ZV45TaBTCJg7XQNEl3fPyyJcuMMhdDEQ6BCLc/5pMuTv38M226ER0WTu5sbmba8jlliDuzeRqkRFHwrGdWAgyg==",
+      "path": "xam.plugin.connectivity/3.2.0",
+      "hashPath": "xam.plugin.connectivity.3.2.0.nupkg.sha512"
     },
     "Xam.Plugins.Settings/3.1.1": {
       "type": "package",
@@ -621,12 +621,12 @@
       "path": "xam.plugins.settings/3.1.1",
       "hashPath": "xam.plugins.settings.3.1.1.nupkg.sha512"
     },
-    "Xamarin.Forms/3.0.0.482510": {
+    "Xamarin.Forms/3.1.0.697729": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-kq209d8qVvulrY3o+nGirENZ3kaZpEN7VWRErWcW1M+ahtDgm4BUXQJ5s9hnp1SAGxQMTMhDAVI3uk5g9NV7hA==",
-      "path": "xamarin.forms/3.0.0.482510",
-      "hashPath": "xamarin.forms.3.0.0.482510.nupkg.sha512"
+      "sha512": "sha512-YlFOM9u8onIRxJwYJ3l+O0wFKqzzrDjDrgnoBr1rct+eaQKU77vFydxvTP+WxYlYzR14hYvyLNC65L84+6ke6w==",
+      "path": "xamarin.forms/3.1.0.697729",
+      "hashPath": "xamarin.forms.3.1.0.697729.nupkg.sha512"
     },
     "SpevoCore/1.0.0": {
       "type": "project",

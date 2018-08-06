@@ -20,8 +20,10 @@
 &lt;/dict&gt;
 &lt;/plist&gt;
 </TargetiOSDevice>
-    <DeveloperId />
-    <DevelopmentTeamId />
+    <DeveloperId>
+    </DeveloperId>
+    <DevelopmentTeamId>
+    </DevelopmentTeamId>
     <DefaultDevice>iPhone 8 iOS 11.4</DefaultDevice>
     <ProjectView>ProjectFiles</ProjectView>
   </PropertyGroup>

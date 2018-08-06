@@ -15,7 +15,7 @@ namespace ProjectOnlineMobile2.ViewModels
 {
     public class TasksPageViewModel : BaseViewModel
     {
-        const string ASSIGNMENTS_LIST_GUID = "550ab747-a01c-4d2a-9263-f2e3fe4c895e";
+        const string ASSIGNMENTS_LIST_GUID = "83b05574-7af6-4bf8-bfd2-0810c5967010";
 
         private ObservableCollection<AssignmentsModel> _tasks = new ObservableCollection<AssignmentsModel>();
         public ObservableCollection<AssignmentsModel> Tasks
@@ -64,19 +64,18 @@ namespace ProjectOnlineMobile2.ViewModels
 
                     var user = realm.All<UserModel>().FirstOrDefault();
 
-                    string query = "$select=taskName," +
-                        "description," +
-                        "startDate," +
-                        "endDate," +
-                        "percentCompleted," +
-                        "work," +
-                        "actualWork," +
-                        "remainingWork," +
+                    string query = "$select=TaskName," +
+                        "TaskStartDate," +
+                        "TaskFinishDate," +
+                        "TaskPercentComplete," +
+                        "TaskWork," +
+                        "TaskActualWork," +
+                        "TaskRemainingWork," +
                         "ID," +
-                        "projectId/projectName," +
-                        "resourceName/Title" +
-                        "&$expand=projectId,resourceName" +
-                        "&$filter=resourceNameStringId eq " + user.UserId.ToString();
+                        "ProjectName/ProjectName," +
+                        "ResourceName/Title" +
+                        "&$expand=ProjectName,ResourceName" +
+                        "&$filter=ResourceNameStringId eq " + user.UserId.ToString();
 
                     var api = await SPapi.GetListItemsByListGuid(ASSIGNMENTS_LIST_GUID, query);
 
@@ -144,14 +143,14 @@ namespace ProjectOnlineMobile2.ViewModels
                 }
                 else if (sort.Equals("In Progress"))
                 {
-                    if (!item.PercentCompleted.Equals("100%"))
+                    if (!item.TaskPercentComplete.Equals("100%"))
                     {
                         Tasks.Add(item);
                     }
                 }
                 else if (sort.Equals("Completed"))
                 {
-                    if (!item.PercentCompleted.Equals("100%"))
+                    if (!item.TaskPercentComplete.Equals("100%"))
                     {
                         Tasks.Add(item);
                     }

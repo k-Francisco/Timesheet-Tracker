@@ -45,7 +45,7 @@
                                              HorizontalOptions="Center"
                                              VerticalOptions="Center">
 
-                                    <Label Text="{Binding PercentCompleted}"
+                                    <Label Text="{Binding TaskPercentComplete}"
                                            FontAttributes="Bold"
                                            FontSize="Large"
                                            TextColor="Black"
@@ -58,7 +58,7 @@
                                            HorizontalOptions="Center"
                                            Margin="0,0,0,16"/>
 
-                                    <Label Text="{Binding RemainingWork}"
+                                    <Label Text="{Binding TaskRemainingWork}"
                                            FontAttributes="Bold"
                                            FontSize="Large"
                                            TextColor="Black"
@@ -94,7 +94,7 @@
                                            HorizontalOptions="Start"
                                            LineBreakMode="TailTruncation"/>
 
-                                    <Label Text="{Binding ProjectName}"
+                                    <Label Text="{Binding Project}"
                                            FontAttributes="None"
                                            FontSize="Micro"
                                            TextColor="LightSlateGray"
@@ -109,7 +109,7 @@
                                                HeightRequest="16"
                                                Aspect="AspectFit"/>
 
-                                        <Label Text="{Binding StartDate, StringFormat='{0:MMMM dd, yyyy}'}}"
+                                        <Label Text="{Binding TaskStartDate, StringFormat='{0:MMMM dd, yyyy}'}}"
                                                FontAttributes="Bold"
                                                FontSize="18"
                                                TextColor="Black"
@@ -125,7 +125,7 @@
                                                HeightRequest="16"
                                                Aspect="AspectFit"/>
 
-                                        <Label Text="{Binding EndDate, StringFormat='{0:MMMM dd, yyyy}'}}"
+                                        <Label Text="{Binding TaskFinishDate, StringFormat='{0:MMMM dd, yyyy}'}}"
                                                FontAttributes="Bold"
                                                FontSize="18"
                                                TextColor="Black"

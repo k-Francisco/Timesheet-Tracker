@@ -2,13 +2,13 @@
   "version": 3,
   "targets": {
     ".NETStandard,Version=v2.0": {
-      "Fody/2.4.6": {
+      "Fody/3.0.3": {
         "type": "package",
         "build": {
           "build/Fody.targets": {}
         }
       },
-      "Microsoft.AppCenter/1.6.1": {
+      "Microsoft.AppCenter/1.8.0": {
         "type": "package",
         "compile": {
           "lib/netstandard1.0/Microsoft.AppCenter.dll": {}
@@ -17,10 +17,10 @@
           "lib/netstandard1.0/Microsoft.AppCenter.dll": {}
         }
       },
-      "Microsoft.AppCenter.Analytics/1.6.1": {
+      "Microsoft.AppCenter.Analytics/1.8.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.AppCenter": "1.6.1"
+          "Microsoft.AppCenter": "1.8.0"
         },
         "compile": {
           "lib/netstandard1.0/Microsoft.AppCenter.Analytics.dll": {}
@@ -29,10 +29,10 @@
           "lib/netstandard1.0/Microsoft.AppCenter.Analytics.dll": {}
         }
       },
-      "Microsoft.AppCenter.Crashes/1.6.1": {
+      "Microsoft.AppCenter.Crashes/1.8.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.AppCenter": "1.6.1"
+          "Microsoft.AppCenter": "1.8.0"
         },
         "compile": {
           "lib/netstandard1.0/Microsoft.AppCenter.Crashes.dll": {}
@@ -97,11 +97,11 @@
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
-      "Realm/3.0.0": {
+      "Realm/3.1.0": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "10.0.3",
-          "Realm.Database": "3.0.0"
+          "Realm.Database": "3.1.0"
         },
         "compile": {
           "lib/netstandard1.4/Realm.Sync.dll": {}
@@ -131,10 +131,10 @@
           }
         }
       },
-      "Realm.Database/3.0.0": {
+      "Realm.Database/3.1.0": {
         "type": "package",
         "dependencies": {
-          "Fody": "2.4.6",
+          "Fody": "3.0.3",
           "NETStandard.Library": "2.0.0",
           "Realm.DataBinding": "1.2.0",
           "Remotion.Linq": "2.1.2",
@@ -166,7 +166,7 @@
           "lib/netstandard1.0/Realm.DataBinding.dll": {}
         }
       },
-      "Refit/4.5.6": {
+      "Refit/4.6.30": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "11.0.2"
@@ -500,7 +500,7 @@
           "ref/netstandard1.3/System.Threading.Tasks.dll": {}
         }
       },
-      "Xam.Plugin.Connectivity/3.1.1": {
+      "Xam.Plugin.Connectivity/3.2.0": {
         "type": "package",
         "dependencies": {
           "NETStandard.Library": "1.6.1"
@@ -528,7 +528,7 @@
           "lib/netstandard1.0/Plugin.Settings.dll": {}
         }
       },
-      "Xamarin.Forms/3.0.0.482510": {
+      "Xamarin.Forms/3.1.0.697729": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/Xamarin.Forms.Core.dll": {},
@@ -550,7 +550,7 @@
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "Newtonsoft.Json": "11.0.2",
-          "Refit": "4.5.6",
+          "Refit": "4.6.30",
           "Xam.Plugins.Settings": "3.1.1"
         },
         "compile": {
@@ -563,13 +563,13 @@
     }
   },
   "libraries": {
-    "Fody/2.4.6": {
-      "sha512": "aCmPhhBV4IpuK0+ChDvteplDWre/zDcgENLUMPjT83QWcKppg3UNSoQTgbzt16JlpTjaBkEzH6a3F5YZWiL9Nw==",
+    "Fody/3.0.3": {
+      "sha512": "jjc1i8AX9/NIfVgRAZpCw1uKpkaMQrXFYWlMnQ6zjr0l+Or56DaIq0xA+EcQzYrfg6KrF03ybynpotd1UlAHcA==",
       "type": "package",
-      "path": "fody/2.4.6",
+      "path": "fody/3.0.3",
       "files": [
         "build/Fody.targets",
-        "fody.2.4.6.nupkg.sha512",
+        "fody.3.0.3.nupkg.sha512",
         "fody.nuspec",
         "netclassictask/Fody.dll",
         "netclassictask/Fody.pdb",
@@ -605,10 +605,10 @@
         "netstandardtask/Mono.Cecil.pdb"
       ]
     },
-    "Microsoft.AppCenter/1.6.1": {
-      "sha512": "Ly1R8HcB5zbp8J2/F3eVXVK1ThnSmVrjsANnGG9hwtvjhI/oO+jvnKsdY91VwKVReSuXi52bLtemGydKhiv8Dg==",
+    "Microsoft.AppCenter/1.8.0": {
+      "sha512": "V9ZPAVnnv8gTSxp2N1Wb39pbd5nSSuCvjpruFq27r0azRkhqLhOu+2mNgGOoX9LP/UiOrtoy3PY/y4LNAoI76g==",
       "type": "package",
-      "path": "microsoft.appcenter/1.6.1",
+      "path": "microsoft.appcenter/1.8.0",
       "files": [
         ".signature.p7s",
         "lib/MonoAndroid403/Microsoft.AppCenter.Android.Bindings.dll",
@@ -618,14 +618,14 @@
         "lib/netstandard1.0/Microsoft.AppCenter.dll",
         "lib/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.dll",
         "lib/uap10.0/Microsoft.AppCenter.dll",
-        "microsoft.appcenter.1.6.1.nupkg.sha512",
+        "microsoft.appcenter.1.8.0.nupkg.sha512",
         "microsoft.appcenter.nuspec"
       ]
     },
-    "Microsoft.AppCenter.Analytics/1.6.1": {
-      "sha512": "KWwIMJJjpu7gcElpXx+xe0aa+szbtE6DeW82e6qBRZY1BwKh3OMxjP5I0Yh/beeigVOsOW0MBaR6Bnyr2zG7gg==",
+    "Microsoft.AppCenter.Analytics/1.8.0": {
+      "sha512": "uj6b7qxKyONSZmqjgryApE4Sq23DC1j8wPJc1QA7BF1Nfa/e92bnKP497bs31xugjBSGwtSMH8hUhi/vH+tukA==",
       "type": "package",
-      "path": "microsoft.appcenter.analytics/1.6.1",
+      "path": "microsoft.appcenter.analytics/1.8.0",
       "files": [
         ".signature.p7s",
         "lib/MonoAndroid403/Microsoft.AppCenter.Analytics.Android.Bindings.dll",
@@ -635,14 +635,14 @@
         "lib/netstandard1.0/Microsoft.AppCenter.Analytics.dll",
         "lib/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Analytics.dll",
         "lib/uap10.0/Microsoft.AppCenter.Analytics.dll",
-        "microsoft.appcenter.analytics.1.6.1.nupkg.sha512",
+        "microsoft.appcenter.analytics.1.8.0.nupkg.sha512",
         "microsoft.appcenter.analytics.nuspec"
       ]
     },
-    "Microsoft.AppCenter.Crashes/1.6.1": {
-      "sha512": "2K/ZwzBDRB5xevOPu1bNJ7f0GWGidCk8HSGC2eRhQp0Ry06/HNCbSa/b6KXLVjzTRt5Hn7f9nIEeoQ9i9PzMTg==",
+    "Microsoft.AppCenter.Crashes/1.8.0": {
+      "sha512": "paVrOYaErMz9+k6wQvW9m8TEauARlVW7iX9y/QGm1f6PIHiezPNWkzLhMsnpbbWZBk+wv/H296jW/BoAxOEbzg==",
       "type": "package",
-      "path": "microsoft.appcenter.crashes/1.6.1",
+      "path": "microsoft.appcenter.crashes/1.8.0",
       "files": [
         ".signature.p7s",
         "build/uap10.0/Microsoft.AppCenter.Crashes.targets",
@@ -652,7 +652,7 @@
         "lib/Xamarin.iOS10/Microsoft.AppCenter.Crashes.iOS.Bindings.dll",
         "lib/netstandard1.0/Microsoft.AppCenter.Crashes.dll",
         "lib/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Crashes.dll",
-        "microsoft.appcenter.crashes.1.6.1.nupkg.sha512",
+        "microsoft.appcenter.crashes.1.8.0.nupkg.sha512",
         "microsoft.appcenter.crashes.nuspec",
         "ref/uap10.0/Microsoft.AppCenter.Crashes.dll",
         "runtimes/win10-arm/lib/uap10.0/Microsoft.AppCenter.Crashes.dll",
@@ -847,10 +847,10 @@
         "newtonsoft.json.nuspec"
       ]
     },
-    "Realm/3.0.0": {
-      "sha512": "SkSVCQdh5QgZaxDF4fJwX6FM3Fy4NQ41YD8tOQxxbDvF7AKHPSZ3pCy6ULxibJZZAOO+pdKDQwx3KKiuxruIgA==",
+    "Realm/3.1.0": {
+      "sha512": "WGRHxqD7YQimdLEt62I91wv+3m7WYEsGWxY6vRqKJ2yFif3usKG027GxxJrSI74wqra1zIdXYXXAc0hZWKvrZg==",
       "type": "package",
-      "path": "realm/3.0.0",
+      "path": "realm/3.1.0",
       "files": [
         "build/Realm.targets",
         "lib/netstandard1.4/Realm.Sync.deps.json",
@@ -864,7 +864,7 @@
         "native/android/x86/librealm-wrappers.so",
         "native/android/x86_64/librealm-wrappers.so",
         "native/ios/universal/librealm-wrappers.a",
-        "realm.3.0.0.nupkg.sha512",
+        "realm.3.1.0.nupkg.sha512",
         "realm.nuspec",
         "runtimes/linux-x64/native/librealm-wrappers.so",
         "runtimes/osx.10.10-x64/native/librealm-wrappers.dylib",
@@ -875,10 +875,10 @@
         "runtimes/win81-x86/native/realm-wrappers.dll"
       ]
     },
-    "Realm.Database/3.0.0": {
-      "sha512": "D+r/c59+SNUujkC+eLfcUkyeQfP9DUTGY7RuTBm3eDhb58ZQhWUdyz1wBxO1uTiA4nn72e8GasBi6PQetUWDtw==",
+    "Realm.Database/3.1.0": {
+      "sha512": "GwNf4cezisWcpzu/GG8qfKmVYYpZOpBqeS7UCSzXOTla3gYNko4xuIMkX1z40td3jMNkfXNxnaB9tHd5zAZR5Q==",
       "type": "package",
-      "path": "realm.database/3.0.0",
+      "path": "realm.database/3.1.0",
       "files": [
         "build/Realm.Database.targets",
         "content/FodyWeavers.xml.install.xdt",
@@ -894,7 +894,7 @@
         "native/android/x86/librealm-wrappers.so",
         "native/android/x86_64/librealm-wrappers.so",
         "native/ios/universal/librealm-wrappers.a",
-        "realm.database.3.0.0.nupkg.sha512",
+        "realm.database.3.1.0.nupkg.sha512",
         "realm.database.nuspec",
         "runtimes/linux-x64/native/librealm-wrappers.so",
         "runtimes/osx.10.10-x64/native/librealm-wrappers.dylib",
@@ -927,10 +927,10 @@
         "realm.databinding.nuspec"
       ]
     },
-    "Refit/4.5.6": {
-      "sha512": "YJCKmbt/scLyuT25zvONFr/1GJJwEOV44ojJ85Etys1EvwB8O79CZZTkBafRVO1BFgVdC1VDmI0hZNy6v3CoLg==",
+    "Refit/4.6.30": {
+      "sha512": "rl/zMFd4sZqQSERIFi3qMVPShQoB9FUfsO9gq+JUK7jNdbYmTH1xjB7W7TBAFbC+lgZEbLHG4NJ8FR5x0VRW+g==",
       "type": "package",
-      "path": "refit/4.5.6",
+      "path": "refit/4.6.30",
       "files": [
         ".signature.p7s",
         "build/MSBuildCore20/GeneratedInterfaceStubTemplate.mustache",
@@ -997,7 +997,7 @@
         "lib/netstandard1.4/Refit.xml",
         "lib/netstandard2.0/Refit.dll",
         "lib/netstandard2.0/Refit.xml",
-        "refit.4.5.6.nupkg.sha512",
+        "refit.4.6.30.nupkg.sha512",
         "refit.nuspec"
       ]
     },
@@ -2353,10 +2353,10 @@
         "system.threading.tasks.nuspec"
       ]
     },
-    "Xam.Plugin.Connectivity/3.1.1": {
-      "sha512": "X92JJFbVT8TRVaikzqjonP766jU1xeP6UgvDwu+aWA6Ll00Zjz0S/WevmzzxuPREbsYt//DdLWocy3lbbaJHPA==",
+    "Xam.Plugin.Connectivity/3.2.0": {
+      "sha512": "ZV45TaBTCJg7XQNEl3fPyyJcuMMhdDEQ6BCLc/5pMuTv38M226ER0WTu5sbmba8jlliDuzeRqkRFHwrGdWAgyg==",
       "type": "package",
-      "path": "xam.plugin.connectivity/3.1.1",
+      "path": "xam.plugin.connectivity/3.2.0",
       "files": [
         "lib/MonoAndroid10/Plugin.Connectivity.Abstractions.dll",
         "lib/MonoAndroid10/Plugin.Connectivity.Abstractions.pdb",
@@ -2414,7 +2414,7 @@
         "lib/tizen40/Plugin.Connectivity.Abstractions.xml",
         "lib/tizen40/Plugin.Connectivity.deps.json",
         "lib/tizen40/Plugin.Connectivity.dll",
-        "xam.plugin.connectivity.3.1.1.nupkg.sha512",
+        "xam.plugin.connectivity.3.2.0.nupkg.sha512",
         "xam.plugin.connectivity.nuspec"
       ]
     },
@@ -2484,11 +2484,12 @@
         "xam.plugins.settings.nuspec"
       ]
     },
-    "Xamarin.Forms/3.0.0.482510": {
-      "sha512": "kq209d8qVvulrY3o+nGirENZ3kaZpEN7VWRErWcW1M+ahtDgm4BUXQJ5s9hnp1SAGxQMTMhDAVI3uk5g9NV7hA==",
+    "Xamarin.Forms/3.1.0.697729": {
+      "sha512": "YlFOM9u8onIRxJwYJ3l+O0wFKqzzrDjDrgnoBr1rct+eaQKU77vFydxvTP+WxYlYzR14hYvyLNC65L84+6ke6w==",
       "type": "package",
-      "path": "xamarin.forms/3.0.0.482510",
+      "path": "xamarin.forms/3.1.0.697729",
       "files": [
+        ".signature.p7s",
         "build/netstandard1.0/Mono.Cecil.Mdb.dll",
         "build/netstandard1.0/Mono.Cecil.Pdb.dll",
         "build/netstandard1.0/Mono.Cecil.Rocks.dll",
@@ -2622,12 +2623,13 @@
         "lib/uap10.0/Xamarin.Forms.Platform.UAP/PageControlStyle.xbf",
         "lib/uap10.0/Xamarin.Forms.Platform.UAP/Properties/Xamarin.Forms.Platform.UAP.rd.xml",
         "lib/uap10.0/Xamarin.Forms.Platform.UAP/Resources.xbf",
+        "lib/uap10.0/Xamarin.Forms.Platform.UAP/SliderStyle.xbf",
         "lib/uap10.0/Xamarin.Forms.Platform.UAP/TabbedPageStyle.xbf",
         "lib/uap10.0/Xamarin.Forms.Platform.UAP/Xamarin.Forms.Platform.UAP.xr.xml",
         "lib/uap10.0/Xamarin.Forms.Platform.dll",
         "lib/uap10.0/Xamarin.Forms.Xaml.dll",
         "lib/uap10.0/Xamarin.Forms.Xaml.xml",
-        "xamarin.forms.3.0.0.482510.nupkg.sha512",
+        "xamarin.forms.3.1.0.697729.nupkg.sha512",
         "xamarin.forms.nuspec"
       ]
     },
@@ -2639,15 +2641,15 @@
   },
   "projectFileDependencyGroups": {
     ".NETStandard,Version=v2.0": [
-      "Microsoft.AppCenter.Analytics >= 1.6.1",
-      "Microsoft.AppCenter.Crashes >= 1.6.1",
+      "Microsoft.AppCenter.Analytics >= 1.8.0",
+      "Microsoft.AppCenter.Crashes >= 1.8.0",
       "NETStandard.Library >= 2.0.3",
       "Newtonsoft.Json >= 11.0.2",
-      "Realm >= 3.0.0",
+      "Realm >= 3.1.0",
       "SpevoCore >= 1.0.0",
-      "Xam.Plugin.Connectivity >= 3.1.1",
+      "Xam.Plugin.Connectivity >= 3.2.0",
       "Xam.Plugins.Settings >= 3.1.1",
-      "Xamarin.Forms >= 3.0.0.482510"
+      "Xamarin.Forms >= 3.1.0.697729"
     ]
   },
   "packageFolders": {
@@ -2697,11 +2699,11 @@
         "dependencies": {
           "Microsoft.AppCenter.Analytics": {
             "target": "Package",
-            "version": "[1.6.1, )"
+            "version": "[1.8.0, )"
           },
           "Microsoft.AppCenter.Crashes": {
             "target": "Package",
-            "version": "[1.6.1, )"
+            "version": "[1.8.0, )"
           },
           "NETStandard.Library": {
             "suppressParent": "All",
@@ -2715,11 +2717,11 @@
           },
           "Realm": {
             "target": "Package",
-            "version": "[3.0.0, )"
+            "version": "[3.1.0, )"
           },
           "Xam.Plugin.Connectivity": {
             "target": "Package",
-            "version": "[3.1.1, )"
+            "version": "[3.2.0, )"
           },
           "Xam.Plugins.Settings": {
             "target": "Package",
@@ -2727,7 +2729,7 @@
           },
           "Xamarin.Forms": {
             "target": "Package",
-            "version": "[3.0.0.482510, )"
+            "version": "[3.1.0.697729, )"
           }
         },
         "imports": [

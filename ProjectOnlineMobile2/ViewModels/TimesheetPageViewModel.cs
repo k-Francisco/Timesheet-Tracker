@@ -73,9 +73,9 @@ namespace ProjectOnlineMobile2.ViewModels
         public ICommand SelectedProjectChangedCommand { get; set; }
 
         CompositeRoot compositeList;
-        const string TIMESHEET_PERIODS_LIST_GUID = "cf39e6af-a8a6-47ca-b8bc-f1fdf6cf03a4";
-        const string TIMESHEET_LINES_LIST_GUID = "f8097a6d-3d12-49a2-948a-91c1273e41e1";
-        const string COMPOSITE_LIST_GUID = "7077d713-c414-4201-9587-f6707b049e71";
+        const string TIMESHEET_PERIODS_LIST_GUID = "9b209820-64ae-4edd-ad61-1490d980b362";
+        const string TIMESHEET_LINES_LIST_GUID = "ee561f4c-2604-46c3-8d36-63693cad1510";
+        const string COMPOSITE_LIST_GUID = "7fe8ecb3-8a7f-4874-ac2f-dac80517f439";
 
         public TimesheetPageViewModel()
         {
@@ -185,7 +185,7 @@ namespace ProjectOnlineMobile2.ViewModels
             var periodId = PeriodList[SelectedIndex].ID;
 
             var localLines = realm.All<LineModel>()
-                .Where(p => p.PeriodId == periodId)
+                .Where(p => p.LinePeriodId == periodId)
                 .ToList();
 
             foreach (var item in localLines)
@@ -205,35 +205,37 @@ namespace ProjectOnlineMobile2.ViewModels
                     var localLines = realm.All<LineModel>().ToList();
 
                     string query = "$select=ID," +
-                        "taskName," +
-                        "comment," +
-                        "status," +
-                        "totalWork," +
-                        "projectId," +
-                        "periodId" +
+                        "Comment," +
+                        "Status," +
+                        "TotalWork," +
+                        "LinePeriodId," +
+                        "ProjectName/ProjectName," +
+                        "TaskName/TaskName" +
+                        "&$expand=ProjectName,TaskName" +
                         "&$filter=";
 
                     StringBuilder sb = new StringBuilder(query);
 
                     foreach (var item in compositeList.D.Results)
                     {
-                        sb.Append("(ID eq "+ item.TimesheetLindIdId +") or ");
+                        sb.Append("(ID eq "+ item.TimesheetLineId +") or ");
                     }
-                    //remove the last or in the query
+                    //remove the last 'or' in the query
                     sb.Remove((sb.Length-4),4);
 
                     var apiResponse = await SPapi.GetListItemsByListGuid(TIMESHEET_LINES_LIST_GUID, sb.ToString());
+                    
                     if (apiResponse.IsSuccessStatusCode)
                     {
                         var lineList = JsonConvert.DeserializeObject<LineRoot>(await apiResponse.Content.ReadAsStringAsync());
 
-                        foreach (var item in lineList.D.Results)
-                        {
-                            if (!string.IsNullOrWhiteSpace(item.Comment))
-                            {
-                                item.Comment = item.Comment.Remove(0, 62).Replace("<br>", "").Replace("</p>", "").Replace("</div>", "");
-                            }
-                        }
+                        //foreach (var item in lineList.D.Results)
+                        //{
+                        //    if (!string.IsNullOrWhiteSpace(item.Comment))
+                        //    {
+                        //        item.Comment = item.Comment.Remove(0, 62).Replace("<br>", "").Replace("</p>", "").Replace("</div>", "");
+                        //    }
+                        //}
 
                         syncDataService.SyncTimesheetLines(localLines, lineList.D.Results, PeriodLines, PeriodList[SelectedIndex].ID);
                     }
@@ -271,7 +273,7 @@ namespace ProjectOnlineMobile2.ViewModels
             var completeLineIds = new List<int>();
             foreach (var item in compositeList.D.Results)
             {
-                completeLineIds.Add(item.TimesheetLindIdId);
+                completeLineIds.Add(item.TimesheetLineId);
             }
             MessagingCenter.Instance.Send<List<int>>(completeLineIds, "SendLineIdsToWorkPage");
         }
@@ -284,11 +286,11 @@ namespace ProjectOnlineMobile2.ViewModels
                 {
                     var userId = realm.All<UserModel>().FirstOrDefault().UserId;
 
-                    string query = "$select=projectIdId," +
-                        "assignmentIdId," +
-                        "periodIdId," +
-                        "timesheetLindIdId" +
-                        "&$filter=resourceIdId eq " + userId.ToString();
+                    string query = "$select=ProjectId," +
+                        "TaskId," +
+                        "TimesheetPeriodId," +
+                        "TimesheetLineId" +
+                        "&$filter=ResourceStringId eq " + userId.ToString();
 
                     var apiResponse = await SPapi.GetListItemsByListGuid(COMPOSITE_LIST_GUID, query);
 

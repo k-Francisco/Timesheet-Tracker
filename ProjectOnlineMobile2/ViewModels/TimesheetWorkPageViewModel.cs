@@ -37,7 +37,7 @@ namespace ProjectOnlineMobile2.ViewModels
             set { SetProperty(ref _isRefreshing, value); }
         }
 
-        const string TIMESHEETWORK_LIST_GUID = "d87fa340-2484-4a71-9a66-b8e8982405cb";
+        const string TIMESHEETWORK_LIST_GUID = "5aeee3e3-758e-4aab-a5d6-3f2b877e394c";
         int _periodId, _lineId;
         private List<int> _completeLineIds { get; set; }
 
@@ -84,7 +84,7 @@ namespace ProjectOnlineMobile2.ViewModels
         {
             HeaderVisibility = false;
             var localWorkModel = realm.All<LineWorkModel>()
-                .Where(p=> p.PeriodIdId == _periodId && p.LineIdId == _lineId)
+                .Where(p=> p.TimesheetPeriodId == _periodId && p.TimesheetLineId == _lineId)
                 .ToList();
 
             foreach (var item in localWorkModel)
@@ -102,11 +102,11 @@ namespace ProjectOnlineMobile2.ViewModels
                 {
                     IsRefreshing = true;
 
-                    var query = "$select=workDate," +
-                        "actualWork," +
-                        "plannedWork," +
-                        "lineIdId," +
-                        "periodIdId," +
+                    var query = "$select=WorkDate," +
+                        "ActualWork," +
+                        "PlannedWork," +
+                        "TimesheetLineId," +
+                        "TimesheetPeriodId," +
                         "ID" +
                         "&$filter=";
 
@@ -114,13 +114,13 @@ namespace ProjectOnlineMobile2.ViewModels
 
                     foreach (var item in _completeLineIds)
                     {
-                        sb.Append("(lineIdId eq "+ item.ToString() +") or ");
+                        sb.Append("(TimesheetLineId eq " + item.ToString() +") or ");
                     }
                     //remove the last or in the query
                     sb.Remove((sb.Length - 4), 4);
 
                     var apiResponse = await SPapi.GetListItemsByListGuid(TIMESHEETWORK_LIST_GUID, sb.ToString());
-
+                    
                     if (apiResponse.IsSuccessStatusCode)
                     {
                         var localLineWorkModels = realm.All<LineWorkModel>().ToList();
@@ -145,7 +145,7 @@ namespace ProjectOnlineMobile2.ViewModels
         public void OnExitPage()
         {
             var localWorkModel = realm.All<LineWorkModel>()
-                .Where(p => p.PeriodIdId == _periodId && p.LineIdId == _lineId)
+                .Where(p => p.TimesheetPeriodId == _periodId && p.TimesheetLineId == _lineId)
                 .ToList();
 
             foreach (var item in localWorkModel)
@@ -168,7 +168,7 @@ namespace ProjectOnlineMobile2.ViewModels
         private async void ExecuteSaveTimesheetWorkChanges()
         {
             var localWorkModel = realm.All<LineWorkModel>()
-                    .Where(p => p.PeriodIdId == _periodId && p.LineIdId == _lineId)
+                    .Where(p => p.TimesheetPeriodId == _periodId && p.TimesheetLineId == _lineId)
                     .ToList();
 
             if(IsConnectedToInternet())
