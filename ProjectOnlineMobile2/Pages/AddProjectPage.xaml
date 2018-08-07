@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjectOnlineMobile2.Pages.AddProjectPage">
+    <ContentPage.Content>
+        <StackLayout Orientation="Vertical"
+                     Spacing="1">
+
+            <Entry x:Name="ProjectNameEntry"
+                   Placeholder="Project Name"
+                   PlaceholderColor="LightSlateGray"/>
+
+            <Editor x:Name="ProjectDescriptionEntry"/>
+
+            <DatePicker x:Name="ProjectDate"/>
+
+            <Picker x:Name="ProjectType"/>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

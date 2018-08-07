@@ -34,7 +34,6 @@ namespace ProjectOnlineMobile2.Models2.LineWorkModel
         public int ID { get; set; }
 
         public string EntryTextActualHours { get; set; }
-        public string EntryTextPlannedHours { get; set; }
         public bool isNotSaved { get; set; }
     }
 

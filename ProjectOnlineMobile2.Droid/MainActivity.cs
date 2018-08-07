@@ -159,7 +159,7 @@ namespace ProjectOnlineMobile2.Droid
             TimesheetLineComment = timesheetLine.Comment;
 
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
-            toolbar.Title = timesheetLine.TaskName;
+            toolbar.Title = timesheetLine.Task;
             bottomNavigation.Visibility = ViewStates.Gone;
 
             if (menu != null)

@@ -25,6 +25,13 @@
                                                 Margin="16,8,16,8"
                                                 HorizontalOptions="FillAndExpand">
 
+                            <controls:CustomFrame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Path=BindingContext.ExecuteTaskClickedCommand, Source={x:Reference mainLayout}}"
+                                                      CommandParameter="{Binding .}"
+                                                      NumberOfTapsRequired="2"/>
+                                
+                            </controls:CustomFrame.GestureRecognizers>
+
                             <Grid CompressedLayout.IsHeadless="True">
 
                                 <Grid.ColumnDefinitions>
@@ -148,8 +155,14 @@
     </ContentPage.Resources>
     
     <ContentPage.Content>
-        <controls:CustomListView  
-                      x:Name="listy"
+
+        <StackLayout x:Name="mainLayout" 
+                     Orientation="Vertical"
+                     VerticalOptions="FillAndExpand"
+                     HorizontalOptions="FillAndExpand"
+                     Spacing="0">
+
+            <controls:CustomListView  
                       HasUnevenRows="True"
                       SeparatorVisibility="None"
                       IsPullToRefreshEnabled="True"
@@ -157,9 +170,12 @@
                       RefreshCommand="{Binding RefreshTasksCommand}"
                       ItemTemplate="{StaticResource TaskCardTemplate}"
                       ItemsSource="{Binding Tasks}">
-            <x:Arguments>
-                <ListViewCachingStrategy>RecycleElementAndDataTemplate</ListViewCachingStrategy>
-            </x:Arguments>
-        </controls:CustomListView>
+                <x:Arguments>
+                    <ListViewCachingStrategy>RecycleElementAndDataTemplate</ListViewCachingStrategy>
+                </x:Arguments>
+            </controls:CustomListView>
+
+        </StackLayout>
+        
     </ContentPage.Content>
 </ContentPage>

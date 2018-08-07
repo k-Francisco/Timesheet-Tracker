@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Windows.Input;
 using Xamarin.Forms;
 using ProjectsModel = ProjectOnlineMobile2.Models2.Projects.ProjectModel;
 using ProjectsRoot = ProjectOnlineMobile2.Models2.Projects.RootObject;
+using UserModel = ProjectOnlineMobile2.Models2.UserModel;
 
 namespace ProjectOnlineMobile2.ViewModels
 {
@@ -34,7 +36,61 @@ namespace ProjectOnlineMobile2.ViewModels
 
         public ProjectPageViewModel()
         {
-            //empty constructor
+            MessagingCenter.Instance.Subscribe<string[]>(this, "AddProject", (parameters) => {
+                AddProject(parameters);
+            });
+        }
+
+        private async void AddProject(string[] parameters)
+        {
+            /**
+             * parameters[0] = project name
+             * parameters[1] = project description
+             * parameters[2] = project start date
+             * parameters[3] = project type
+              **/
+
+            try
+            {
+                if (IsConnectedToInternet())
+                {
+                    var user = realm.All<UserModel>().FirstOrDefault();
+
+                    var body = "{'__metadata':{'type':'SP.Data.ProjectsListItem'}," +
+                    "'ProjectName':'" + parameters[0] + "'," +
+                    "'ProjectDescription':'" + parameters[1] + "'," +
+                    "'ProjectStartDate':'" + DateTime.Parse(parameters[2]) +"'," +
+                    "'ProjectType':'" + parameters[3] +"'," +
+                    "'ProjectOwnerId':'" + user.UserId +"'}";
+
+                    var item = new StringContent(body);
+                    item.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json;odata=verbose");
+
+                    var formDigest = await SPapi.GetFormDigest();
+
+                    var add = await SPapi.AddListItemByListGuid(formDigest.D.GetContextWebInformation.FormDigestValue,
+                        PROJECTS_LIST_GUID,
+                        item);
+                    var ensure = add.EnsureSuccessStatusCode();
+
+                    if (ensure.IsSuccessStatusCode)
+                    {
+                        Debug.WriteLine("SUCCESS", "ADD PROJECT");
+                    }
+                    else
+                    {
+                        Debug.WriteLine("FAILED", "ADD PROJECT");
+                    }
+
+
+                    
+                }
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message, "AddProjectError");
+            }
+            
         }
 
         public void LoadProjectsFromDatabase()

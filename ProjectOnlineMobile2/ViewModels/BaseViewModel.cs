@@ -22,7 +22,7 @@ namespace ProjectOnlineMobile2.ViewModels
 
             if (realm == null)
             {
-                RealmConfiguration.DefaultConfiguration.SchemaVersion = 6;
+                RealmConfiguration.DefaultConfiguration.SchemaVersion = 7;
                 realm = Realm.GetInstance();
             }
 

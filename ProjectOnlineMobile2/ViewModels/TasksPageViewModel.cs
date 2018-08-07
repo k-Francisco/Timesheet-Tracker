@@ -32,6 +32,7 @@ namespace ProjectOnlineMobile2.ViewModels
         }
 
         public ICommand RefreshTasksCommand { get { return new Command(ExecuteRefreshTasksCommand); } }
+        public ICommand ExecuteTaskClickedCommand { get { return new Command<AssignmentsModel>(TaskClicked); } }
 
         public TasksPageViewModel()
         {
@@ -158,6 +159,19 @@ namespace ProjectOnlineMobile2.ViewModels
             }
         }
 
+        private void TaskClicked(AssignmentsModel assignment)
+        {
+            MessagingCenter.Instance.Send<AssignmentsModel>(assignment, "DisplayActionSheet");
+        }
 
+        public void EditTask(AssignmentsModel assignment)
+        {
+
+        }
+
+        public void DeleteTask(AssignmentsModel assignment)
+        {
+
+        }
     }
 }

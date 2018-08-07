@@ -91,7 +91,9 @@ namespace ProjectOnlineMobile2.ViewModels
             {
                 LineWorkList.Add(item);
             }
-            HeaderVisibility = true;
+
+            if(localWorkModel.Any())
+                HeaderVisibility = true;
         }
 
         public async void SyncTimesheetLineWork()
@@ -155,7 +157,6 @@ namespace ProjectOnlineMobile2.ViewModels
                     realm.Write(() =>
                     {
                         item.EntryTextActualHours = string.Empty;
-                        item.EntryTextPlannedHours = string.Empty;
                     });
                 }
             }
@@ -171,10 +172,10 @@ namespace ProjectOnlineMobile2.ViewModels
                     .Where(p => p.TimesheetPeriodId == _periodId && p.TimesheetLineId == _lineId)
                     .ToList();
 
-            if(IsConnectedToInternet())
+            if (IsConnectedToInternet())
                 MessagingCenter.Instance.Send<String[]>(new string[] { "Saving progress...", "Close" }, "DisplayAlert");
             else
-                MessagingCenter.Instance.Send<String[]>(new string[] { "The changes that were made will be saved when the device is connected to the internet", "Close" }, "DisplayAlert");
+                MessagingCenter.Instance.Send<String[]>(new string[] { "The changes that were made will be uploaded when the device is connected to the internet", "Close" }, "DisplayAlert");
 
 
             foreach (var item in localWorkModel)
@@ -185,21 +186,16 @@ namespace ProjectOnlineMobile2.ViewModels
                     {
                         var formDigest = await SPapi.GetFormDigest();
 
-                        if (!string.IsNullOrWhiteSpace(item.EntryTextActualHours) || !string.IsNullOrWhiteSpace(item.EntryTextPlannedHours))
+                        if (!string.IsNullOrWhiteSpace(item.EntryTextActualHours))
                         {
-                            string actualHours, plannedHours;
+                            string actualHours;
 
                             if (string.IsNullOrWhiteSpace(item.EntryTextActualHours))
                                 actualHours = item.ActualWork.ToString();
                             else
                                 actualHours = item.EntryTextActualHours;
 
-                            if (string.IsNullOrWhiteSpace(item.EntryTextPlannedHours))
-                                plannedHours = item.PlannedWork.ToString();
-                            else
-                                plannedHours = item.EntryTextPlannedHours;
-
-                            var body = ConstructBody(actualHours, plannedHours);
+                            var body = ConstructBody(actualHours);
 
                             var apiResponse = await SPapi.UpdateListItemByListGuid(formDigest.D.GetContextWebInformation.FormDigestValue,
                                 TIMESHEETWORK_LIST_GUID, body, item.ID.ToString());
@@ -208,9 +204,7 @@ namespace ProjectOnlineMobile2.ViewModels
                             {
                                 realm.Write(() => {
                                     item.ActualWork = Convert.ToInt32(actualHours);
-                                    item.PlannedWork = Convert.ToInt32(plannedHours);
                                     item.EntryTextActualHours = "";
-                                    item.EntryTextPlannedHours = "";
                                     item.isNotSaved = false;
                                 });
                             }
@@ -226,7 +220,7 @@ namespace ProjectOnlineMobile2.ViewModels
                     }
                     else
                     {
-                        if (!string.IsNullOrWhiteSpace(item.EntryTextActualHours) || !string.IsNullOrWhiteSpace(item.EntryTextPlannedHours))
+                        if (!string.IsNullOrWhiteSpace(item.EntryTextActualHours))
                         {
                             realm.Write(() => {
                                 item.isNotSaved = true;
@@ -246,11 +240,10 @@ namespace ProjectOnlineMobile2.ViewModels
             }
         }
 
-        private StringContent ConstructBody(string actualHours, string plannedHours)
+        private StringContent ConstructBody(string actualHours)
         {
-            var body = "{'__metadata':{'type':'SP.Data.TimesheetWorkListItem'}," +
-                "'actualWork':'"+ actualHours +"'," +
-                "'plannedWork':'"+ plannedHours +"'}";
+            var body = "{'__metadata':{'type':'SP.Data.TimesheetLineWorkListListItem'}," +
+                "'ActualWork':'" + actualHours +"'}";
 
             var contents = new StringContent(body);
             contents.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json;odata=verbose");
