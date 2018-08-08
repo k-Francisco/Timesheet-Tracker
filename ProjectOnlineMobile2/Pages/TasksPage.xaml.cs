@@ -1,6 +1,5 @@
 ﻿using ProjectOnlineMobile2.ViewModels;
 using AssignmentsModel = ProjectOnlineMobile2.Models2.Assignments.AssignmentModel;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -19,15 +18,15 @@ namespace ProjectOnlineMobile2.Pages
 			InitializeComponent ();
 
             MessagingCenter.Instance.Subscribe<AssignmentsModel>(this,"DisplayActionSheet",(assignment) => {
-                DisplayActionSheet(assignment);
+                DisplayTaskOptions(assignment);
             });
 
             viewModel = BindingContext as TasksPageViewModel;
 		}
 
-        public async void DisplayActionSheet(AssignmentsModel assignment)
+        public async void DisplayTaskOptions(AssignmentsModel assignment)
         {
-            string action = await this.DisplayActionSheet(assignment.TaskName, CANCEL_BUTTON, "", new string[] { EDIT_TASK,DELETE_TASK});
+            string action = await this.DisplayActionSheet(assignment.TaskName, CANCEL_BUTTON, null, new string[] { EDIT_TASK,DELETE_TASK});
 
             if(action.Equals(EDIT_TASK))
             {
@@ -37,7 +36,7 @@ namespace ProjectOnlineMobile2.Pages
             {
                 //delete task here
             }
-
         }
+
     }
 }

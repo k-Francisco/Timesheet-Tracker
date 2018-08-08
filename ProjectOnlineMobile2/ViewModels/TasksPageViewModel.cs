@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using Xamarin.Forms;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Net.Http;
 using System.Windows.Input;
-using AssignmentsRoot = ProjectOnlineMobile2.Models2.Assignments.RootObject;
+using Xamarin.Forms;
 using AssignmentsModel = ProjectOnlineMobile2.Models2.Assignments.AssignmentModel;
+using AssignmentsRoot = ProjectOnlineMobile2.Models2.Assignments.RootObject;
 using UserModel = ProjectOnlineMobile2.Models2.UserModel;
-using Newtonsoft.Json;
 
 namespace ProjectOnlineMobile2.ViewModels
 {
     public class TasksPageViewModel : BaseViewModel
     {
-        const string ASSIGNMENTS_LIST_GUID = "83b05574-7af6-4bf8-bfd2-0810c5967010";
+        private const string ASSIGNMENTS_LIST_GUID = "83b05574-7af6-4bf8-bfd2-0810c5967010";
 
         private ObservableCollection<AssignmentsModel> _tasks = new ObservableCollection<AssignmentsModel>();
+
         public ObservableCollection<AssignmentsModel> Tasks
         {
             get { return _tasks; }
@@ -25,6 +25,7 @@ namespace ProjectOnlineMobile2.ViewModels
         }
 
         private bool _isRefreshing;
+
         public bool IsRefreshing
         {
             get { return _isRefreshing; }
@@ -39,6 +40,25 @@ namespace ProjectOnlineMobile2.ViewModels
             MessagingCenter.Instance.Subscribe<String>(this, "SortTasks", (sortReference) =>
             {
                 ExecuteSortTasks(sortReference);
+            });
+
+            MessagingCenter.Instance.Subscribe<string[]>(this, "TaskOptions", (option) =>
+            {
+                /**
+                 * option[0] = identifier
+                 * option[1]... = parameters
+                 **/
+                switch (option[0])
+                {
+                    case "Create":
+                        Debug.WriteLine("here 1");
+                        CreateTask(option);
+                        break;
+                    case "Edit":
+                        break;
+                    case "Delete":
+                        break;
+                }
             });
 
             LoadAssignmentsFromDatabase();
@@ -95,12 +115,11 @@ namespace ProjectOnlineMobile2.ViewModels
                     IsRefreshing = false;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine("SyncUserTasks", e.Message);
                 IsRefreshing = false;
             }
-            
         }
 
         private void ExecuteRefreshTasksCommand()
@@ -127,7 +146,6 @@ namespace ProjectOnlineMobile2.ViewModels
                 Debug.WriteLine("ExecuteRefreshTasksCommand", e.Message);
                 IsRefreshing = false;
             }
-
         }
 
         private void ExecuteSortTasks(string sort)
@@ -164,14 +182,61 @@ namespace ProjectOnlineMobile2.ViewModels
             MessagingCenter.Instance.Send<AssignmentsModel>(assignment, "DisplayActionSheet");
         }
 
-        public void EditTask(AssignmentsModel assignment)
+        private async void CreateTask(string[] parameters)
+        {
+            Debug.WriteLine("here 2");
+            /**
+             * parameters[1] = task name
+             * parameters[2] = task start date
+             * parameters[3] = task project
+             * parameters[4] = resource id
+            **/
+            if (IsConnectedToInternet())
+            {
+                try
+                {
+                    var body = "{'__metadata':{'type':'SP.Data.TasksListItem'}," +
+                    "'TaskName':'" + parameters[1] + "'," +
+                    "'TaskStartDate':'" + DateTime.Parse(parameters[2]) + "'," +
+                    "'ProjectNameId':'" + parameters[3] + "'," +
+                    "'ResourceNameId':'" + parameters[4] + "'}";
+
+                    var item = new StringContent(body);
+                    item.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json;odata=verbose");
+
+                    var formDigest = await SPapi.GetFormDigest();
+
+                    var add = await SPapi.AddListItemByListGuid(formDigest.D.GetContextWebInformation.FormDigestValue,
+                        ASSIGNMENTS_LIST_GUID,
+                        item);
+                    var ensure = add.EnsureSuccessStatusCode();
+
+                    if (ensure.IsSuccessStatusCode)
+                    {
+                        //display prompt that creation of project is successful
+                        Debug.WriteLine("SUCCESS", "ADD TASK");
+                    }
+                    else
+                    {
+                        //display prompt that creation of project has failed
+                        Debug.WriteLine("FAILED", "ADD TASK");
+                    }
+                }
+                catch(Exception e)
+                {
+                    Debug.WriteLine(e.Message,"CreateTask");
+                }
+            }
+
+        }
+
+        private void EditTask(AssignmentsModel assignment)
         {
 
         }
 
-        public void DeleteTask(AssignmentsModel assignment)
+        private void DeleteTask(AssignmentsModel assignment)
         {
-
         }
     }
 }

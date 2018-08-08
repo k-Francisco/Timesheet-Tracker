@@ -1,10 +1,7 @@
 ﻿using Refit;
 using SpevoCore.Models.FormDigest;
 using SpevoCore.Models.User;
-using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SpevoCore.Services.Sharepoint_API
@@ -13,6 +10,8 @@ namespace SpevoCore.Services.Sharepoint_API
     {
         [Get("/_api/web/currentuser?")]
         Task<UserModel> GetCurrentUser();
+
+        Task<HttpResponseMessage> GetSiteUsers(string query);
 
         [Post("/_api/contextinfo")]
         Task<FormDigestModel> GetFormDigest();
@@ -33,7 +32,7 @@ namespace SpevoCore.Services.Sharepoint_API
 
         Task<HttpResponseMessage> GetListItemsByListGuid(string listGuid, string query);
 
-        [Headers("Accept:application/json;odata=verbose", 
+        [Headers("Accept:application/json;odata=verbose",
                  "Content-Type:application/json;odata=verbose")]
         [Post("/_api/web/lists/getbytitle('{listTitle}')/items")]
         Task<HttpResponseMessage> AddListItemByListTitle([Header("X-RequestDigest")] string formDigest,
@@ -47,13 +46,13 @@ namespace SpevoCore.Services.Sharepoint_API
                                            string listGuid,
                                            StringContent item);
 
-        [Headers("Accept:application/json;odata=verbose", 
-                 "Content-Type:application/json;odata=verbose", 
+        [Headers("Accept:application/json;odata=verbose",
+                 "Content-Type:application/json;odata=verbose",
                  "X-HTTP-Method:MERGE",
                  "IF-MATCH:*")]
         [Post("/_api/web/lists/getbytitle('{listTitle}')/items({itemToBeReplacedId})")]
-        Task<HttpResponseMessage> UpdateListItemByListTitle([Header("X-RequestDigest")] string formDigest, 
-                                     string listTitle, 
+        Task<HttpResponseMessage> UpdateListItemByListTitle([Header("X-RequestDigest")] string formDigest,
+                                     string listTitle,
                                      StringContent item,
                                      string itemToBeReplacedId);
 

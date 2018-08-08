@@ -270,12 +270,15 @@ namespace ProjectOnlineMobile2.ViewModels
             MessagingCenter.Instance.Send<string>(PeriodList[SelectedIndex].ID.ToString(), "SendPeriodIdToWorkPage");
             MessagingCenter.Instance.Send<string>(line.ID.ToString(), "SendCurrentLineIdToWorkPage");
 
-            var completeLineIds = new List<int>();
-            foreach (var item in compositeList.D.Results)
+            if (IsConnectedToInternet())
             {
-                completeLineIds.Add(item.TimesheetLineId);
+                var completeLineIds = new List<int>();
+                foreach (var item in compositeList.D.Results)
+                {
+                    completeLineIds.Add(item.TimesheetLineId);
+                }
+                MessagingCenter.Instance.Send<List<int>>(completeLineIds, "SendLineIdsToWorkPage");
             }
-            MessagingCenter.Instance.Send<List<int>>(completeLineIds, "SendLineIdsToWorkPage");
         }
 
         private async void GetCompositeListFromServer()

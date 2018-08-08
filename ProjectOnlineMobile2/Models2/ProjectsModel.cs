@@ -54,6 +54,11 @@ namespace ProjectOnlineMobile2.Models2.Projects
         {
             get { return ProjectOwner.Title; }
         }
+
+        public override string ToString()
+        {
+            return ProjectName;
+        }
     }
 
     public class ProjectOwner : RealmObject

@@ -4,6 +4,8 @@ using AssignmentsModel = ProjectOnlineMobile2.Models2.Assignments.AssignmentMode
 using PeriodsModel = ProjectOnlineMobile2.Models2.TimesheetPeriodsModel.PeriodsModel;
 using LineModel = ProjectOnlineMobile2.Models2.LineModel.LineModel;
 using LineWorkModel = ProjectOnlineMobile2.Models2.LineWorkModel.LineWorkModel;
+using ResourceRoot = ProjectOnlineMobile2.Models2.ResourceModel.ResourceRoot;
+using ResourceModel = ProjectOnlineMobile2.Models2.ResourceModel.ResourceModel;
 using Realms;
 using System;
 using System.Collections.Generic;
@@ -23,6 +25,74 @@ namespace ProjectOnlineMobile2.Services
                 realm = Realm.GetInstance();
         }
 
+        public bool SyncSiteUsers(ResourceRoot resourcesFromServer, List<ResourceModel> localResources) {
+            try
+            {
+                //PARTS:
+                //1.remove the projects that are deleted/removed form the server on the local database
+                //2.add the projects that are added from the server on the local database
+                //3.sync the changes that are made to the server on the local database
+
+                
+                var localSiteUsersClone = new List<ResourceModel>();
+                foreach (var item in localResources)
+                {
+                    localSiteUsersClone.Add(item);
+                }
+
+                //Part 1
+                foreach (var item in localSiteUsersClone)
+                {
+                    var temp = resourcesFromServer.D.Results
+                        .Where(p => p.Resource.Id == item.Resource.Id)
+                        .FirstOrDefault();
+
+                    if(temp == null)
+                    {
+                        realm.Write(() =>
+                        {
+                            realm.Remove(item);
+                            localResources.Remove(item);
+                        });
+                    }
+                }
+                realm.Refresh();
+
+                foreach (var item in resourcesFromServer.D.Results)
+                {
+                    var temp = localResources
+                        .Where(p => p.Resource.Id == item.Resource.Id)
+                        .FirstOrDefault();
+
+                    if(temp == null)
+                    {
+                        //*Part 2
+                        realm.Write(() =>
+                        {
+                            realm.Add(item);
+                            localResources.Add(item);
+                        });
+                    }
+                    else
+                    {
+                        //*Part 3
+                        realm.Write(() =>
+                        {
+                            temp.Resource = item.Resource;
+                        });
+                    }
+                }
+                realm.Refresh();
+
+                return true;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message, "SyncSiteUsersService");
+                return false;
+            }
+        }
+
         public bool SyncProjects(ProjectsRoot projects, List<ProjectsModel> localProjects, ObservableCollection<ProjectsModel> displayedProjects)
         {
             try
@@ -32,8 +102,13 @@ namespace ProjectOnlineMobile2.Services
                 //2.add the projects that are added from the server on the local database
                 //3.sync the changes that are made to the server on the local database
 
+                var localProjectsClone = new List<ProjectsModel>();
+                foreach (var item in localProjects)
+                {
+                    localProjectsClone.Add(item);
+                }
+
                 //*Part 1
-                var localProjectsClone = localProjects;
                 foreach (var item in localProjectsClone)
                 {
                     var temp = projects.D.Results
@@ -108,8 +183,13 @@ namespace ProjectOnlineMobile2.Services
 
             try
             {
+                var localTasksClone = new List<AssignmentsModel>();
+                foreach (var item in localTasks)
+                {
+                    localTasksClone.Add(item);
+                }
+
                 //PART 1
-                var localTasksClone = localTasks;
                 foreach (var item in localTasksClone)
                 {
                     var temp = tasksFromServer
@@ -181,8 +261,13 @@ namespace ProjectOnlineMobile2.Services
                 //2. add the periods that are added from the server on the local database
                 //3. sync the changes that are made to the server on the local database
 
+                var localPeriodsClone = new List<PeriodsModel>();
+                foreach (var item in localPeriods)
+                {
+                    localPeriodsClone.Add(item);
+                }
+
                 //PART 1
-                var localPeriodsClone = localPeriods;
                 foreach (var item in localPeriods)
                 {
                     var temp = periodsFromServer
@@ -242,7 +327,14 @@ namespace ProjectOnlineMobile2.Services
         {
             try
             {
-                var localLinesClone = localLines;
+
+                var localLinesClone = new List<LineModel>();
+                foreach (var item in localLines)
+                {
+                    localLinesClone.Add(item);
+                }
+
+
                 foreach (var item in localLinesClone)
                 {
                     var temp = linesFromServer
@@ -326,7 +418,13 @@ namespace ProjectOnlineMobile2.Services
         {
             try
             {
-                var localLineWorkModelsClone = localLineWorkModels;
+                var localLineWorkModelsClone = new List<LineWorkModel>();
+                foreach (var item in localLineWorkModels)
+                {
+                    localLineWorkModelsClone.Add(item);
+                }
+
+
                 foreach (var item in localLineWorkModelsClone)
                 {
                     var temp = lineWorkModelsFromServer

@@ -29,3 +29,4 @@ D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2\obj\Debug\netstandard
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2\obj\Debug\netstandard2.0\ProjectOnlineMobile2.dll
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2\obj\Debug\netstandard2.0\ProjectOnlineMobile2.pdb
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2\obj\Debug\netstandard2.0\Pages\AddProjectPage.xaml.g.cs
+D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2\obj\Debug\netstandard2.0\Pages\AddTaskPage.xaml.g.cs

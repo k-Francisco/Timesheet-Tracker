@@ -16,6 +16,7 @@ namespace ProjectOnlineMobile2.Pages
 		public ProjectPage ()
 		{
 			InitializeComponent ();
+
             viewModel = this.BindingContext as ProjectPageViewModel;
 		}
 

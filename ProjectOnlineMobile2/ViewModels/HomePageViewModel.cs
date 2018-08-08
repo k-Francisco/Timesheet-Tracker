@@ -2,16 +2,19 @@
 using System.Diagnostics;
 using System.Linq;
 using Xamarin.Forms;
-using ProjectOnlineMobile2.Services;
 using Plugin.Connectivity;
 using ProjectOnlineMobile2.Models2;
 using SpevoCore.Services.Token_Service;
-using Realms;
+using ResourceRoot = ProjectOnlineMobile2.Models2.ResourceModel.ResourceRoot;
+using ResourceModel = ProjectOnlineMobile2.Models2.ResourceModel.ResourceModel;
+using Newtonsoft.Json;
 
 namespace ProjectOnlineMobile2.ViewModels
 {
     public class HomePageViewModel : BaseViewModel
     {
+        const string RESOURCES_LIST_GUID = "7b6e6088-380c-4782-b176-8ce910771922";
+
         private string _userName;
         public string UserName
         {
@@ -39,7 +42,7 @@ namespace ProjectOnlineMobile2.ViewModels
 
             CrossConnectivity.Current.ConnectivityChanged += async (sender, args) => {
                 if(IsConnectedToInternet())
-                    MessagingCenter.Instance.Send<String>("", "SaveOfflineWorkChanges");
+                   MessagingCenter.Instance.Send<String>("", "SaveOfflineWorkChanges");
             };
 
         }
@@ -89,10 +92,35 @@ namespace ProjectOnlineMobile2.ViewModels
                     }
                 }
 
+                realm.Refresh();
+
+                SyncSiteUsers();
+
             }
             catch(Exception e)
             {
                 Debug.WriteLine("GetUserInfo", e.Message);
+            }
+        }
+
+        private async void SyncSiteUsers()
+        {
+            if (IsConnectedToInternet())
+            {
+                try
+                {
+                    var query = "$select=Resource/Title,Resource/EMail,Resource/Id,Resource/Department&$expand=Resource";
+                    var response = await SPapi.GetListItemsByListGuid(RESOURCES_LIST_GUID,query);
+                    
+                    var usersFromServer = JsonConvert.DeserializeObject<ResourceRoot>(await response.Content.ReadAsStringAsync());
+                    var localUsers = realm.All<ResourceModel>().ToList();
+
+                    syncDataService.SyncSiteUsers(usersFromServer, localUsers);
+                }
+                catch(Exception e)
+                {
+                    Debug.WriteLine(e.Message,"SyncSiteUsers");
+                }
             }
         }
 

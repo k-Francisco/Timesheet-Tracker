@@ -7,7 +7,6 @@ using System.Diagnostics.CodeAnalysis;
 using Refit;
 using SpevoCore.Models.FormDigest;
 using SpevoCore.Models.User;
-using System.Text;
 using System.Threading.Tasks;
 
 /* ******** Hey You! *********
@@ -60,6 +59,12 @@ namespace SpevoCore.Services.Sharepoint_API
             var arguments = new object[] {  };
             var func = requestBuilder.BuildRestResultFuncForMethod("GetCurrentUser", new Type[] {  });
             return (Task<UserModel>)func(Client, arguments);
+        }
+
+        /// <inheritdoc />
+        public virtual Task<HttpResponseMessage> GetSiteUsers(string query)
+        {
+            throw new NotImplementedException("Either this method has no Refit HTTP method attribute or you've used something other than a string literal for the 'path' argument.");
         }
 
         /// <inheritdoc />

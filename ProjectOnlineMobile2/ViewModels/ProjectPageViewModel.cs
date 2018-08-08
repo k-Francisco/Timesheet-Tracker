@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -15,10 +14,10 @@ namespace ProjectOnlineMobile2.ViewModels
 {
     public class ProjectPageViewModel : BaseViewModel
     {
-
         private const string PROJECTS_LIST_GUID = "248a4da4-f54a-4ebf-9193-2fe4bd13a517";
 
         private ObservableCollection<ProjectsModel> _projectList = new ObservableCollection<ProjectsModel>();
+
         public ObservableCollection<ProjectsModel> ProjectList
         {
             get { return _projectList; }
@@ -26,17 +25,17 @@ namespace ProjectOnlineMobile2.ViewModels
         }
 
         private bool _isRefreshing;
+
         public bool IsRefreshing
         {
             get { return _isRefreshing; }
             set { SetProperty(ref _isRefreshing, value); }
         }
 
-        public ICommand RefreshProjects { get { return new Command(ExecuteRefreshProjects); } }
-
         public ProjectPageViewModel()
         {
-            MessagingCenter.Instance.Subscribe<string[]>(this, "AddProject", (parameters) => {
+            MessagingCenter.Instance.Subscribe<string[]>(this, "AddProject", (parameters) =>
+            {
                 AddProject(parameters);
             });
         }
@@ -59,9 +58,9 @@ namespace ProjectOnlineMobile2.ViewModels
                     var body = "{'__metadata':{'type':'SP.Data.ProjectsListItem'}," +
                     "'ProjectName':'" + parameters[0] + "'," +
                     "'ProjectDescription':'" + parameters[1] + "'," +
-                    "'ProjectStartDate':'" + DateTime.Parse(parameters[2]) +"'," +
-                    "'ProjectType':'" + parameters[3] +"'," +
-                    "'ProjectOwnerId':'" + user.UserId +"'}";
+                    "'ProjectStartDate':'" + DateTime.Parse(parameters[2]) + "'," +
+                    "'ProjectType':'" + parameters[3] + "'," +
+                    "'ProjectOwnerId':'" + user.UserId + "'}";
 
                     var item = new StringContent(body);
                     item.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json;odata=verbose");
@@ -75,22 +74,20 @@ namespace ProjectOnlineMobile2.ViewModels
 
                     if (ensure.IsSuccessStatusCode)
                     {
+                        //display prompt that creation of project is successful
                         Debug.WriteLine("SUCCESS", "ADD PROJECT");
                     }
                     else
                     {
+                        //display prompt that creation of project has failed
                         Debug.WriteLine("FAILED", "ADD PROJECT");
                     }
-
-
-                    
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message, "AddProjectError");
             }
-            
         }
 
         public void LoadProjectsFromDatabase()
@@ -103,6 +100,7 @@ namespace ProjectOnlineMobile2.ViewModels
             }
         }
 
+        public ICommand RefreshProjects { get { return new Command(ExecuteRefreshProjects); } }
         private void ExecuteRefreshProjects()
         {
             try

@@ -3,16 +3,13 @@ using SpevoCore.Models.FormDigest;
 using SpevoCore.Models.User;
 using SpevoCore.Services.Sharepoint_API;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SpevoCore.Services
 {
-    public class SharepointApiWrapper : BaseWrapper , ISharepointAPI
+    public class SharepointApiWrapper : BaseWrapper, ISharepointAPI
     {
         private static string _sharepointUrl = "https://sharepointevo.sharepoint.com/timesheettracker";
         private HttpClient _client;
@@ -39,9 +36,22 @@ namespace SpevoCore.Services
             {
                 return await api.GetCurrentUser();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine("GetCurrentUser", e.Message);
+                return null;
+            }
+        }
+
+        public async Task<HttpResponseMessage> GetSiteUsers(string query)
+        {
+            try
+            {
+                return await _client.GetAsync(_sharepointUrl + "/_api/web/siteusers?" + query);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("GetListItemsByListGuid", e.Message);
                 return null;
             }
         }
@@ -65,7 +75,7 @@ namespace SpevoCore.Services
             {
                 return await api.GetListByTitle(listTitle);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine("GetListByTitle", e.Message);
                 return null;
@@ -78,9 +88,9 @@ namespace SpevoCore.Services
             {
                 return await api.GetListByGuid(listGuid);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Debug.WriteLine("",e.Message);
+                Debug.WriteLine("", e.Message);
                 return null;
             }
         }
@@ -91,7 +101,7 @@ namespace SpevoCore.Services
             {
                 return await api.GetListItemsByListTitle(listTitle);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine("GetAllItemsInList", e.Message);
                 return null;
@@ -102,7 +112,7 @@ namespace SpevoCore.Services
         {
             try
             {
-                return await _client.GetAsync(_sharepointUrl + "/api/web/lists/getbytitle('"+ listTitle +"')/items?"+query);
+                return await _client.GetAsync(_sharepointUrl + "/api/web/lists/getbytitle('" + listTitle + "')/items?" + query);
             }
             catch (Exception e)
             {
@@ -117,7 +127,7 @@ namespace SpevoCore.Services
             {
                 return await api.GetListItemsByListGuid(listGuid);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine("GetAllListItemsByListGuid", e.Message);
                 return null;
@@ -128,9 +138,9 @@ namespace SpevoCore.Services
         {
             try
             {
-                return await _client.GetAsync(_sharepointUrl+"/_api/web/lists(guid'"+ listGuid +"')/items?"+query);
+                return await _client.GetAsync(_sharepointUrl + "/_api/web/lists(guid'" + listGuid + "')/items?" + query);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine("GetListItemsByListGuid", e.Message);
                 return null;
@@ -154,9 +164,9 @@ namespace SpevoCore.Services
         {
             try
             {
-                return await api.AddListItemByListGuid(formDigest, listGuid, item);       
+                return await api.AddListItemByListGuid(formDigest, listGuid, item);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine("AddListItemByListGuid", e.Message);
                 return null;
@@ -182,7 +192,7 @@ namespace SpevoCore.Services
             {
                 return await api.UpdateListItemByListGuid(formDigest, listGuid, item, itemToBeReplacedId);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine("UpdateListItemByListGuid", e.Message);
                 return null;
@@ -195,7 +205,7 @@ namespace SpevoCore.Services
             {
                 return await api.DeleteListItemByListTitle(formDigest, listTitle, itemToBeDeletedId);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine("DeleteListItem", e.Message);
                 return null;
@@ -208,12 +218,11 @@ namespace SpevoCore.Services
             {
                 return await api.DeleteListItemByListGuid(formDigest, listGuid, itemToBeDeletedId);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine("DeleteListItemByListGuid", e.Message);
                 return null;
             }
         }
-
     }
 }
