@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjectOnlineMobile2.Pages.EditTaskPage">
+    <ContentPage.Content>
+        <StackLayout Orientation="Vertical"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand"
+                     Spacing="1">
+
+            <Entry x:Name="taskName"/>
+            <DatePicker x:Name="taskStartDate"
+                        Format="MM/dd/yyyy"/>
+            <Entry x:Name="taskWork"
+                   Keyboard="Numeric"/>
+            <Entry x:Name="taskActualWork"
+                   Keyboard="Numeric"/>
+
+            <BoxView HeightRequest="1"
+                     HorizontalOptions="FillAndExpand"
+                     BackgroundColor="Green"/>
+
+            <Label Text="Preview"
+                   Margin="0,0,8,0"/>
+
+            <Label x:Name="previewTaskName"/>
+            <Label x:Name="previewTaskStartDate"/>
+            <Label x:Name="previewRemainingWork"/>
+            <Label x:Name="previewPercentComplete"/>
+            <Label x:Name="previewWork"/>
+            <Label x:Name="previewActualHours"/>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

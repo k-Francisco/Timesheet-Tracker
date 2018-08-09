@@ -1,4 +1,6 @@
 ﻿using Realms;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -10,33 +12,61 @@ namespace ProjectOnlineMobile2.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AddTaskPage : ContentPage
     {
-        private Realm realm;
+        private Realm _realm;
+        private List<ProjectsModel> _taskProjectSource = new List<ProjectsModel>();
+        private List<ResourceModel> _resourceSource = new List<ResourceModel>();
 
         public AddTaskPage()
         {
             InitializeComponent();
 
-            realm = Realm.GetInstance();
-
-            var localProjects = realm.All<ProjectsModel>().ToList();
-            taskProject.ItemsSource = localProjects;
-            taskProject.SelectedIndex = 0;
-
-            var localResources = realm.All<ResourceModel>().ToList();
-            resource.ItemsSource = localResources;
-            resource.SelectedIndex = 0;
+            _realm = Realm.GetInstance();
+            
 
             MessagingCenter.Instance.Subscribe<string>(this, "SaveTask", (s) =>
             {
                 var parameters = new string[] { "Create",
                     taskNameEntry.Text,
-                    taskStartDate.Date.ToString(),
-                    localProjects[taskProject.SelectedIndex].ID.ToString(),
-                    localResources[resource.SelectedIndex].Resource.Id.ToString()
+                    String.Format("{0: MM/dd/yyyy}",taskStartDate.Date),
+                    _taskProjectSource[taskProject.SelectedIndex].ID.ToString(),
+                    _resourceSource[resource.SelectedIndex].Resource.Id.ToString()
                 };
 
                 MessagingCenter.Instance.Send<string[]>(parameters, "TaskOptions");
             });
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            var localProjects = _realm.All<ProjectsModel>().ToList();
+            foreach (var item in localProjects)
+            {
+                _taskProjectSource.Add(item);
+            }
+            taskProject.ItemsSource = _taskProjectSource;
+            taskProject.SelectedIndex = 0;
+
+            var localResources = _realm.All<ResourceModel>().ToList();
+            foreach (var item in localResources)
+            {
+                _resourceSource.Add(item);
+            }
+            resource.ItemsSource = _resourceSource;
+            resource.SelectedIndex = 0;
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+
+            taskNameEntry.Text = "";
+            taskStartDate.Date = DateTime.Now;
+
+            _taskProjectSource.Clear();
+            _resourceSource.Clear();
+            
         }
     }
 }

@@ -30,11 +30,18 @@ namespace ProjectOnlineMobile2.Pages
 
             if(action.Equals(EDIT_TASK))
             {
-                //edit task here
+                MessagingCenter.Instance.Send<string>(string.Empty, "ShowEditTaskPage");
+                MessagingCenter.Instance.Send<AssignmentsModel>(assignment, "ShowAssignmentDetails");
             }
             else if(action.Equals(DELETE_TASK))
             {
-                //delete task here
+                bool confirm = await this.DisplayAlert(null, "Do you really want to delete this task?" +
+                    " The timesheet associated with this task will also be deleted.", "Delete", "Cancel");
+
+                if (confirm)
+                {
+                    viewModel.DeleteTask(assignment);
+                }
             }
         }
 

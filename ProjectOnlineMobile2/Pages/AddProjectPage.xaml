@@ -12,7 +12,8 @@
 
             <Editor x:Name="ProjectDescriptionEntry"/>
 
-            <DatePicker x:Name="ProjectDate"/>
+            <DatePicker x:Name="ProjectDate"
+                        Format="MM/dd/yyyy"/>
 
             <Picker x:Name="ProjectType"/>
 

@@ -5,13 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="Refit" Version="4.6.30" />
-    <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
+    <Compile Remove="Services\API Service\Project Online API\**" />
+    <EmbeddedResource Remove="Services\API Service\Project Online API\**" />
+    <None Remove="Services\API Service\Project Online API\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\API Service\Project Online API\" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Refit" Version="4.6.30" />
+    <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
   </ItemGroup>
 
 </Project>

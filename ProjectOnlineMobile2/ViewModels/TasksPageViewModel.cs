@@ -25,7 +25,6 @@ namespace ProjectOnlineMobile2.ViewModels
         }
 
         private bool _isRefreshing;
-
         public bool IsRefreshing
         {
             get { return _isRefreshing; }
@@ -51,14 +50,14 @@ namespace ProjectOnlineMobile2.ViewModels
                 switch (option[0])
                 {
                     case "Create":
-                        Debug.WriteLine("here 1");
                         CreateTask(option);
                         break;
-                    case "Edit":
-                        break;
-                    case "Delete":
-                        break;
                 }
+            });
+
+            MessagingCenter.Instance.Subscribe<string[]>(this, "UploadEditedTask", (parameters) =>
+            {
+                EditTask(parameters);
             });
 
             LoadAssignmentsFromDatabase();
@@ -184,7 +183,6 @@ namespace ProjectOnlineMobile2.ViewModels
 
         private async void CreateTask(string[] parameters)
         {
-            Debug.WriteLine("here 2");
             /**
              * parameters[1] = task name
              * parameters[2] = task start date
@@ -230,13 +228,88 @@ namespace ProjectOnlineMobile2.ViewModels
 
         }
 
-        private void EditTask(AssignmentsModel assignment)
+        public async void EditTask(string[] parameters)
         {
+            /**
+             * parameters[0] = item ID
+             * parameters[1] = task name
+             * parameters[2] = task start date
+             * parameters[3] = task work
+             * parameters[4] = task actual work
+             **/
 
+            if (IsConnectedToInternet())
+            {
+                try
+                {
+                    var body = "{'__metadata':{'type':'SP.Data.TasksListItem'}," +
+                    "'TaskName':'" + parameters[1] + "'," +
+                    "'TaskStartDate':'" + DateTime.Parse(parameters[2]) + "'," +
+                    "'TaskWork':'" + parameters[3] + "'," +
+                    "'TaskActualWork':'" + parameters[4] + "'}";
+
+                    var item = new StringContent(body);
+                    item.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json;odata=verbose");
+
+                    var formDigest = await SPapi.GetFormDigest();
+
+                    var edit = await SPapi.UpdateListItemByListGuid(formDigest.D.GetContextWebInformation.FormDigestValue,
+                        ASSIGNMENTS_LIST_GUID,
+                        item,
+                        parameters[0]);
+                    var ensure = edit.EnsureSuccessStatusCode();
+
+                    if (ensure.IsSuccessStatusCode)
+                    {
+                        //display prompt that creation of project is successful
+                        Debug.WriteLine("SUCCESS", "EDIT TASK");
+                    }
+                    else
+                    {
+                        //display prompt that creation of project has failed
+                        Debug.WriteLine("FAILED", "EDIT TASK");
+                    }
+                }
+                catch(Exception e)
+                {
+                    Debug.WriteLine(e.Message, "EditTask");
+                }
+
+            }
         }
 
-        private void DeleteTask(AssignmentsModel assignment)
+        public async void DeleteTask(AssignmentsModel assignment)
         {
+            var formDigest = await SPapi.GetFormDigest();
+
+            if (IsConnectedToInternet())
+            {
+                try
+                {
+                    var delete = await SPapi.DeleteListItemByListGuid(formDigest.D.GetContextWebInformation.FormDigestValue,
+                    ASSIGNMENTS_LIST_GUID,
+                    assignment.ID.ToString());
+
+                    var ensure = delete.EnsureSuccessStatusCode();
+
+                    if (ensure.IsSuccessStatusCode)
+                    {
+                        Debug.WriteLine("Delete success!");
+                        //prompt user of successful deletion
+
+                        ExecuteRefreshTasksCommand();
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Delete failed!");
+                        //prompt user of failed deletion
+                    }
+                }
+                catch(Exception e)
+                {
+                    Debug.WriteLine(e.Message, "DeleteTask");
+                }
+            }
         }
     }
 }

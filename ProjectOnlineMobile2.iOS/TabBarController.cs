@@ -1,4 +1,4 @@
-﻿using Foundation;
+﻿using AssignmentsModel = ProjectOnlineMobile2.Models2.Assignments.AssignmentModel;
 using LineModel = ProjectOnlineMobile2.Models2.LineModel.LineModel;
 using ProjectOnlineMobile2.Pages;
 using System;
@@ -11,9 +11,12 @@ namespace ProjectOnlineMobile2.iOS
     public partial class TabBarController : UITabBarController
     {
         private UIViewController _projectPageController, _tasksPageController, _timesheetPageController, _timesheetWorkPageController;
-        private UINavigationController _projectNavController, _tasksNavController, _timesheetNavController, _modalsNavController;
+        private UINavigationController _projectNavController, _tasksNavController, _timesheetNavController;
+
+        private UINavigationController _addProjectNavController, _addTaskNavController, _editTaskNavController;
+        private UIViewController _addProjectController, _addTaskController, _editTaskController;
+        
         private UIAlertView currentAlertView;
-        private Page _addProjectPage, _addTaskPage;
 
         private string TimesheetStatus;
 
@@ -31,6 +34,10 @@ namespace ProjectOnlineMobile2.iOS
                 DisplayAlert(s);
             });
 
+            MessagingCenter.Instance.Subscribe<string>(this,"ShowEditTaskPage",(s)=> {
+                SelectedViewController.PresentModalViewController(_editTaskNavController,true);
+            });
+
             MessagingCenter.Instance.Subscribe<String>(this, "ExitWorkPage", (s)=> {
                 _timesheetNavController.PopViewController(true);
             });
@@ -38,17 +45,14 @@ namespace ProjectOnlineMobile2.iOS
             MessagingCenter.Instance.Subscribe<String>(this, "TimesheetStatus", (status) => {
                 SetTimesheetStatus(status);
             });
-
-            MessagingCenter.Instance.Subscribe<Page>(this, "PresentModals", (page) =>
-            {
-                PresentModals(page);
-            });
         }
 
         public override void ViewDidLoad()
         {
             this.TabBar.Translucent = false;
             this.TabBar.TintColor = UIColor.FromRGBA(49,117,47,255);
+
+            #region UIBarButtonItems region
 
             UIBarButtonItem userButtonItem = new UIBarButtonItem(UIImage.FromFile("ic_user.png"), UIBarButtonItemStyle.Plain,
                 (sender, args) =>
@@ -71,11 +75,16 @@ namespace ProjectOnlineMobile2.iOS
                     DisplayTimesheetOptions(sender as UIBarButtonItem);
                 });
 
-            _addProjectPage = new AddProjectPage();
-            _addTaskPage = new AddTaskPage();
+            UIBarButtonItem CancelButtonItem = new UIBarButtonItem("Cancel", UIBarButtonItemStyle.Plain,
+                (sender, args) => {
+                    SelectedViewController.DismissModalViewController(true);
+                });
+
+            #endregion
+
+            #region main controllers region
 
             var homePageController = new HomePage().CreateViewController();
-            _modalsNavController = new UINavigationController();
 
             _timesheetWorkPageController = new TimesheetWorkPage().CreateViewController();
             _timesheetWorkPageController.NavigationItem.SetRightBarButtonItem(new UIBarButtonItem(UIImage.FromFile("ic_gear.png"), UIBarButtonItemStyle.Plain, (sender, e) => {
@@ -112,6 +121,40 @@ namespace ProjectOnlineMobile2.iOS
             _timesheetNavController.TabBarItem.Image = UIImage.FromFile("ic_timesheet.png");
             _timesheetNavController.PushViewController(_timesheetPageController, false);
 
+            #endregion
+
+            #region details controller region
+
+            _addProjectController = new AddProjectPage().CreateViewController();
+            _addProjectController.Title = "Create Project";
+            _addProjectController.NavigationItem.SetLeftBarButtonItem(CancelButtonItem, true);
+            _addProjectController.NavigationItem.SetRightBarButtonItem(new UIBarButtonItem("Save", UIBarButtonItemStyle.Plain,
+                    (sender, args) => {
+                        MessagingCenter.Instance.Send<string>(string.Empty, "SaveProject");
+                    }), true);
+
+            _addTaskController = new AddTaskPage().CreateViewController();
+            _addTaskController.Title = "Create Task";
+            _addTaskController.NavigationItem.SetLeftBarButtonItem(CancelButtonItem, true);
+            _addTaskController.NavigationItem.SetRightBarButtonItem(new UIBarButtonItem("Save", UIBarButtonItemStyle.Plain,
+                    (sender, args) => {
+                        MessagingCenter.Instance.Send<string>(string.Empty, "SaveTask");
+                    }), true);
+
+            _editTaskController = new EditTaskPage().CreateViewController();
+            _editTaskController.Title = "Edit Task";
+            _editTaskController.NavigationItem.SetLeftBarButtonItem(CancelButtonItem, true);
+            _editTaskController.NavigationItem.SetRightBarButtonItem(new UIBarButtonItem("Save", UIBarButtonItemStyle.Plain,
+                    (sender, args) => {
+                        MessagingCenter.Instance.Send<string>(string.Empty, "SaveEditedTask");
+                    }), true);
+
+            _addProjectNavController = new UINavigationController(_addProjectController);
+            _addTaskNavController = new UINavigationController(_addTaskController);
+            _editTaskNavController = new UINavigationController(_editTaskController);
+
+            #endregion
+
             MessagingCenter.Instance.Send<String>("", "SaveOfflineWorkChanges");
 
             var tabs = new UIViewController[] { _projectNavController, _tasksNavController, _timesheetNavController };
@@ -120,44 +163,13 @@ namespace ProjectOnlineMobile2.iOS
 
         }
 
-        private void PresentModals(Page page)
-        {
-            var _controller = page.CreateViewController();
-            _controller.NavigationItem.SetLeftBarButtonItem(new UIBarButtonItem("Cancel", UIBarButtonItemStyle.Plain,
-                    (sender, args) => {
-                        _controller.Dispose();
-                        _modalsNavController.PopViewController(false);
-                        DismissModalViewController(true);
-                    }), true);
-
-            if (page.GetType().IsEquivalentTo(typeof(AddProjectPage)))
-            {
-                _controller.Title = "Create Project";
-                _controller.NavigationItem.SetRightBarButtonItem(new UIBarButtonItem("Save", UIBarButtonItemStyle.Plain,
-                    (sender,args)=> {
-                        MessagingCenter.Instance.Send<string>(string.Empty, "SaveProject");
-                    }), true);
-            }
-            else if (page.GetType().IsEquivalentTo(typeof(AddTaskPage)))
-            {
-                _controller.Title = "Create Task";
-                _controller.NavigationItem.SetRightBarButtonItem(new UIBarButtonItem("Save", UIBarButtonItemStyle.Plain,
-                    (sender, args) => {
-                        MessagingCenter.Instance.Send<string>(string.Empty, "SaveTask");
-                    }), true);
-            }
-
-            _modalsNavController.PushViewController(_controller, false);
-            SelectedViewController.PresentModalViewController(_modalsNavController, true);
-        }
-
         private void ShowProjectOptionsDialog(UIBarButtonItem buttonItem)
         {
             var alertController = UIAlertController.Create(null,null,UIAlertControllerStyle.ActionSheet);
 
             alertController.AddAction(UIAlertAction.Create("Create Project", UIAlertActionStyle.Default, 
                 alert => {
-                    PresentModals(_addProjectPage);
+                    SelectedViewController.PresentModalViewController(_addProjectNavController, true);
                 }));
 
             alertController.AddAction(UIAlertAction.Create("Close", UIAlertActionStyle.Cancel, alert => {
@@ -447,7 +459,7 @@ namespace ProjectOnlineMobile2.iOS
             }));
 
             alertController.AddAction(UIAlertAction.Create("Create Task", UIAlertActionStyle.Default, alert => {
-                PresentModals(_addTaskPage);
+                SelectedViewController.PresentModalViewController(_addTaskNavController, true);
             }));
 
             alertController.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, alert => {

@@ -12,7 +12,8 @@
                    Placeholder="Project Name"
                    PlaceholderColor="LightSlateGray"/>
 
-            <DatePicker x:Name="taskStartDate"/>
+            <DatePicker x:Name="taskStartDate"
+                        Format="MM/dd/yyyy"/>
 
             <Picker x:Name="taskProject"/>
             <Picker x:Name="resource"/>
