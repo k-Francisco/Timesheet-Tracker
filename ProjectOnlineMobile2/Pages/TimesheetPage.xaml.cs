@@ -1,5 +1,6 @@
 ﻿using ProjectOnlineMobile2.ViewModels;
 using System;
+using LineModel = ProjectOnlineMobile2.Models2.LineModel.LineModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using ProjectOnlineMobile2.Models2.LineModel;
 
 namespace ProjectOnlineMobile2.Pages
 {
@@ -15,7 +17,11 @@ namespace ProjectOnlineMobile2.Pages
 	{
         TimesheetPageViewModel viewModel;
         bool didAppear;
-		public TimesheetPage ()
+        const string EDIT_TASK = "Edit Task";
+        const string DELETE_TASK = "Delete Task";
+        const string CANCEL_BUTTON = "Cancel";
+
+        public TimesheetPage ()
 		{
 			InitializeComponent ();
 
@@ -33,15 +39,23 @@ namespace ProjectOnlineMobile2.Pages
                 projectPicker.Unfocus();
             });
 
+            MessagingCenter.Instance.Subscribe<LineModel>(this, "EditComment", (line)=> {
+                DisplayEditCommentAlert(line);
+            });
+            
 		}
+
+        private void DisplayEditCommentAlert(LineModel line)
+        {
+            MessagingCenter.Instance.Send<LineModel>(line, "DisplayEditLineCommentAlert");
+        }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-
+            viewModel.SyncTimesheetLines();
             if (!didAppear)
             {
-                viewModel.SyncTimesheetLines();
                 didAppear = true;
             }
         }

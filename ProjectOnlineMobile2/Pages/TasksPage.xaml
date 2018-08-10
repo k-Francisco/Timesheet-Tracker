@@ -20,17 +20,12 @@
                         </StackLayout.GestureRecognizers>
 
                         <controls:CustomFrame HasShadow="True"
-                                                BackgroundColor="White"
-                                                CornerRadius="4"
-                                                Margin="16,8,16,8"
-                                                HorizontalOptions="FillAndExpand">
-
-                            <controls:CustomFrame.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Path=BindingContext.ExecuteTaskClickedCommand, Source={x:Reference mainLayout}}"
-                                                      CommandParameter="{Binding .}"
-                                                      NumberOfTapsRequired="2"/>
-                                
-                            </controls:CustomFrame.GestureRecognizers>
+                                              BackgroundColor="White"
+                                              CornerRadius="4"
+                                              Margin="16,8,16,8"
+                                              HorizontalOptions="FillAndExpand"
+                                              LongPressCommand="{Binding Path=BindingContext.ExecuteTaskClickedCommand, Source={x:Reference mainLayout}}"
+                                              CommandParameter="{Binding .}">
 
                             <Grid CompressedLayout.IsHeadless="True">
 

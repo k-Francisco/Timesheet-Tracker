@@ -15,7 +15,6 @@ namespace ProjectOnlineMobile2.Pages
 	public partial class TimesheetWorkPage : ContentPage
 	{
         TimesheetWorkPageViewModel viewModel;
-        bool didAppear;
 		public TimesheetWorkPage ()
 		{
 			InitializeComponent ();
@@ -25,12 +24,7 @@ namespace ProjectOnlineMobile2.Pages
         protected override void OnAppearing()
         {
             viewModel.LoadWorkFromDatabase();
-            if (!didAppear)
-            {
-                viewModel.SyncTimesheetLineWork();
-
-                didAppear = true;
-            }
+            viewModel.SyncTimesheetLineWork();
         }
 
         protected override void OnDisappearing()

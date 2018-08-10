@@ -14,6 +14,7 @@ using LineRoot = ProjectOnlineMobile2.Models2.LineModel.RootObject;
 using LineModel = ProjectOnlineMobile2.Models2.LineModel.LineModel;
 using ProjectOnlineMobile2.Models2;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace ProjectOnlineMobile2.ViewModels
 {
@@ -107,6 +108,10 @@ namespace ProjectOnlineMobile2.ViewModels
             //MessagingCenter.Instance.Subscribe<String>(this, "AddAssignedProjects", (s)=> {
             //    ExecuteAddAssignedProjects();
             //});
+
+            MessagingCenter.Instance.Subscribe<string[]>(this, "SaveEditedComment", (parameters)=> {
+                SaveEditedComment(parameters);
+            });
 
             LoadPeriodsFromLocalDatabase();
             SyncPeriods();
@@ -307,6 +312,58 @@ namespace ProjectOnlineMobile2.ViewModels
             {
                 Debug.WriteLine("GetCompositeListFromServer", e.Message);
             }
+        }
+
+        public ICommand ExecuteLongPress { get { return new Command<LineModel>(ItemLongPress); } }
+        private void ItemLongPress(LineModel line)
+        {
+            MessagingCenter.Instance.Send<LineModel>(line, "EditComment");
+        }
+
+        private async void SaveEditedComment(string[] parameters)
+        {
+            /**
+             * parameters[0] = timesheet line ID
+             * parameters[1] = comment
+             **/
+
+            if (IsConnectedToInternet())
+            {
+
+                try
+                {
+                    var body = "{'__metadata':{'type':'SP.Data.TimesheetLinesListListItem'}," +
+                    "'Comment':'" + parameters[1] + "'}";
+
+                    var item = new StringContent(body);
+                    item.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json;odata=verbose");
+
+                    var formDigest = await SPapi.GetFormDigest();
+
+                    var edit = await SPapi.UpdateListItemByListGuid(formDigest.D.GetContextWebInformation.FormDigestValue,
+                        TIMESHEET_LINES_LIST_GUID,
+                        item,
+                        parameters[0]);
+                    var ensure = edit.EnsureSuccessStatusCode();
+
+                    if (ensure.IsSuccessStatusCode)
+                    {
+                        //display prompt that creation of project is successful
+                        Debug.WriteLine("SUCCESS", "EDIT TIMESHEET LINE COMMENT");
+                    }
+                    else
+                    {
+                        //display prompt that creation of project has failed
+                        Debug.WriteLine("FAILED", "EDIT TIMESHEET LINE COMMENT");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message, "SaveEditedComment");
+                }
+
+            }
+
         }
 
         //private void ExecuteTimesheetLineClicked(LineResult timesheetLine)

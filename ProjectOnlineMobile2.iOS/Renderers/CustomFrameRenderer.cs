@@ -15,6 +15,27 @@ namespace ProjectOnlineMobile2.iOS.Renderers
 {
     public class CustomFrameRenderer : FrameRenderer
     {
+
+        protected override void OnElementChanged(ElementChangedEventArgs<Frame> e)
+        {
+            base.OnElementChanged(e);
+
+            var longPressGestureRecognizer = new UILongPressGestureRecognizer((longpress)=> {
+                var frame = (CustomFrame)Element;
+                if(frame.LongPressCommand != null)
+                {
+                    if (longpress.State == UIGestureRecognizerState.Began &&
+                    frame.LongPressCommand.CanExecute(Element.BindingContext))
+                    {
+                        frame.LongPressCommand.Execute(frame.CommandParameter ?? Element.BindingContext);
+                    }
+                }
+            });
+
+            this.RemoveGestureRecognizer(longPressGestureRecognizer);
+            this.AddGestureRecognizer(longPressGestureRecognizer);
+        }
+
         public override void Draw(CGRect rect)
         {
             base.Draw(rect);

@@ -9,7 +9,7 @@
                      VerticalOptions="FillAndExpand">
 
             <Entry x:Name="taskNameEntry"
-                   Placeholder="Project Name"
+                   Placeholder="Task Name"
                    PlaceholderColor="LightSlateGray"/>
 
             <DatePicker x:Name="taskStartDate"

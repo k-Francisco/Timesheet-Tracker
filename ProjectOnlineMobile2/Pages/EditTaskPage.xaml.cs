@@ -57,7 +57,15 @@ namespace ProjectOnlineMobile2.Pages
             taskStartDate.Date = assignment.TaskStartDate.Date;
             taskWork.Placeholder = string.Format("{0}h", assignment.TaskWork);
             taskActualWork.Placeholder = string.Format("{0}h",assignment.TaskActualWork);
-            
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+
+            taskName.Text = "";
+            taskWork.Text = "";
+            taskActualWork.Text = "";
         }
     }
 }

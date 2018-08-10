@@ -4,7 +4,7 @@ using ProjectOnlineMobile2.Pages;
 using System;
 using UIKit;
 using Xamarin.Forms;
-
+using ProjectOnlineMobile2.Models2.LineModel;
 
 namespace ProjectOnlineMobile2.iOS
 {
@@ -45,6 +45,38 @@ namespace ProjectOnlineMobile2.iOS
             MessagingCenter.Instance.Subscribe<String>(this, "TimesheetStatus", (status) => {
                 SetTimesheetStatus(status);
             });
+
+            MessagingCenter.Instance.Subscribe<LineModel>(this, "DisplayEditLineCommentAlert", (line)=> {
+                DisplayEditLineCommentAlert(line);
+            });
+        }
+
+        private void DisplayEditLineCommentAlert(LineModel line)
+        {
+            if (currentAlertView != null)
+                currentAlertView.DismissWithClickedButtonIndex(-1, true);
+
+            var updateLineAlertView = new UIAlertView()
+            {
+                Title = line.Task,
+            };
+            updateLineAlertView.AlertViewStyle = UIAlertViewStyle.PlainTextInput;
+            updateLineAlertView.GetTextField(0).Placeholder = "Comment";
+
+            updateLineAlertView.AddButton("Update");
+            updateLineAlertView.AddButton("Cancel");
+            updateLineAlertView.DismissWithClickedButtonIndex(1, true);
+            updateLineAlertView.Clicked += (sender, args) => {
+                if (args.ButtonIndex == 0)
+                {
+                    if (!string.IsNullOrWhiteSpace(updateLineAlertView.GetTextField(0).Text))
+                    {
+                       MessagingCenter.Instance.Send<string[]>(new string[] { line.ID.ToString(), updateLineAlertView.GetTextField(0).Text }, "SaveEditedComment");
+                    }
+                }
+            };
+            updateLineAlertView.Show();
+            currentAlertView = updateLineAlertView;
         }
 
         public override void ViewDidLoad()

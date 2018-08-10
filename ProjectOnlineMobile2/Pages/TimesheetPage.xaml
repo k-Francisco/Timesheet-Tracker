@@ -23,7 +23,9 @@
                         <controls:CustomFrame HasShadow="True"
                                               CornerRadius="4"
                                               BackgroundColor="White"
-                                              Margin="16,8,16,8">
+                                              Margin="16,8,16,8"
+                                              LongPressCommand="{Binding Path=BindingContext.ExecuteLongPress, Source={x:Reference mainLayout}}"
+                                              CommandParameter="{Binding .}">
                             <controls:CustomFrame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding Path=BindingContext.TimesheetLineClicked, Source={x:Reference mainLayout}}"
                                                   CommandParameter="{Binding .}"/>
