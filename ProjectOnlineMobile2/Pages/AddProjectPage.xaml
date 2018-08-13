@@ -3,19 +3,43 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProjectOnlineMobile2.Pages.AddProjectPage">
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical"
-                     Spacing="1">
+        <StackLayout CompressedLayout.IsHeadless="True"
+                     Orientation="Vertical"
+                     Spacing="16"
+                     Padding="16">
 
-            <Entry x:Name="ProjectNameEntry"
-                   Placeholder="Project Name"
-                   PlaceholderColor="LightSlateGray"/>
+            <StackLayout CompressedLayout.IsHeadless="True"
+                         Orientation="Vertical"
+                         HorizontalOptions="FillAndExpand"
+                         Spacing="4">
+                <Label Text="Project Name"/>
+                <Entry x:Name="ProjectNameEntry"/>
+            </StackLayout>
 
-            <Editor x:Name="ProjectDescriptionEntry"/>
+            <StackLayout CompressedLayout.IsHeadless="True"
+                         Orientation="Vertical"
+                         HorizontalOptions="FillAndExpand"
+                         Spacing="4">
+                <Label Text="Project Description"/>
+                <Editor x:Name="ProjectDescriptionEntry"/>
+            </StackLayout>
 
-            <DatePicker x:Name="ProjectDate"
+            <StackLayout CompressedLayout.IsHeadless="True"
+                         Orientation="Vertical"
+                         HorizontalOptions="FillAndExpand"
+                         Spacing="4">
+                <Label Text="Project Start Date"/>
+                <DatePicker x:Name="ProjectDate"
                         Format="MM/dd/yyyy"/>
+            </StackLayout>
 
-            <Picker x:Name="ProjectType"/>
+            <StackLayout CompressedLayout.IsHeadless="True"
+                         Orientation="Vertical"
+                         HorizontalOptions="FillAndExpand"
+                         Spacing="4">
+                <Label Text="Project Start Date"/>
+                <Picker x:Name="ProjectType"/>
+            </StackLayout>
 
         </StackLayout>
     </ContentPage.Content>

@@ -3,20 +3,43 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProjectOnlineMobile2.Pages.AddTaskPage">
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical"
-                     Spacing="1"
-                     HorizontalOptions="FillAndExpand"
-                     VerticalOptions="FillAndExpand">
+        <StackLayout CompressedLayout.IsHeadless="True"
+                     Orientation="Vertical"
+                     Spacing="16"
+                     Padding="16">
 
-            <Entry x:Name="taskNameEntry"
-                   Placeholder="Task Name"
-                   PlaceholderColor="LightSlateGray"/>
+            <StackLayout CompressedLayout.IsHeadless="True"
+                         Orientation="Vertical"
+                         HorizontalOptions="FillAndExpand"
+                         Spacing="4">
+                <Label Text="Task Name"/>
+                <Entry x:Name="taskNameEntry"/>
+            </StackLayout>
 
-            <DatePicker x:Name="taskStartDate"
+            <StackLayout CompressedLayout.IsHeadless="True"
+                         Orientation="Vertical"
+                         HorizontalOptions="FillAndExpand"
+                         Spacing="4">
+                <Label Text="Task Start Date"/>
+                <DatePicker x:Name="taskStartDate"
                         Format="MM/dd/yyyy"/>
+            </StackLayout>
 
-            <Picker x:Name="taskProject"/>
-            <Picker x:Name="resource"/>
+            <StackLayout CompressedLayout.IsHeadless="True"
+                         Orientation="Vertical"
+                         HorizontalOptions="FillAndExpand"
+                         Spacing="4">
+                <Label Text="Project"/>
+                <Picker x:Name="taskProject"/>
+            </StackLayout>
+
+            <StackLayout CompressedLayout.IsHeadless="True"
+                         Orientation="Vertical"
+                         HorizontalOptions="FillAndExpand"
+                         Spacing="4">
+                <Label Text="Resource"/>
+                <Picker x:Name="resource"/>
+            </StackLayout>
 
         </StackLayout>
     </ContentPage.Content>

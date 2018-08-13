@@ -44,7 +44,7 @@ namespace ProjectOnlineMobile2.Pages
             previewActualHours.Text = string.IsNullOrWhiteSpace(taskActualWork.Text) ? string.Format("{0}h", assignment.TaskActualWork) : taskActualWork.Text;
 
             previewPercentComplete.Text = string.IsNullOrEmpty(taskWork.Text) || string.IsNullOrEmpty(taskActualWork.Text) ?
-                "0%" : string.Format("{0}%", ((Double.Parse(taskActualWork.Text) / Double.Parse(taskWork.Text)) * 100));
+                assignment.TaskPercentComplete : string.Format("{0}%", ((Double.Parse(taskActualWork.Text) / Double.Parse(taskWork.Text)) * 100));
             previewRemainingWork.Text = string.IsNullOrEmpty(taskWork.Text) || string.IsNullOrEmpty(taskActualWork.Text) ?
                 string.Format("{0}h", assignment.TaskWork) : string.Format("{0}h", (Double.Parse(taskWork.Text) - Double.Parse(taskActualWork.Text)));
         }

@@ -193,9 +193,11 @@ namespace ProjectOnlineMobile2.ViewModels
             {
                 try
                 {
+                    MessagingCenter.Instance.Send<string[]>(new string[] { "Saving", null, null }, "DisplayAlert");
+
                     var body = "{'__metadata':{'type':'SP.Data.TasksListItem'}," +
                     "'TaskName':'" + parameters[1] + "'," +
-                    "'TaskStartDate':'" + DateTime.Parse(parameters[2]) + "'," +
+                    "'TaskStartDate':'" + parameters[2] + "'," +
                     "'ProjectNameId':'" + parameters[3] + "'," +
                     "'ResourceNameId':'" + parameters[4] + "'}";
 
@@ -212,19 +214,24 @@ namespace ProjectOnlineMobile2.ViewModels
                     if (ensure.IsSuccessStatusCode)
                     {
                         //display prompt that creation of project is successful
+                        MessagingCenter.Instance.Send<string[]>(new string[] { "Successfully created the task", "OK", null }, "DisplayAlert");
                         Debug.WriteLine("SUCCESS", "ADD TASK");
                     }
                     else
                     {
                         //display prompt that creation of project has failed
+                        MessagingCenter.Instance.Send<string[]>(new string[] { "There was an error creating the task", "OK", null }, "DisplayAlert");
                         Debug.WriteLine("FAILED", "ADD TASK");
                     }
                 }
                 catch(Exception e)
                 {
+                    MessagingCenter.Instance.Send<string[]>(new string[] { "There was an error creating the task", "OK", null }, "DisplayAlert");
                     Debug.WriteLine(e.Message,"CreateTask");
                 }
             }
+            else
+                MessagingCenter.Instance.Send<string[]>(new string[] { "Your device is not connected to the internet", "OK", null }, "DisplayAlert");
 
         }
 

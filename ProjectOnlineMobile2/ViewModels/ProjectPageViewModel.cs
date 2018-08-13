@@ -53,12 +53,14 @@ namespace ProjectOnlineMobile2.ViewModels
             {
                 if (IsConnectedToInternet())
                 {
+                    MessagingCenter.Instance.Send<string[]>(new string[] { "Saving", null, null }, "DisplayAlert");
+
                     var user = realm.All<UserModel>().FirstOrDefault();
 
                     var body = "{'__metadata':{'type':'SP.Data.ProjectsListItem'}," +
                     "'ProjectName':'" + parameters[0] + "'," +
                     "'ProjectDescription':'" + parameters[1] + "'," +
-                    "'ProjectStartDate':'" + DateTime.Parse(parameters[2]) + "'," +
+                    "'ProjectStartDate':'" + parameters[2] + "'," +
                     "'ProjectType':'" + parameters[3] + "'," +
                     "'ProjectOwnerId':'" + user.UserId + "'}";
 
@@ -75,17 +77,23 @@ namespace ProjectOnlineMobile2.ViewModels
                     if (ensure.IsSuccessStatusCode)
                     {
                         //display prompt that creation of project is successful
-                        Debug.WriteLine("SUCCESS", "ADD PROJECT");
+                        MessagingCenter.Instance.Send<string[]>(new string[] { "Successfully created the project", "OK", null }, "DisplayAlert");
+                        MessagingCenter.Instance.Send<string>(string.Empty, "DismissModalViewController");
+                        Debug.WriteLine(ensure.StatusCode.ToString(), "ADD PROJECT");
                     }
                     else
                     {
                         //display prompt that creation of project has failed
-                        Debug.WriteLine("FAILED", "ADD PROJECT");
+                        MessagingCenter.Instance.Send<string[]>(new string[] { "There was an error creating the project", "OK", null }, "DisplayAlert");
+                        Debug.WriteLine(ensure.StatusCode.ToString(), "ADD PROJECT");
                     }
                 }
+                else
+                    MessagingCenter.Instance.Send<string[]>(new string[] { "Your device is not connected to the internet", "OK", null }, "DisplayAlert");
             }
             catch (Exception e)
             {
+                MessagingCenter.Instance.Send<string[]>(new string[] { "There was an error creating the project", "OK", null }, "DisplayAlert");
                 Debug.WriteLine(e.Message, "AddProjectError");
             }
         }

@@ -27,7 +27,7 @@ namespace ProjectOnlineMobile2.Pages
             {
                 var parameters = new string[] { "Create",
                     taskNameEntry.Text,
-                    String.Format("{0: MM/dd/yyyy}",taskStartDate.Date),
+                    String.Format("{0:MM/dd/yyyy}",taskStartDate.Date),
                     _taskProjectSource[taskProject.SelectedIndex].ID.ToString(),
                     _resourceSource[resource.SelectedIndex].Resource.Id.ToString()
                 };

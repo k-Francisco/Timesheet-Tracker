@@ -38,6 +38,10 @@ namespace ProjectOnlineMobile2.iOS
                 SelectedViewController.PresentModalViewController(_editTaskNavController,true);
             });
 
+            MessagingCenter.Instance.Subscribe<string>(this, "DismissModalViewController",(s)=> {
+                SelectedViewController.DismissModalViewController(true);
+            });
+
             MessagingCenter.Instance.Subscribe<String>(this, "ExitWorkPage", (s)=> {
                 _timesheetNavController.PopViewController(true);
             });
@@ -49,34 +53,6 @@ namespace ProjectOnlineMobile2.iOS
             MessagingCenter.Instance.Subscribe<LineModel>(this, "DisplayEditLineCommentAlert", (line)=> {
                 DisplayEditLineCommentAlert(line);
             });
-        }
-
-        private void DisplayEditLineCommentAlert(LineModel line)
-        {
-            if (currentAlertView != null)
-                currentAlertView.DismissWithClickedButtonIndex(-1, true);
-
-            var updateLineAlertView = new UIAlertView()
-            {
-                Title = line.Task,
-            };
-            updateLineAlertView.AlertViewStyle = UIAlertViewStyle.PlainTextInput;
-            updateLineAlertView.GetTextField(0).Placeholder = "Comment";
-
-            updateLineAlertView.AddButton("Update");
-            updateLineAlertView.AddButton("Cancel");
-            updateLineAlertView.DismissWithClickedButtonIndex(1, true);
-            updateLineAlertView.Clicked += (sender, args) => {
-                if (args.ButtonIndex == 0)
-                {
-                    if (!string.IsNullOrWhiteSpace(updateLineAlertView.GetTextField(0).Text))
-                    {
-                       MessagingCenter.Instance.Send<string[]>(new string[] { line.ID.ToString(), updateLineAlertView.GetTextField(0).Text }, "SaveEditedComment");
-                    }
-                }
-            };
-            updateLineAlertView.Show();
-            currentAlertView = updateLineAlertView;
         }
 
         public override void ViewDidLoad()
@@ -195,6 +171,34 @@ namespace ProjectOnlineMobile2.iOS
 
         }
 
+        private void DisplayEditLineCommentAlert(LineModel line)
+        {
+            if (currentAlertView != null)
+                currentAlertView.DismissWithClickedButtonIndex(-1, true);
+
+            var updateLineAlertView = new UIAlertView()
+            {
+                Title = line.Task,
+            };
+            updateLineAlertView.AlertViewStyle = UIAlertViewStyle.PlainTextInput;
+            updateLineAlertView.GetTextField(0).Placeholder = "Comment";
+
+            updateLineAlertView.AddButton("Update");
+            updateLineAlertView.AddButton("Cancel");
+            updateLineAlertView.DismissWithClickedButtonIndex(1, true);
+            updateLineAlertView.Clicked += (sender, args) => {
+                if (args.ButtonIndex == 0)
+                {
+                    if (!string.IsNullOrWhiteSpace(updateLineAlertView.GetTextField(0).Text))
+                    {
+                        MessagingCenter.Instance.Send<string[]>(new string[] { line.ID.ToString(), updateLineAlertView.GetTextField(0).Text }, "SaveEditedComment");
+                    }
+                }
+            };
+            updateLineAlertView.Show();
+            currentAlertView = updateLineAlertView;
+        }
+
         private void ShowProjectOptionsDialog(UIBarButtonItem buttonItem)
         {
             var alertController = UIAlertController.Create(null,null,UIAlertControllerStyle.ActionSheet);
@@ -242,37 +246,27 @@ namespace ProjectOnlineMobile2.iOS
         private void DisplayAlert(string[] parameters)
         {
             if (currentAlertView != null)
-                currentAlertView.DismissWithClickedButtonIndex(-1, true);    
+                currentAlertView.DismissWithClickedButtonIndex(-1, true);
 
-            //s[0] = message
-            //s[1] = affirm button message
-            //s[2] = cancel button message
-            //s[3] = identifier
-            //s[4] = period id
+            //parameters[0] = message
+            //parameters[1] = affirm button message
+            //parameters[2] = cancel button message
             var alertController2 = new UIAlertView()
             {
                 Title = parameters[0],
             };
             alertController2.AlertViewStyle = UIAlertViewStyle.Default;
-            alertController2.AddButton(parameters[1]);
+            if(!string.IsNullOrEmpty(parameters[1]))
+                alertController2.AddButton(parameters[1]);
 
-            if (parameters.Length > 3)
+            if (!string.IsNullOrEmpty(parameters[2]))
                 alertController2.AddButton(parameters[2]);
 
             alertController2.DismissWithClickedButtonIndex(1, true);
             alertController2.Clicked += (sender, args) => {
                 if (args.ButtonIndex == 0)
                 {
-                    if (parameters.Length > 2)
-                    {
-                        if (!string.IsNullOrEmpty(parameters[3]))
-                        {
-                            if (parameters[3].Equals("CreateTimesheet"))
-                            {
-                                MessagingCenter.Instance.Send<String>(parameters[4], "CreateTimesheet");
-                            }
-                        }
-                    }
+                    //TODO HERE
                 }
             };
 

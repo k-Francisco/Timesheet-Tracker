@@ -15,6 +15,6 @@ namespace ProjectOnlineMobile2.Pages
 		public HomePage ()
 		{
 			InitializeComponent ();
-		}
-	}
+        }
+    }
 }

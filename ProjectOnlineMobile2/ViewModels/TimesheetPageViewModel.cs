@@ -205,8 +205,6 @@ namespace ProjectOnlineMobile2.ViewModels
             {
                 if (IsConnectedToInternet())
                 {
-                    IsRefreshing = true;
-
                     var localLines = realm.All<LineModel>().ToList();
 
                     string query = "$select=ID," +
@@ -234,14 +232,6 @@ namespace ProjectOnlineMobile2.ViewModels
                     {
                         var lineList = JsonConvert.DeserializeObject<LineRoot>(await apiResponse.Content.ReadAsStringAsync());
 
-                        //foreach (var item in lineList.D.Results)
-                        //{
-                        //    if (!string.IsNullOrWhiteSpace(item.Comment))
-                        //    {
-                        //        item.Comment = item.Comment.Remove(0, 62).Replace("<br>", "").Replace("</p>", "").Replace("</div>", "");
-                        //    }
-                        //}
-
                         syncDataService.SyncTimesheetLines(localLines, lineList.D.Results, PeriodLines, PeriodList[SelectedIndex].ID);
                     }
 
@@ -263,6 +253,7 @@ namespace ProjectOnlineMobile2.ViewModels
         public ICommand RefreshLinesCommand { get { return new Command(ExecuteRefreshLinesCommand); } }
         private void ExecuteRefreshLinesCommand()
         {
+            IsRefreshing = true;
             GetCompositeListFromServer();
             Task.Delay(1500);
             SyncTimesheetLines();
@@ -277,12 +268,19 @@ namespace ProjectOnlineMobile2.ViewModels
 
             if (IsConnectedToInternet())
             {
-                var completeLineIds = new List<int>();
-                foreach (var item in compositeList.D.Results)
+                try
                 {
-                    completeLineIds.Add(item.TimesheetLineId);
+                    var completeLineIds = new List<int>();
+                    foreach (var item in compositeList.D.Results)
+                    {
+                        completeLineIds.Add(item.TimesheetLineId);
+                    }
+                    MessagingCenter.Instance.Send<List<int>>(completeLineIds, "SendLineIdsToWorkPage");
                 }
-                MessagingCenter.Instance.Send<List<int>>(completeLineIds, "SendLineIdsToWorkPage");
+                catch(Exception e)
+                {
+                    Debug.WriteLine(e.Message, "ExecuteTimesheetLineClicked");
+                }
             }
         }
 
