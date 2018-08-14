@@ -32,7 +32,7 @@ namespace ProjectOnlineMobile2.ViewModels
         }
 
         public ICommand RefreshTasksCommand { get { return new Command(ExecuteRefreshTasksCommand); } }
-        public ICommand ExecuteTaskClickedCommand { get { return new Command<AssignmentsModel>(TaskClicked); } }
+        public ICommand ExecuteTaskLongPressCommand { get { return new Command<AssignmentsModel>(TaskLongPressCommand); } }
 
         public TasksPageViewModel()
         {
@@ -41,18 +41,9 @@ namespace ProjectOnlineMobile2.ViewModels
                 ExecuteSortTasks(sortReference);
             });
 
-            MessagingCenter.Instance.Subscribe<string[]>(this, "TaskOptions", (option) =>
+            MessagingCenter.Instance.Subscribe<string[]>(this, "CreateTask", (parameters) =>
             {
-                /**
-                 * option[0] = identifier
-                 * option[1]... = parameters
-                 **/
-                switch (option[0])
-                {
-                    case "Create":
-                        CreateTask(option);
-                        break;
-                }
+                CreateTask(parameters);
             });
 
             MessagingCenter.Instance.Subscribe<string[]>(this, "UploadEditedTask", (parameters) =>
@@ -176,7 +167,7 @@ namespace ProjectOnlineMobile2.ViewModels
             }
         }
 
-        private void TaskClicked(AssignmentsModel assignment)
+        private void TaskLongPressCommand(AssignmentsModel assignment)
         {
             MessagingCenter.Instance.Send<AssignmentsModel>(assignment, "DisplayActionSheet");
         }
@@ -184,10 +175,10 @@ namespace ProjectOnlineMobile2.ViewModels
         private async void CreateTask(string[] parameters)
         {
             /**
-             * parameters[1] = task name
-             * parameters[2] = task start date
-             * parameters[3] = task project
-             * parameters[4] = resource id
+             * parameters[0] = task name
+             * parameters[1] = task start date
+             * parameters[2] = task project
+             * parameters[3] = resource id
             **/
             if (IsConnectedToInternet())
             {
@@ -196,10 +187,10 @@ namespace ProjectOnlineMobile2.ViewModels
                     MessagingCenter.Instance.Send<string[]>(new string[] { "Saving", null, null }, "DisplayAlert");
 
                     var body = "{'__metadata':{'type':'SP.Data.TasksListItem'}," +
-                    "'TaskName':'" + parameters[1] + "'," +
-                    "'TaskStartDate':'" + parameters[2] + "'," +
-                    "'ProjectNameId':'" + parameters[3] + "'," +
-                    "'ResourceNameId':'" + parameters[4] + "'}";
+                    "'TaskName':'" + parameters[0] + "'," +
+                    "'TaskStartDate':'" + parameters[1] + "'," +
+                    "'ProjectNameId':'" + parameters[2] + "'," +
+                    "'ResourceNameId':'" + parameters[3] + "'}";
 
                     var item = new StringContent(body);
                     item.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json;odata=verbose");
@@ -215,13 +206,14 @@ namespace ProjectOnlineMobile2.ViewModels
                     {
                         //display prompt that creation of project is successful
                         MessagingCenter.Instance.Send<string[]>(new string[] { "Successfully created the task", "OK", null }, "DisplayAlert");
-                        Debug.WriteLine("SUCCESS", "ADD TASK");
+                        MessagingCenter.Instance.Send<string>(string.Empty, "DismissModalViewController");
+                        Debug.WriteLine(ensure.StatusCode.ToString(), "ADD TASK");
                     }
                     else
                     {
                         //display prompt that creation of project has failed
                         MessagingCenter.Instance.Send<string[]>(new string[] { "There was an error creating the task", "OK", null }, "DisplayAlert");
-                        Debug.WriteLine("FAILED", "ADD TASK");
+                        Debug.WriteLine(ensure.StatusCode.ToString(), "ADD TASK");
                     }
                 }
                 catch(Exception e)
@@ -249,9 +241,11 @@ namespace ProjectOnlineMobile2.ViewModels
             {
                 try
                 {
+                    MessagingCenter.Instance.Send<string[]>(new string[] { "Saving", null, null }, "DisplayAlert");
+
                     var body = "{'__metadata':{'type':'SP.Data.TasksListItem'}," +
                     "'TaskName':'" + parameters[1] + "'," +
-                    "'TaskStartDate':'" + DateTime.Parse(parameters[2]) + "'," +
+                    "'TaskStartDate':'" + parameters[2] + "'," +
                     "'TaskWork':'" + parameters[3] + "'," +
                     "'TaskActualWork':'" + parameters[4] + "'}";
 
@@ -269,16 +263,23 @@ namespace ProjectOnlineMobile2.ViewModels
                     if (ensure.IsSuccessStatusCode)
                     {
                         //display prompt that creation of project is successful
+                        MessagingCenter.Instance.Send<string[]>(new string[] { "Successfully edited the task", "OK", null }, "DisplayAlert");
+                        MessagingCenter.Instance.Send<string>(string.Empty, "DismissModalViewController");
+
                         Debug.WriteLine("SUCCESS", "EDIT TASK");
                     }
                     else
                     {
                         //display prompt that creation of project has failed
+                        MessagingCenter.Instance.Send<string[]>(new string[] { "There was an error sending the request", "OK", null }, "DisplayAlert");
+
                         Debug.WriteLine("FAILED", "EDIT TASK");
                     }
                 }
                 catch(Exception e)
                 {
+                    MessagingCenter.Instance.Send<string[]>(new string[] { "There was an error sending the request", "OK", null }, "DisplayAlert");
+
                     Debug.WriteLine(e.Message, "EditTask");
                 }
 
@@ -287,12 +288,14 @@ namespace ProjectOnlineMobile2.ViewModels
 
         public async void DeleteTask(AssignmentsModel assignment)
         {
-            var formDigest = await SPapi.GetFormDigest();
-
             if (IsConnectedToInternet())
             {
                 try
                 {
+                    MessagingCenter.Instance.Send<string[]>(new string[] { "Deleting", null, null }, "DisplayAlert");
+
+                    var formDigest = await SPapi.GetFormDigest();
+
                     var delete = await SPapi.DeleteListItemByListGuid(formDigest.D.GetContextWebInformation.FormDigestValue,
                     ASSIGNMENTS_LIST_GUID,
                     assignment.ID.ToString());
@@ -301,19 +304,26 @@ namespace ProjectOnlineMobile2.ViewModels
 
                     if (ensure.IsSuccessStatusCode)
                     {
-                        Debug.WriteLine("Delete success!");
                         //prompt user of successful deletion
+                        MessagingCenter.Instance.Send<string[]>(new string[] { "Successfully edited the task", "OK", null }, "DisplayAlert");
 
+                        Debug.WriteLine("Delete success!");
+
+                        //refresh the items/tasks
                         ExecuteRefreshTasksCommand();
                     }
                     else
                     {
-                        Debug.WriteLine("Delete failed!");
                         //prompt user of failed deletion
+                        MessagingCenter.Instance.Send<string[]>(new string[] { "There was an error sending the request", "OK", null }, "DisplayAlert");
+
+                        Debug.WriteLine("Delete failed!");
                     }
                 }
                 catch(Exception e)
                 {
+                    MessagingCenter.Instance.Send<string[]>(new string[] { "There was an error sending the request", "OK", null }, "DisplayAlert");
+
                     Debug.WriteLine(e.Message, "DeleteTask");
                 }
             }

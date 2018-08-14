@@ -173,10 +173,11 @@ namespace ProjectOnlineMobile2.ViewModels
                     .ToList();
 
             if (IsConnectedToInternet())
-                MessagingCenter.Instance.Send<String[]>(new string[] { "Saving progress...", "Close" }, "DisplayAlert");
-            else
-                MessagingCenter.Instance.Send<String[]>(new string[] { "The changes that were made will be uploaded when the device is connected to the internet", "Close" }, "DisplayAlert");
-
+            {
+                MessagingCenter.Instance.Send<String[]>(new string[] { "Saving", null, null }, "DisplayAlert");
+                
+            }
+                
 
             foreach (var item in localWorkModel)
             {
@@ -238,6 +239,8 @@ namespace ProjectOnlineMobile2.ViewModels
                     });
                 }
             }
+
+            MessagingCenter.Instance.Send<string>(string.Empty, "DismissCurrentAlertView");
         }
 
         private StringContent ConstructBody(string actualHours)

@@ -24,7 +24,7 @@
                                               CornerRadius="4"
                                               Margin="16,8,16,8"
                                               HorizontalOptions="FillAndExpand"
-                                              LongPressCommand="{Binding Path=BindingContext.ExecuteTaskClickedCommand, Source={x:Reference mainLayout}}"
+                                              LongPressCommand="{Binding Path=BindingContext.ExecuteTaskLongPressCommand, Source={x:Reference mainLayout}}"
                                               CommandParameter="{Binding .}">
 
                             <Grid CompressedLayout.IsHeadless="True">

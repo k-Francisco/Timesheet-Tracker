@@ -42,6 +42,11 @@ namespace ProjectOnlineMobile2.iOS
                 SelectedViewController.DismissModalViewController(true);
             });
 
+            MessagingCenter.Instance.Subscribe<string>(this, "DismissCurrentAlertView", (s)=> {
+                currentAlertView.DismissWithClickedButtonIndex(-1, true);
+                currentAlertView = null;
+            });
+
             MessagingCenter.Instance.Subscribe<String>(this, "ExitWorkPage", (s)=> {
                 _timesheetNavController.PopViewController(true);
             });

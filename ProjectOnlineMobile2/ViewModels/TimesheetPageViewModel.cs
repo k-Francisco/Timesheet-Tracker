@@ -197,6 +197,8 @@ namespace ProjectOnlineMobile2.ViewModels
             {
                 PeriodLines.Add(item);
             }
+
+            MessagingCenter.Instance.Send<String>(PeriodList[SelectedIndex].ToString(), "TimesheetPeriod");
         }
 
         public async void SyncTimesheetLines()
@@ -330,6 +332,8 @@ namespace ProjectOnlineMobile2.ViewModels
 
                 try
                 {
+                    MessagingCenter.Instance.Send<string[]>(new string[] { "Saving", null, null }, "DisplayAlert");
+
                     var body = "{'__metadata':{'type':'SP.Data.TimesheetLinesListListItem'}," +
                     "'Comment':'" + parameters[1] + "'}";
 
@@ -347,16 +351,22 @@ namespace ProjectOnlineMobile2.ViewModels
                     if (ensure.IsSuccessStatusCode)
                     {
                         //display prompt that creation of project is successful
+                        MessagingCenter.Instance.Send<string[]>(new string[] { "Successfully edited the line", "OK", null }, "DisplayAlert");
+
                         Debug.WriteLine("SUCCESS", "EDIT TIMESHEET LINE COMMENT");
                     }
                     else
                     {
                         //display prompt that creation of project has failed
+                        MessagingCenter.Instance.Send<string[]>(new string[] { "There was an error sending the request", "OK", null }, "DisplayAlert");
+
                         Debug.WriteLine("FAILED", "EDIT TIMESHEET LINE COMMENT");
                     }
                 }
                 catch (Exception e)
                 {
+                    MessagingCenter.Instance.Send<string[]>(new string[] { "There was an error sending the request", "OK", null }, "DisplayAlert");
+
                     Debug.WriteLine(e.Message, "SaveEditedComment");
                 }
 

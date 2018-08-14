@@ -346,6 +346,7 @@ namespace ProjectOnlineMobile2.Services
                         realm.Write(()=> {
                             realm.Remove(item);
                             localLines.Remove(item);
+                            displayedLines.Remove(item);
                         });
                     }
                 }
@@ -362,6 +363,7 @@ namespace ProjectOnlineMobile2.Services
                         realm.Write(()=> {
                             realm.Add(item);
                             localLines.Add(item);
+                            displayedLines.Add(item);
                         });
                     }
                     else
@@ -436,6 +438,7 @@ namespace ProjectOnlineMobile2.Services
                         realm.Write(()=> {
                             realm.Remove(item);
                             localLineWorkModels.Remove(item);
+                            displayedLines.Remove(item);
                         });
                     }
                 }
@@ -452,6 +455,7 @@ namespace ProjectOnlineMobile2.Services
                         realm.Write(()=> {
                             realm.Add(item);
                             localLineWorkModels.Add(item);
+                            displayedLines.Add(item);
                         });
                     }
                     else

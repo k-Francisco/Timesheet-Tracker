@@ -25,14 +25,21 @@ namespace ProjectOnlineMobile2.Pages
 
             MessagingCenter.Instance.Subscribe<string>(this, "SaveTask", (s) =>
             {
-                var parameters = new string[] { "Create",
+                if (string.IsNullOrWhiteSpace(taskNameEntry.Text))
+                {
+                    this.DisplayAlert(null, "Please fill in the name of the task", "OK");
+                }
+                else
+                {
+                    var parameters = new string[] {
                     taskNameEntry.Text,
                     String.Format("{0:MM/dd/yyyy}",taskStartDate.Date),
                     _taskProjectSource[taskProject.SelectedIndex].ID.ToString(),
                     _resourceSource[resource.SelectedIndex].Resource.Id.ToString()
                 };
 
-                MessagingCenter.Instance.Send<string[]>(parameters, "TaskOptions");
+                    MessagingCenter.Instance.Send<string[]>(parameters, "TaskOptions");
+                }
             });
         }
 
