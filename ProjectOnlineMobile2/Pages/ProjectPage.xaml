@@ -20,11 +20,19 @@
                         </StackLayout.GestureRecognizers>
                         
                         <controls:CustomFrame HasShadow="True"
-                               BackgroundColor="White"
-                               CornerRadius="4"
-                               Padding="16"
-                               Margin="16,8,16,8"
-                               HorizontalOptions="FillAndExpand">
+                                              BackgroundColor="White"
+                                              CornerRadius="4"
+                                              Padding="16"
+                                              Margin="16,8,16,8"
+                                              HorizontalOptions="FillAndExpand"
+                                              LongPressCommand="{Binding Path=BindingContext.ProjectLongPressCommand, Source={x:Reference mainLayout}}"
+                                              CommandParameter="{Binding .}">
+
+                            <controls:CustomFrame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Path=BindingContext.ProjectTappedCommand, Source={x:Reference mainLayout}}"
+                                                  CommandParameter="{Binding .}"
+                                                  NumberOfTapsRequired="1"/>
+                            </controls:CustomFrame.GestureRecognizers>
 
                             <StackLayout Margin="0"
                                          Padding="0"
@@ -45,16 +53,6 @@
                                            FontAttributes="Bold"
                                            TextColor="Black"
                                            Grid.Column="0"/>
-
-                                    <Image Source="ic_more.png"
-                                           Aspect="AspectFit"
-                                           HeightRequest="14"
-                                           WidthRequest="4"
-                                           HorizontalOptions="End"
-                                           VerticalOptions="Center"
-                                           Grid.Column="1"
-                                           IsVisible="False"/>
-
                                 </Grid>
 
                                 <Grid RowSpacing="0"
@@ -119,12 +117,12 @@
                                         <RowDefinition Height="22"/>
                                     </Grid.RowDefinitions>
 
-                                    <Label Text="Status"
+                                    <Label Text="Type"
                                            TextColor="LightSlateGray"
                                            FontSize="Micro"
                                            Grid.Row="0"/>
 
-                                    <Label Text="{Binding ProjectStatus}"
+                                    <Label Text="{Binding ProjectType}"
                                            FontSize="Medium"
                                            TextColor="Black"
                                            Grid.Row="1"/>
@@ -142,9 +140,12 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <StackLayout Padding="0"
-                     HorizontalOptions="FillAndExpand"
-                     VerticalOptions="FillAndExpand">
+        <Grid x:Name="mainLayout"
+                Padding="0"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+              ColumnSpacing="0"
+              RowSpacing="0">
 
             <controls:CustomListView 
                       HasUnevenRows="True"
@@ -159,6 +160,12 @@
                 </x:Arguments>
             </controls:CustomListView>
 
-        </StackLayout>
+            <Label Text="There are no projects available in the list."
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   FontSize="Medium"
+                   IsVisible="{Binding IsEmpty}"/>
+
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

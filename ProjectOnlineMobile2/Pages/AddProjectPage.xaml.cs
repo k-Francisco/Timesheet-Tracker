@@ -1,22 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using ProjectOnlineMobile2.ViewModels;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace ProjectOnlineMobile2.Pages
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class AddProjectPage : ContentPage
-	{
-		public AddProjectPage ()
-		{
-			InitializeComponent ();
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class AddProjectPage : ContentPage
+    {
 
-            MessagingCenter.Instance.Subscribe<string>(this,"SaveProject", (s) => {
+        private ProjectPageViewModel viewModel;
+
+        public AddProjectPage()
+        {
+            InitializeComponent();
+
+            viewModel = BindingContext as ProjectPageViewModel;
+
+            MessagingCenter.Instance.Subscribe<string>(this, "SaveProject", (s) =>
+            {
                 if (string.IsNullOrWhiteSpace(ProjectNameEntry.Text))
                 {
                     this.DisplayAlert(null, "Please fill in the name of the project", "OK");
@@ -28,7 +30,7 @@ namespace ProjectOnlineMobile2.Pages
                     String.Format("{0:MM/dd/yyyy}", ProjectDate.Date),
                     ProjectType.SelectedItem.ToString()};
 
-                    MessagingCenter.Instance.Send<string[]>(parameters, "AddProject");
+                    viewModel.AddProject(parameters);
                 }
             });
 

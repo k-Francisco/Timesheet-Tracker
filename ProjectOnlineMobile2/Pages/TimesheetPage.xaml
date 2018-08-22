@@ -117,11 +117,11 @@
     </ContentPage.Resources>
     
     <ContentPage.Content>
-        <StackLayout x:Name="mainLayout" 
-                     Orientation="Vertical"
-                     VerticalOptions="FillAndExpand"
-                     HorizontalOptions="FillAndExpand"
-                     Spacing="0">
+        <Grid x:Name="mainLayout" 
+              VerticalOptions="FillAndExpand"
+              HorizontalOptions="FillAndExpand"
+              RowSpacing="0"
+              ColumnSpacing="0">
 
             <controls:CustomListView 
                       HasUnevenRows="True"
@@ -135,6 +135,12 @@
                     <ListViewCachingStrategy>RecycleElementAndDataTemplate</ListViewCachingStrategy>
                 </x:Arguments>
             </controls:CustomListView>
+
+            <Label Text="There are no lines available in this period."
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   FontSize="Medium"
+                   IsVisible="{Binding IsEmpty}"/>
 
             <Picker x:Name="periodPicker"
                     Title="Select Period"
@@ -158,6 +164,6 @@
 
 
 
-        </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -64,6 +64,13 @@ namespace ProjectOnlineMobile2.ViewModels
             set { SetProperty(ref _isRefreshing, value); }
         }
 
+        private bool _isEmpty;
+        public bool IsEmpty
+        {
+            get { return _isEmpty; }
+            set { SetProperty(ref _isEmpty, value); }
+        }
+
         private bool _openPicker = false;
         public bool OpenPicker
         {
@@ -173,7 +180,6 @@ namespace ProjectOnlineMobile2.ViewModels
                         if (SelectedIndex < 0)
                             FindTodaysPeriod();
                     }
-                    
                 }
             }
             catch(Exception e)
@@ -208,25 +214,29 @@ namespace ProjectOnlineMobile2.ViewModels
                 if (IsConnectedToInternet())
                 {
                     var localLines = realm.All<LineModel>().ToList();
+                    var userId = realm.All<UserModel>().FirstOrDefault().UserId;
+                    string query;
 
-                    string query = "$select=ID," +
-                        "Comment," +
-                        "Status," +
-                        "TotalWork," +
-                        "LinePeriodId," +
-                        "ProjectName/ProjectName," +
-                        "TaskName/TaskName" +
-                        "&$expand=ProjectName,TaskName" +
-                        "&$filter=";
+                    query = "$select=ID," +
+                    "Comment," +
+                    "Status," +
+                    "TotalWork," +
+                    "LinePeriodId," +
+                    "ProjectName/ProjectName," +
+                    "TaskName/TaskName" +
+                    "&$expand=ProjectName,TaskName" +
+                    "&$filter=ResourceStringId eq " + userId.ToString() +
+                    "and ";
 
                     StringBuilder sb = new StringBuilder(query);
 
                     foreach (var item in compositeList.D.Results)
                     {
-                        sb.Append("(ID eq "+ item.TimesheetLineId +") or ");
+                        sb.Append("(ID eq " + item.TimesheetLineId + ") or ");
                     }
                     //remove the last 'or' in the query
-                    sb.Remove((sb.Length-4),4);
+                    sb.Remove((sb.Length - 4), 4);
+
 
                     var apiResponse = await SPapi.GetListItemsByListGuid(TIMESHEET_LINES_LIST_GUID, sb.ToString());
                     
@@ -244,6 +254,11 @@ namespace ProjectOnlineMobile2.ViewModels
                     ExecuteSelectedItemChangedCommand();
                     IsRefreshing = false;
                 }
+
+                if (PeriodLines.Any())
+                    IsEmpty = false;
+                else
+                    IsEmpty = true;
             }
             catch(Exception e)
             {
@@ -256,9 +271,22 @@ namespace ProjectOnlineMobile2.ViewModels
         private void ExecuteRefreshLinesCommand()
         {
             IsRefreshing = true;
-            GetCompositeListFromServer();
-            Task.Delay(1500);
-            SyncTimesheetLines();
+
+            if (IsConnectedToInternet())
+            {
+                realm.Write(() =>
+                {
+                    realm.RemoveAll<LineModel>();
+                });
+
+                PeriodLines.Clear();
+
+                GetCompositeListFromServer();
+                Task.Delay(1500);
+                SyncTimesheetLines();
+            }
+            else
+                IsRefreshing = false;
         }
 
         public ICommand TimesheetLineClicked { get { return new Command<LineModel>(ExecuteTimesheetLineClicked); } }

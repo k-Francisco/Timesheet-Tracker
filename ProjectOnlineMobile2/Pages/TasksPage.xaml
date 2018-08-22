@@ -151,11 +151,11 @@
     
     <ContentPage.Content>
 
-        <StackLayout x:Name="mainLayout" 
-                     Orientation="Vertical"
-                     VerticalOptions="FillAndExpand"
-                     HorizontalOptions="FillAndExpand"
-                     Spacing="0">
+        <Grid x:Name="mainLayout" 
+              VerticalOptions="FillAndExpand"
+              HorizontalOptions="FillAndExpand"
+              RowSpacing="0"
+              ColumnSpacing="0">
 
             <controls:CustomListView  
                       HasUnevenRows="True"
@@ -170,7 +170,13 @@
                 </x:Arguments>
             </controls:CustomListView>
 
-        </StackLayout>
+            <Label Text="There are no tasks available in the list."
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   FontSize="Medium"
+                   IsVisible="{Binding IsEmpty}"/>
+
+        </Grid>
         
     </ContentPage.Content>
 </ContentPage>

@@ -2,7 +2,12 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProjectOnlineMobile2.Pages.EditTaskPage"
-             xmlns:controls="clr-namespace:ProjectOnlineMobile2.Controls">
+             xmlns:viewModels="clr-namespace:ProjectOnlineMobile2.ViewModels">
+
+    <ContentPage.BindingContext>
+        <viewModels:TasksPageViewModel/>
+    </ContentPage.BindingContext>
+    
     <ContentPage.Content>
         <StackLayout CompressedLayout.IsHeadless="True"
                      Orientation="Vertical"

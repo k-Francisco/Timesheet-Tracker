@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using System.Diagnostics;
 using System.Windows.Input;
-using ProjectOnlineMobile2.Models;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;

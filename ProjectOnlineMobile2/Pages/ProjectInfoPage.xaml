@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:ProjectOnlineMobile2.ViewModels"
+             xmlns:controls="clr-namespace:ProjectOnlineMobile2.Controls"
+			 x:Class="ProjectOnlineMobile2.Pages.ProjectInfoPage">
+
+    <ContentPage.BindingContext>
+        <viewModels:ProjectPageViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <DataTemplate x:Key="TaskUpdatesTemplate">
+                <ViewCell>
+                    <StackLayout Orientation="Vertical">
+                        <Label Text="{Binding TaskUpdateTaskName}"/>
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+            
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <ScrollView VerticalScrollBarVisibility="Never">
+
+            <StackLayout CompressedLayout.IsHeadless="True"
+					 Orientation="Vertical"
+					 Padding="16"
+					 Spacing="24">
+
+                <Frame HasShadow="True"
+				   CornerRadius="8">
+
+                    <StackLayout CompressedLayout.IsHeadless="True"
+							 Orientation="Vertical"
+							 Spacing="0">
+
+                        <Label Text="Project Details"
+                           FontAttributes="Bold"
+                           FontSize="Large"/>
+
+                        <Grid CompressedLayout.IsHeadless="True"
+						  Margin="0,16,0,0"
+						  ColumnSpacing="0">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackLayout CompressedLayout.IsHeadless="True"
+									 Orientation="Vertical"
+									 HorizontalOptions="Center"
+									 VerticalOptions="Center"
+									 Grid.Column="0">
+
+                                <Label x:Name="ProjectWork"
+								   Text="0h"
+								   FontAttributes="Bold"
+								   FontSize="Medium"
+								   HorizontalOptions="Center"/>
+
+                                <Label Text="Work"
+								   FontSize="Small"
+								   TextColor="LightSlateGray"
+								   HorizontalOptions="Center"/>
+
+                            </StackLayout>
+
+                            <StackLayout CompressedLayout.IsHeadless="True"
+							 Orientation="Vertical"
+							 HorizontalOptions="Center"
+							 VerticalOptions="Center"
+							 Grid.Column="1">
+
+                                <Label x:Name="ProjectPercentComplete"
+						   Text="100%"
+						   FontAttributes="Bold"
+						   FontSize="Medium"
+						   HorizontalOptions="Center"/>
+
+                                <Label Text="% Complete"
+						   FontSize="Small"
+						   TextColor="LightSlateGray"
+						   HorizontalOptions="Center"/>
+
+                            </StackLayout>
+
+                            <StackLayout CompressedLayout.IsHeadless="True"
+							 Orientation="Vertical"
+							 HorizontalOptions="Center"
+							 VerticalOptions="Center"
+							 Grid.Column="2">
+
+                                <Label x:Name="ProjectDuration"
+						   Text="25d"
+						   FontAttributes="Bold"
+						   FontSize="Medium"
+						   HorizontalOptions="Center"/>
+
+                                <Label Text="Duration"
+						   FontSize="Small"
+						   TextColor="LightSlateGray"
+						   HorizontalOptions="Center"/>
+
+                            </StackLayout>
+
+                        </Grid>
+
+                        <Grid CompressedLayout.IsHeadless="True"
+				  Margin="0,16,0,0"
+				  ColumnSpacing="0">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackLayout Orientation="Horizontal"
+							 CompressedLayout.IsHeadless="True"
+							 HorizontalOptions="Center"
+							 VerticalOptions="Center"
+							 Grid.Column="0">
+
+                                <Image Source="event_available.png"
+						   WidthRequest="24"
+						   HeightRequest="24"
+						   Aspect="AspectFit"
+						   HorizontalOptions="Start"/>
+
+                                <Label x:Name="ProjectStartDate"
+						   Text="Sept 21, 1997"
+						   FontSize="Small"
+						   FontAttributes="Bold"
+						   VerticalOptions="Center"/>
+
+                            </StackLayout>
+
+                            <BoxView WidthRequest="1"
+						 Grid.Column="0"
+						 VerticalOptions="FillAndExpand"
+						 HorizontalOptions="End"
+						 Color="Green"/>
+
+                            <StackLayout CompressedLayout.IsHeadless="True"
+							 Orientation="Horizontal"
+							 HorizontalOptions="Center"
+							 VerticalOptions="Center"
+							 Grid.Column="1">
+
+                                <Image Source="event_busy.png"
+						   WidthRequest="24"
+						   HeightRequest="24"
+						   Aspect="AspectFit"
+						   HorizontalOptions="Start"/>
+
+                                <Label x:Name="ProjectFinishDate"
+						   Text="Sept 21, 1997"
+						   FontSize="Small"
+						   FontAttributes="Bold"
+						   VerticalOptions="Center"/>
+
+                            </StackLayout>
+
+                        </Grid>
+
+                    </StackLayout>
+
+                </Frame>
+
+                <Frame HasShadow="True"
+                   CornerRadius="8">
+
+                    <controls:CustomListView
+                          x:Name="TaskUpdatesList"
+                          HasUnevenRows="True"
+                          SeparatorVisibility="None"
+                          ItemTemplate="{StaticResource TaskUpdatesTemplate}">
+                        <x:Arguments>
+                            <ListViewCachingStrategy>RecycleElementAndDataTemplate</ListViewCachingStrategy>
+                        </x:Arguments>
+                    </controls:CustomListView>
+
+                </Frame>
+
+            </StackLayout>
+
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using AssignmentsModel = ProjectOnlineMobile2.Models2.Assignments.AssignmentModel;
@@ -31,24 +32,18 @@ namespace ProjectOnlineMobile2.ViewModels
             set { SetProperty(ref _isRefreshing, value); }
         }
 
-        public ICommand RefreshTasksCommand { get { return new Command(ExecuteRefreshTasksCommand); } }
-        public ICommand ExecuteTaskLongPressCommand { get { return new Command<AssignmentsModel>(TaskLongPressCommand); } }
+        private bool _isEmpty;
+        public bool IsEmpty
+        {
+            get { return _isEmpty; }
+            set { SetProperty(ref _isEmpty, value); }
+        }
 
         public TasksPageViewModel()
         {
             MessagingCenter.Instance.Subscribe<String>(this, "SortTasks", (sortReference) =>
             {
                 ExecuteSortTasks(sortReference);
-            });
-
-            MessagingCenter.Instance.Subscribe<string[]>(this, "CreateTask", (parameters) =>
-            {
-                CreateTask(parameters);
-            });
-
-            MessagingCenter.Instance.Subscribe<string[]>(this, "UploadEditedTask", (parameters) =>
-            {
-                EditTask(parameters);
             });
 
             LoadAssignmentsFromDatabase();
@@ -59,10 +54,13 @@ namespace ProjectOnlineMobile2.ViewModels
         {
             var localAssignments = realm.All<AssignmentsModel>().ToList();
 
-            foreach (var item in localAssignments)
-            {
-                Tasks.Add(item);
-            }
+            if (localAssignments.Any())
+                foreach (var item in localAssignments)
+                {
+                    Tasks.Add(item);
+                }
+            else
+                IsEmpty = true;
         }
 
         private async void SyncUserTasks()
@@ -104,6 +102,11 @@ namespace ProjectOnlineMobile2.ViewModels
 
                     IsRefreshing = false;
                 }
+
+                if (Tasks.Any())
+                    IsEmpty = false;
+                else
+                    IsEmpty = true;
             }
             catch (Exception e)
             {
@@ -112,6 +115,7 @@ namespace ProjectOnlineMobile2.ViewModels
             }
         }
 
+        public ICommand RefreshTasksCommand { get { return new Command(ExecuteRefreshTasksCommand); } }
         private void ExecuteRefreshTasksCommand()
         {
             try
@@ -167,30 +171,54 @@ namespace ProjectOnlineMobile2.ViewModels
             }
         }
 
+        public ICommand ExecuteTaskLongPressCommand { get { return new Command<AssignmentsModel>(TaskLongPressCommand); } }
         private void TaskLongPressCommand(AssignmentsModel assignment)
         {
             MessagingCenter.Instance.Send<AssignmentsModel>(assignment, "DisplayActionSheet");
         }
 
-        private async void CreateTask(string[] parameters)
+        public async void CreateTask(string[] parameters)
         {
             /**
-             * parameters[0] = task name
-             * parameters[1] = task start date
-             * parameters[2] = task project
-             * parameters[3] = resource id
+             * parameters[0] = project type
+             * parameters[1] = task name
+             * parameters[2] = task start date
+             * parameters[3] = task project
+             * parameters[4] = resource id
             **/
             if (IsConnectedToInternet())
             {
                 try
                 {
+
                     MessagingCenter.Instance.Send<string[]>(new string[] { "Saving", null, null }, "DisplayAlert");
 
-                    var body = "{'__metadata':{'type':'SP.Data.TasksListItem'}," +
-                    "'TaskName':'" + parameters[0] + "'," +
-                    "'TaskStartDate':'" + parameters[1] + "'," +
-                    "'ProjectNameId':'" + parameters[2] + "'," +
-                    "'ResourceNameId':'" + parameters[3] + "'}";
+                    string body = "", listId = "", message = "";
+
+                    if(parameters[0].Equals("Enterprise Project"))
+                    {
+                        body = "{'__metadata':{'type':'SP.Data.TaskUpdateRequestsListItem'}," +
+                               "'TaskUpdateTaskName':'" + parameters[1] + "'," +
+                               "'TaskUpdateStartDate':'" + parameters[2] + "'," +
+                               "'TaskUpdateProjectNameId':'" + parameters[3] + "'," +
+                               "'TaskUpdateResourceNameId':'" + parameters[4] + "'}";
+
+                        listId = TASK_UPDATE_LIST_GUID;
+
+                        message = "The task has been sent and is waiting for approval";
+                    }
+                    else if(parameters[0].Equals("Task List Project"))
+                    {
+                        body = "{'__metadata':{'type':'SP.Data.TasksListItem'}," +
+                               "'TaskName':'" + parameters[0] + "'," +
+                               "'TaskStartDate':'" + parameters[1] + "'," +
+                               "'ProjectNameId':'" + parameters[2] + "'," +
+                               "'ResourceNameId':'" + parameters[3] + "'}";
+
+                        listId = ASSIGNMENTS_LIST_GUID;
+
+                        message = "Successfully created the task";
+                    }
 
                     var item = new StringContent(body);
                     item.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json;odata=verbose");
@@ -198,16 +226,19 @@ namespace ProjectOnlineMobile2.ViewModels
                     var formDigest = await SPapi.GetFormDigest();
 
                     var add = await SPapi.AddListItemByListGuid(formDigest.D.GetContextWebInformation.FormDigestValue,
-                        ASSIGNMENTS_LIST_GUID,
+                        listId,
                         item);
                     var ensure = add.EnsureSuccessStatusCode();
 
                     if (ensure.IsSuccessStatusCode)
                     {
                         //display prompt that creation of project is successful
-                        MessagingCenter.Instance.Send<string[]>(new string[] { "Successfully created the task", "OK", null }, "DisplayAlert");
+                        MessagingCenter.Instance.Send<string[]>(new string[] { message, "OK", null }, "DisplayAlert");
                         MessagingCenter.Instance.Send<string>(string.Empty, "DismissModalViewController");
                         Debug.WriteLine(ensure.StatusCode.ToString(), "ADD TASK");
+
+                        await Task.Delay(1500);
+                        GetTaskUpdates();
                     }
                     else
                     {
@@ -216,14 +247,12 @@ namespace ProjectOnlineMobile2.ViewModels
                         Debug.WriteLine(ensure.StatusCode.ToString(), "ADD TASK");
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     MessagingCenter.Instance.Send<string[]>(new string[] { "There was an error creating the task", "OK", null }, "DisplayAlert");
                     Debug.WriteLine(e.Message,"CreateTask");
                 }
             }
-            else
-                MessagingCenter.Instance.Send<string[]>(new string[] { "Your device is not connected to the internet", "OK", null }, "DisplayAlert");
 
         }
 
@@ -267,6 +296,9 @@ namespace ProjectOnlineMobile2.ViewModels
                         MessagingCenter.Instance.Send<string>(string.Empty, "DismissModalViewController");
 
                         Debug.WriteLine("SUCCESS", "EDIT TASK");
+
+                        await Task.Delay(1500);
+                        GetTaskUpdates();
                     }
                     else
                     {
@@ -305,7 +337,7 @@ namespace ProjectOnlineMobile2.ViewModels
                     if (ensure.IsSuccessStatusCode)
                     {
                         //prompt user of successful deletion
-                        MessagingCenter.Instance.Send<string[]>(new string[] { "Successfully edited the task", "OK", null }, "DisplayAlert");
+                        MessagingCenter.Instance.Send<string[]>(new string[] { "Successfully deleted the task", "OK", null }, "DisplayAlert");
 
                         Debug.WriteLine("Delete success!");
 

@@ -40,6 +40,8 @@ namespace ProjectOnlineMobile2.Models2.Projects
         public string ProjectRemainingWork { get; set; }
         [JsonProperty("ProjectStatus")]
         public string ProjectStatus { get; set; }
+        [JsonProperty("ProjectType")]
+        public string ProjectType { get; set; }
         [JsonProperty("ProjectFinishDate")]
         public DateTimeOffset ProjectFinishDate { get; set; }
         [JsonProperty("ID")]

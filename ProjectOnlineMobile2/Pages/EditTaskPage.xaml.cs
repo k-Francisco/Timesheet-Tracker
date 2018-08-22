@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System;
+using ProjectOnlineMobile2.ViewModels;
 
 namespace ProjectOnlineMobile2.Pages
 {
@@ -9,6 +10,8 @@ namespace ProjectOnlineMobile2.Pages
 	public partial class EditTaskPage : ContentPage
 	{
         private AssignmentsModel assignment;
+        private TasksPageViewModel viewModel;
+
 		public EditTaskPage ()
 		{
 			InitializeComponent ();
@@ -104,12 +107,12 @@ namespace ProjectOnlineMobile2.Pages
                 if (validate)
                 {
                     var parameters = new string[] { assignment.ID.ToString(),
-                    previewTaskName.Text,
-                    previewTaskStartDate.Text,
-                    previewWork.Text,
-                    previewActualHours.Text
-                };
-                    MessagingCenter.Instance.Send<string[]>(parameters, "UploadEditedTask");
+                                                    previewTaskName.Text,
+                                                    previewTaskStartDate.Text,
+                                                    previewWork.Text,
+                                                    previewActualHours.Text
+                                                  };
+                    viewModel.EditTask(parameters);
                 }
             }
             catch(Exception e)

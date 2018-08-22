@@ -6,6 +6,8 @@ using LineModel = ProjectOnlineMobile2.Models2.LineModel.LineModel;
 using LineWorkModel = ProjectOnlineMobile2.Models2.LineWorkModel.LineWorkModel;
 using ResourceRoot = ProjectOnlineMobile2.Models2.ResourceModel.ResourceRoot;
 using ResourceModel = ProjectOnlineMobile2.Models2.ResourceModel.ResourceModel;
+using TaskUpdatesModel = ProjectOnlineMobile2.Models2.TaskUpdatesModel.TaskUpdateRequestsModel;
+using TaskUpdatesRoot = ProjectOnlineMobile2.Models2.TaskUpdatesModel.RootObject;
 using Realms;
 using System;
 using System.Collections.Generic;
@@ -34,11 +36,7 @@ namespace ProjectOnlineMobile2.Services
                 //3.sync the changes that are made to the server on the local database
 
                 
-                var localSiteUsersClone = new List<ResourceModel>();
-                foreach (var item in localResources)
-                {
-                    localSiteUsersClone.Add(item);
-                }
+                var localSiteUsersClone = new List<ResourceModel>(localResources);
 
                 //Part 1
                 foreach (var item in localSiteUsersClone)
@@ -102,11 +100,7 @@ namespace ProjectOnlineMobile2.Services
                 //2.add the projects that are added from the server on the local database
                 //3.sync the changes that are made to the server on the local database
 
-                var localProjectsClone = new List<ProjectsModel>();
-                foreach (var item in localProjects)
-                {
-                    localProjectsClone.Add(item);
-                }
+                var localProjectsClone = new List<ProjectsModel>(localProjects);
 
                 //*Part 1
                 foreach (var item in localProjectsClone)
@@ -183,11 +177,7 @@ namespace ProjectOnlineMobile2.Services
 
             try
             {
-                var localTasksClone = new List<AssignmentsModel>();
-                foreach (var item in localTasks)
-                {
-                    localTasksClone.Add(item);
-                }
+                var localTasksClone = new List<AssignmentsModel>(localTasks);
 
                 //PART 1
                 foreach (var item in localTasksClone)
@@ -261,11 +251,7 @@ namespace ProjectOnlineMobile2.Services
                 //2. add the periods that are added from the server on the local database
                 //3. sync the changes that are made to the server on the local database
 
-                var localPeriodsClone = new List<PeriodsModel>();
-                foreach (var item in localPeriods)
-                {
-                    localPeriodsClone.Add(item);
-                }
+                var localPeriodsClone = new List<PeriodsModel>(localPeriods);
 
                 //PART 1
                 foreach (var item in localPeriods)
@@ -328,12 +314,7 @@ namespace ProjectOnlineMobile2.Services
             try
             {
 
-                var localLinesClone = new List<LineModel>();
-                foreach (var item in localLines)
-                {
-                    localLinesClone.Add(item);
-                }
-
+                var localLinesClone = new List<LineModel>(localLines);
 
                 foreach (var item in localLinesClone)
                 {
@@ -420,12 +401,7 @@ namespace ProjectOnlineMobile2.Services
         {
             try
             {
-                var localLineWorkModelsClone = new List<LineWorkModel>();
-                foreach (var item in localLineWorkModels)
-                {
-                    localLineWorkModelsClone.Add(item);
-                }
-
+                var localLineWorkModelsClone = new List<LineWorkModel>(localLineWorkModels);
 
                 foreach (var item in localLineWorkModelsClone)
                 {
@@ -476,6 +452,74 @@ namespace ProjectOnlineMobile2.Services
             catch(Exception e)
             {
                 Debug.WriteLine("SyncTimesheetLineWorkServer", e.Message);
+                return false;
+            }
+        }
+
+        public bool SyncTaskUpdates(TaskUpdatesRoot updatesFromServer, List<TaskUpdatesModel> localUpdates)
+        {
+            try
+            {
+
+                var localUpdatesClone = new List<TaskUpdatesModel>(localUpdates);
+
+                foreach (var item in localUpdatesClone)
+                {
+                    var temp = updatesFromServer.D.Results
+                        .Where(p => p.ID == item.ID)
+                        .FirstOrDefault();
+
+                    if(temp == null)
+                    {
+                        realm.Write(()=> {
+                            realm.Remove(item);
+                            localUpdates.Remove(item);
+                        });
+                    }
+                }
+                realm.Refresh();
+
+                foreach (var item in updatesFromServer.D.Results)
+                {
+                    var temp = localUpdates
+                        .Where(p => p.ID == item.ID)
+                        .FirstOrDefault();
+
+                    if(temp == null)
+                    {
+                        realm.Write(()=> {
+                            realm.Add(item);
+                            localUpdates.Add(item);
+                        });
+                    }
+                    else
+                    {
+                        realm.Write(()=> {
+                            temp.Modified = item.Modified;
+                            temp.RequestType = item.RequestType;
+                            temp.TaskUpdateActualWork = item.TaskUpdateActualWork;
+                            temp.TaskUpdateComment = item.TaskUpdateComment;
+                            temp.TaskUpdateDateSent = item.TaskUpdateDateSent;
+                            temp.TaskUpdateFinishDate = item.TaskUpdateFinishDate;
+                            temp.TaskUpdatePercentComplete = item.TaskUpdatePercentComplete;
+                            temp.TaskUpdateProjectNameId = item.TaskUpdateProjectNameId;
+                            temp.TaskUpdateRemainingWork = item.TaskUpdateRemainingWork;
+                            temp.TaskUpdateResourceNameId = item.TaskUpdateResourceNameId;
+                            temp.TaskUpdateStartDate = item.TaskUpdateStartDate;
+                            temp.TaskUpdateStatus = item.TaskUpdateStatus;
+                            temp.TaskUpdateTaskId = item.TaskUpdateTaskId;
+                            temp.TaskUpdateTaskName = item.TaskUpdateTaskName;
+                            temp.TaskUpdateWork = item.TaskUpdateWork;
+                        });
+                    }
+                }
+                realm.Refresh();
+
+                return true;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message, "SyncTaskUpdatesService");
                 return false;
             }
         }

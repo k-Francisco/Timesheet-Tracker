@@ -1,19 +1,23 @@
-﻿using Plugin.Connectivity;
+﻿using Newtonsoft.Json;
+using Plugin.Connectivity;
 using ProjectOnlineMobile2.Services;
 using Realms;
 using SpevoCore.Services;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using TaskUpdatesModel = ProjectOnlineMobile2.Models2.TaskUpdatesModel.TaskUpdateRequestsModel;
+using TaskUpdatesRoot = ProjectOnlineMobile2.Models2.TaskUpdatesModel.RootObject;
 
 namespace ProjectOnlineMobile2.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
 
+        protected const string TASK_UPDATE_LIST_GUID = "65a1ae0c-d12b-470b-a194-89a58cfb6b17";
         protected SharepointApiWrapper SPapi { get; private set; }
         protected Realm realm { get; set; }
-
         protected SyncDataService syncDataService { get; set; }
 
         public BaseViewModel() {
@@ -22,7 +26,7 @@ namespace ProjectOnlineMobile2.ViewModels
 
             if (realm == null)
             {
-                RealmConfiguration.DefaultConfiguration.SchemaVersion = 0;
+                RealmConfiguration.DefaultConfiguration.SchemaVersion = 2;
                 realm = Realm.GetInstance();
             }
 
@@ -55,6 +59,25 @@ namespace ProjectOnlineMobile2.ViewModels
                 return true;
 
             return CrossConnectivity.Current.IsConnected;
+        }
+
+        public async void GetTaskUpdates()
+        {
+            if (IsConnectedToInternet())
+            {
+                var apiResponse = await SPapi.GetListItemsByListGuid(TASK_UPDATE_LIST_GUID);
+
+                var ensure = apiResponse.EnsureSuccessStatusCode();
+
+                if (ensure.IsSuccessStatusCode)
+                {
+                    var taskUpdatesList = JsonConvert.DeserializeObject<TaskUpdatesRoot>(await apiResponse.Content.ReadAsStringAsync());
+
+                    var localUpdates = realm.All<TaskUpdatesModel>().ToList();
+
+                    syncDataService.SyncTaskUpdates(taskUpdatesList, localUpdates);
+                }
+            }
         }
     }
 }

@@ -17,7 +17,6 @@ namespace ProjectOnlineMobile2.ViewModels
         private const string PROJECTS_LIST_GUID = "248a4da4-f54a-4ebf-9193-2fe4bd13a517";
 
         private ObservableCollection<ProjectsModel> _projectList = new ObservableCollection<ProjectsModel>();
-
         public ObservableCollection<ProjectsModel> ProjectList
         {
             get { return _projectList; }
@@ -25,22 +24,135 @@ namespace ProjectOnlineMobile2.ViewModels
         }
 
         private bool _isRefreshing;
-
         public bool IsRefreshing
         {
             get { return _isRefreshing; }
             set { SetProperty(ref _isRefreshing, value); }
         }
 
-        public ProjectPageViewModel()
+        private bool _isEmpty;
+        public bool IsEmpty
         {
-            MessagingCenter.Instance.Subscribe<string[]>(this, "AddProject", (parameters) =>
-            {
-                AddProject(parameters);
-            });
+            get { return _isEmpty; }
+            set { SetProperty(ref _isEmpty, value); }
         }
 
-        private async void AddProject(string[] parameters)
+        public ProjectPageViewModel()
+        {
+            GetTaskUpdates();
+        }
+
+        public void LoadProjectsFromDatabase()
+        {
+            var localProjects = realm.All<ProjectsModel>().ToList();
+
+            if (localProjects.Any())
+                foreach (var item in localProjects)
+                {
+                    ProjectList.Add(item);
+                }
+            else
+                IsEmpty = true;
+        }
+
+        public ICommand RefreshProjects { get { return new Command(ExecuteRefreshProjects); } }
+        private void ExecuteRefreshProjects()
+        {
+            try
+            {
+                IsRefreshing = true;
+                if (IsConnectedToInternet())
+                {
+                    realm.Write(() =>
+                    {
+                        realm.RemoveAll<ProjectsModel>();
+                    });
+
+                    ProjectList.Clear();
+
+                    SyncProjects();
+                }
+                else
+                    IsRefreshing = false;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("ExecuteRefreshProjects", e.Message);
+                IsRefreshing = false;
+            }
+        }
+
+        public async void SyncProjects()
+        {
+            try
+            {
+                if (IsConnectedToInternet())
+                {
+                    IsRefreshing = true;
+
+                    string query = "$select=ID," +
+                        "ProjectName," +
+                        "ProjectDescription," +
+                        "ProjectStartDate," +
+                        "ProjectFinishDate," +
+                        "ProjectDuration," +
+                        "ProjectPercentComplete," +
+                        "ProjectWork," +
+                        "ProjectType," +
+                        "ProjectActualWork," +
+                        "ProjectRemainingWork," +
+                        "ProjectStatus," +
+                        "ProjectOwner/Title&$expand=ProjectOwner/Title";
+
+                    var api = await SPapi.GetListItemsByListGuid(PROJECTS_LIST_GUID, query);
+
+                    if (api.IsSuccessStatusCode)
+                    {
+                        //projects from the local database
+                        var localProjects = realm.All<ProjectsModel>().ToList();
+
+                        //projects from the server
+                        var projectsList = JsonConvert.DeserializeObject<ProjectsRoot>(await api.Content.ReadAsStringAsync());
+
+                        //sync the two lists
+                        syncDataService.SyncProjects(projectsList, localProjects, ProjectList);
+                    }
+
+                    IsRefreshing = false;
+                }
+
+                if (ProjectList.Any())
+                    IsEmpty = false;
+                else
+                    IsEmpty = true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("SyncProjects", e.Message);
+                IsRefreshing = false;
+
+                MessagingCenter.Instance.Send<string[]>(new string[] { "There was a problem syncing the projects. Please try again", "Close" }, "DisplayAlert");
+            }
+        }
+
+        public ICommand ProjectTappedCommand { get { return new Command<ProjectsModel>(ExecuteProjectTappedCommand); } }
+        private void ExecuteProjectTappedCommand(ProjectsModel project)
+        {
+            MessagingCenter.Instance.Send<ProjectsModel>(project, "ShowProjectDetails");
+            MessagingCenter.Instance.Send<string>(project.ProjectName, "ShowProjectDetails");
+        }
+
+        public ICommand ProjectLongPressCommand { get { return new Command<ProjectsModel>(ExecuteProjectLongPressCommand); } }
+        private void ExecuteProjectLongPressCommand(ProjectsModel project)
+        {
+            var user = realm.All<UserModel>().FirstOrDefault();
+            if (project.OwnerName.Equals(user.UserName))
+            {
+                MessagingCenter.Instance.Send<ProjectsModel>(project, "ProjectOptions");
+            }
+        }
+
+        public async void AddProject(string[] parameters)
         {
             /**
              * parameters[0] = project name
@@ -98,88 +210,40 @@ namespace ProjectOnlineMobile2.ViewModels
             }
         }
 
-        public void LoadProjectsFromDatabase()
+        public async void DeleteProject(ProjectsModel project)
         {
-            var localProjects = realm.All<ProjectsModel>().ToList();
-
-            foreach (var item in localProjects)
+            if (IsConnectedToInternet())
             {
-                ProjectList.Add(item);
-            }
-        }
-
-        public ICommand RefreshProjects { get { return new Command(ExecuteRefreshProjects); } }
-        private void ExecuteRefreshProjects()
-        {
-            try
-            {
-                IsRefreshing = true;
-                if (IsConnectedToInternet())
+                try
                 {
-                    realm.Write(() =>
+                    MessagingCenter.Instance.Send<string[]>(new string[] { "Deleting", null, null }, "DisplayAlert");
+
+                    var formDigest = await SPapi.GetFormDigest();
+
+                    var delete = await SPapi.DeleteListItemByListGuid(formDigest.D.GetContextWebInformation.FormDigestValue,
+                        PROJECTS_LIST_GUID, project.ID.ToString());
+
+                    var ensure = delete.EnsureSuccessStatusCode();
+
+                    if (ensure.IsSuccessStatusCode)
                     {
-                        realm.RemoveAll<ProjectsModel>();
-                    });
+                        MessagingCenter.Instance.Send<string[]>(new string[] { "Successfully deleted the project", "OK", null }, "DisplayAlert");
 
-                    ProjectList.Clear();
-
-                    SyncProjects();
-                }
-                else
-                    IsRefreshing = false;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("ExecuteRefreshProjects", e.Message);
-                IsRefreshing = false;
-            }
-        }
-
-        public async void SyncProjects()
-        {
-            try
-            {
-                if (IsConnectedToInternet())
-                {
-                    IsRefreshing = true;
-
-                    string query = "$select=ID," +
-                        "ProjectName," +
-                        "ProjectDescription," +
-                        "ProjectStartDate," +
-                        "ProjectFinishDate," +
-                        "ProjectDuration," +
-                        "ProjectPercentComplete," +
-                        "ProjectWork," +
-                        "ProjectActualWork," +
-                        "ProjectRemainingWork," +
-                        "ProjectStatus," +
-                        "ProjectOwner/Title&$expand=ProjectOwner/Title";
-
-                    var api = await SPapi.GetListItemsByListGuid(PROJECTS_LIST_GUID, query);
-
-                    if (api.IsSuccessStatusCode)
+                        ExecuteRefreshProjects();
+                    }
+                    else
                     {
-                        //projects from the local database
-                        var localProjects = realm.All<ProjectsModel>().ToList();
-
-                        //projects from the server
-                        var projectsList = JsonConvert.DeserializeObject<ProjectsRoot>(await api.Content.ReadAsStringAsync());
-
-                        //sync the two lists
-                        syncDataService.SyncProjects(projectsList, localProjects, ProjectList);
+                        MessagingCenter.Instance.Send<string[]>(new string[] { "There was an error sending the request", "OK", null }, "DisplayAlert");
                     }
 
-                    IsRefreshing = false;
+                }
+                catch(Exception e)
+                {
+                    MessagingCenter.Instance.Send<string[]>(new string[] { "There was an error sending the request", "OK", null }, "DisplayAlert");
+                    Debug.WriteLine(e.Message, "DeleteProject");
                 }
             }
-            catch (Exception e)
-            {
-                Debug.WriteLine("SyncProjects", e.Message);
-                IsRefreshing = false;
-
-                MessagingCenter.Instance.Send<string[]>(new string[] { "There was a problem syncing the projects. Please try again", "Close" }, "DisplayAlert");
-            }
         }
+
     }
 }
