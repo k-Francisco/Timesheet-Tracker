@@ -52,15 +52,28 @@ namespace ProjectOnlineMobile2.ViewModels
 
         private void LoadAssignmentsFromDatabase()
         {
-            var localAssignments = realm.All<AssignmentsModel>().ToList();
+            try
+            {
+                var userName = realm.All<UserModel>().FirstOrDefault().UserName;
 
-            if (localAssignments.Any())
-                foreach (var item in localAssignments)
-                {
-                    Tasks.Add(item);
-                }
-            else
-                IsEmpty = true;
+                var localAssignments = realm.All<AssignmentsModel>()
+                                       .ToList();
+
+                if (localAssignments.Any())
+                    foreach (var item in localAssignments)
+                    {
+                        Debug.WriteLine(item.Resource.Title + " ang user");
+
+                        if (item.Resource.Title.Equals(userName))
+                            Tasks.Add(item);
+                    }
+                else
+                    IsEmpty = true;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message, "LoadAssignmentsFromDatabase");
+            }
         }
 
         private async void SyncUserTasks()
@@ -83,8 +96,7 @@ namespace ProjectOnlineMobile2.ViewModels
                         "ID," +
                         "ProjectName/ProjectName," +
                         "ResourceName/Title" +
-                        "&$expand=ProjectName,ResourceName" +
-                        "&$filter=ResourceNameStringId eq " + user.UserId.ToString();
+                        "&$expand=ProjectName,ResourceName";
 
                     var api = await SPapi.GetListItemsByListGuid(ASSIGNMENTS_LIST_GUID, query);
 
@@ -97,7 +109,7 @@ namespace ProjectOnlineMobile2.ViewModels
                         var assignmentsList = JsonConvert.DeserializeObject<AssignmentsRoot>(await api.Content.ReadAsStringAsync());
 
                         //sync the two lists
-                        syncDataService.SyncUserTasks(localAssignments, assignmentsList.D.Results, Tasks);
+                        syncDataService.SyncUserTasks(localAssignments, assignmentsList.D.Results, Tasks, user.UserName);
                     }
 
                     IsRefreshing = false;

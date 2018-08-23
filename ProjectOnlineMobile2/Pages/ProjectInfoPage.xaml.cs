@@ -1,10 +1,12 @@
 ﻿using ProjectsModel = ProjectOnlineMobile2.Models2.Projects.ProjectModel;
 using TaskUpdatesModel = ProjectOnlineMobile2.Models2.TaskUpdatesModel.TaskUpdateRequestsModel;
+using AssignmentsModel = ProjectOnlineMobile2.Models2.Assignments.AssignmentModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ProjectOnlineMobile2.ViewModels;
 using Realms;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace ProjectOnlineMobile2.Pages
 {
@@ -14,6 +16,7 @@ namespace ProjectOnlineMobile2.Pages
         private ProjectsModel project;
         private ProjectPageViewModel viewModel;
         private Realm _realm;
+        private List<AssignmentsModel> Tasks = new List<AssignmentsModel>();
 
         public ProjectInfoPage ()
 		{
@@ -46,7 +49,27 @@ namespace ProjectOnlineMobile2.Pages
                               .ToList();
 
                 TaskUpdatesList.ItemsSource = updates;
+
+                var localTasks = _realm.All<AssignmentsModel>()
+                            .ToList();
+
+                foreach (var item in localTasks)
+                {
+                    if (item.Project.Equals(project.ProjectName))
+                        Tasks.Add(item);
+                }
+
+                ProjectTasksList.ItemsSource = Tasks;
+                ProjectTasksList.HeightRequest = Tasks.Count * 60;
             }
         }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+
+            Tasks.Clear();
+        }
+
     }
 }

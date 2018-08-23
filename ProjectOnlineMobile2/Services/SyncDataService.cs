@@ -168,7 +168,8 @@ namespace ProjectOnlineMobile2.Services
             }
         }
 
-        public bool SyncUserTasks(List<AssignmentsModel> localTasks, List<AssignmentsModel> tasksFromServer, ObservableCollection<AssignmentsModel> displayedTasks)
+        public bool SyncUserTasks(List<AssignmentsModel> localTasks, List<AssignmentsModel> tasksFromServer, 
+            ObservableCollection<AssignmentsModel> displayedTasks, string userName)
         {
             //PARTS
             //1. Remove the tasks that were deleted/removed in the server on the local database
@@ -192,7 +193,6 @@ namespace ProjectOnlineMobile2.Services
                         {
                             realm.Remove(item);
                             localTasks.Remove(item);
-                            displayedTasks.Remove(item);
                         });
                     }
                 }
@@ -211,7 +211,6 @@ namespace ProjectOnlineMobile2.Services
                         {
                             realm.Add(item);
                             localTasks.Add(item);
-                            displayedTasks.Add(item);
                         });
                     }
                     else
@@ -224,7 +223,7 @@ namespace ProjectOnlineMobile2.Services
                             temp.TaskPercentComplete = item.TaskPercentComplete;
                             temp.ProjectDetails = item.ProjectDetails;
                             temp.TaskRemainingWork = item.TaskRemainingWork;
-                            temp.ResourceName = item.ResourceName;
+                            temp.Resource = item.Resource;
                             temp.TaskStartDate = item.TaskStartDate;
                             temp.TaskName = item.TaskName;
                             temp.TaskWork = item.TaskWork;
@@ -232,6 +231,21 @@ namespace ProjectOnlineMobile2.Services
                     }
                 }
                 realm.Refresh();
+
+                foreach (var item in localTasks)
+                {
+                    if (item.Resource.Title.Equals(userName))
+                    {
+                        var temp = displayedTasks
+                               .Where(p => p.ID == item.ID)
+                               .FirstOrDefault();
+
+                        if (temp == null)
+                        {
+                            displayedTasks.Add(item);
+                        }
+                    }
+                }
 
                 return true;
             }

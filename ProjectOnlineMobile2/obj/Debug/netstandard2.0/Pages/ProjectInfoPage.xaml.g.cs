@@ -32,6 +32,9 @@ namespace ProjectOnlineMobile2.Pages {
         private global::Xamarin.Forms.Label ProjectFinishDate;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "2.0.0.0")]
+        private global::ProjectOnlineMobile2.Controls.CustomListView ProjectTasksList;
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "2.0.0.0")]
         private global::ProjectOnlineMobile2.Controls.CustomListView TaskUpdatesList;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Forms.Build.Tasks.XamlG", "2.0.0.0")]
@@ -42,6 +45,7 @@ namespace ProjectOnlineMobile2.Pages {
             ProjectDuration = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Label>(this, "ProjectDuration");
             ProjectStartDate = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Label>(this, "ProjectStartDate");
             ProjectFinishDate = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::Xamarin.Forms.Label>(this, "ProjectFinishDate");
+            ProjectTasksList = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::ProjectOnlineMobile2.Controls.CustomListView>(this, "ProjectTasksList");
             TaskUpdatesList = global::Xamarin.Forms.NameScopeExtensions.FindByName<global::ProjectOnlineMobile2.Controls.CustomListView>(this, "TaskUpdatesList");
         }
     }

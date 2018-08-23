@@ -21,7 +21,7 @@ namespace ProjectOnlineMobile2.Models2.Assignments
         [JsonProperty("ProjectName")]
         public ProjectName ProjectDetails { get; set; }
         [JsonProperty("ResourceName")]
-        public ResourceName ResourceName { get; set; }
+        public AssignmentResource Resource { get; set; }
         [JsonProperty("Id")]
         public int Id { get; set; }
         [JsonProperty("TaskName")]
@@ -45,6 +45,12 @@ namespace ProjectOnlineMobile2.Models2.Assignments
         {
             get { return ProjectDetails.Name; }
         }
+
+        public string AssignmentResourceName
+        {
+            get { return Resource.Title; }
+        }
+
     }
 
     public class ProjectName : RealmObject
@@ -53,7 +59,7 @@ namespace ProjectOnlineMobile2.Models2.Assignments
         public string Name { get; set; }
     }
     
-    public class ResourceName : RealmObject
+    public class AssignmentResource : RealmObject
     {
         [JsonProperty("Title")]
         public string Title { get; set; }
