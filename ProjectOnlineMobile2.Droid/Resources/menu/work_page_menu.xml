@@ -5,16 +5,4 @@
        android:id="@+id/menu_save"
        app:showAsAction="never"
        android:title="Save" />
-<item
-       android:id="@+id/menu_send_progress"
-       app:showAsAction="never"
-       android:title="Send Progress" />
-  <item
-       android:id="@+id/menu_edit"
-       app:showAsAction="never"
-       android:title="Edit" />
-  <item
-       android:id="@+id/menu_delete"
-       app:showAsAction="never"
-       android:title="Delete" />
 </menu>

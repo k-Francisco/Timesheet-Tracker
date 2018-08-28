@@ -60,7 +60,7 @@ namespace ProjectOnlineMobile2.Pages
                 }
 
                 ProjectTasksList.ItemsSource = Tasks;
-                ProjectTasksList.HeightRequest = Tasks.Count * 60;
+                ProjectTasksList.HeightRequest = Tasks.Count * 80;
             }
         }
 

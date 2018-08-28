@@ -62,8 +62,6 @@ namespace ProjectOnlineMobile2.ViewModels
                 if (localAssignments.Any())
                     foreach (var item in localAssignments)
                     {
-                        Debug.WriteLine(item.Resource.Title + " ang user");
-
                         if (item.Resource.Title.Equals(userName))
                             Tasks.Add(item);
                     }

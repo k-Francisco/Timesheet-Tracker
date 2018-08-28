@@ -204,6 +204,11 @@ namespace ProjectOnlineMobile2.ViewModels
                 PeriodLines.Add(item);
             }
 
+            if (PeriodLines.Any())
+                IsEmpty = false;
+            else
+                IsEmpty = true;
+
             MessagingCenter.Instance.Send<String>(PeriodList[SelectedIndex].ToString(), "TimesheetPeriod");
         }
 

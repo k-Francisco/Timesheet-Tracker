@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="1.8.0" />
-    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="1.8.0" />
+    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="1.9.0" />
+    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="1.9.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Realm" Version="3.1.0" />
     <PackageReference Include="Xam.Plugin.Connectivity" Version="3.2.0" />

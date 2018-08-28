@@ -8,7 +8,7 @@
           "build/Fody.targets": {}
         }
       },
-      "Microsoft.AppCenter/1.8.0": {
+      "Microsoft.AppCenter/1.9.0": {
         "type": "package",
         "compile": {
           "lib/netstandard1.0/Microsoft.AppCenter.dll": {}
@@ -17,10 +17,10 @@
           "lib/netstandard1.0/Microsoft.AppCenter.dll": {}
         }
       },
-      "Microsoft.AppCenter.Analytics/1.8.0": {
+      "Microsoft.AppCenter.Analytics/1.9.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.AppCenter": "1.8.0"
+          "Microsoft.AppCenter": "1.9.0"
         },
         "compile": {
           "lib/netstandard1.0/Microsoft.AppCenter.Analytics.dll": {}
@@ -29,10 +29,10 @@
           "lib/netstandard1.0/Microsoft.AppCenter.Analytics.dll": {}
         }
       },
-      "Microsoft.AppCenter.Crashes/1.8.0": {
+      "Microsoft.AppCenter.Crashes/1.9.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.AppCenter": "1.8.0"
+          "Microsoft.AppCenter": "1.9.0"
         },
         "compile": {
           "lib/netstandard1.0/Microsoft.AppCenter.Crashes.dll": {}
@@ -605,10 +605,10 @@
         "netstandardtask/Mono.Cecil.pdb"
       ]
     },
-    "Microsoft.AppCenter/1.8.0": {
-      "sha512": "V9ZPAVnnv8gTSxp2N1Wb39pbd5nSSuCvjpruFq27r0azRkhqLhOu+2mNgGOoX9LP/UiOrtoy3PY/y4LNAoI76g==",
+    "Microsoft.AppCenter/1.9.0": {
+      "sha512": "jUCmustijWMUCKlY2kzMUuPqcoVxCSJBR2FpjUQsR7kUTdrPvoKgfPeSr/b6eF5g3nLRbl6GRW7StnnY7yMh+Q==",
       "type": "package",
-      "path": "microsoft.appcenter/1.8.0",
+      "path": "microsoft.appcenter/1.9.0",
       "files": [
         ".signature.p7s",
         "lib/MonoAndroid403/Microsoft.AppCenter.Android.Bindings.dll",
@@ -618,14 +618,14 @@
         "lib/netstandard1.0/Microsoft.AppCenter.dll",
         "lib/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.dll",
         "lib/uap10.0/Microsoft.AppCenter.dll",
-        "microsoft.appcenter.1.8.0.nupkg.sha512",
+        "microsoft.appcenter.1.9.0.nupkg.sha512",
         "microsoft.appcenter.nuspec"
       ]
     },
-    "Microsoft.AppCenter.Analytics/1.8.0": {
-      "sha512": "uj6b7qxKyONSZmqjgryApE4Sq23DC1j8wPJc1QA7BF1Nfa/e92bnKP497bs31xugjBSGwtSMH8hUhi/vH+tukA==",
+    "Microsoft.AppCenter.Analytics/1.9.0": {
+      "sha512": "bHXciKGX6WOZlxomjB/gfC+M191TFMN07mjzEUjBj1agNJ3wG8d8fOC7WZKBRbWN8APZ7OyNfZaKCPFGzyPcJw==",
       "type": "package",
-      "path": "microsoft.appcenter.analytics/1.8.0",
+      "path": "microsoft.appcenter.analytics/1.9.0",
       "files": [
         ".signature.p7s",
         "lib/MonoAndroid403/Microsoft.AppCenter.Analytics.Android.Bindings.dll",
@@ -635,14 +635,14 @@
         "lib/netstandard1.0/Microsoft.AppCenter.Analytics.dll",
         "lib/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Analytics.dll",
         "lib/uap10.0/Microsoft.AppCenter.Analytics.dll",
-        "microsoft.appcenter.analytics.1.8.0.nupkg.sha512",
+        "microsoft.appcenter.analytics.1.9.0.nupkg.sha512",
         "microsoft.appcenter.analytics.nuspec"
       ]
     },
-    "Microsoft.AppCenter.Crashes/1.8.0": {
-      "sha512": "paVrOYaErMz9+k6wQvW9m8TEauARlVW7iX9y/QGm1f6PIHiezPNWkzLhMsnpbbWZBk+wv/H296jW/BoAxOEbzg==",
+    "Microsoft.AppCenter.Crashes/1.9.0": {
+      "sha512": "TE1huyfrNaMOXjr+zAtX5hZ5TQVsWlCKyjIeNkLXT5TBRW54TpmEXEAOw6oOvqP61qDDT5RKUNeptSAd7qSQxQ==",
       "type": "package",
-      "path": "microsoft.appcenter.crashes/1.8.0",
+      "path": "microsoft.appcenter.crashes/1.9.0",
       "files": [
         ".signature.p7s",
         "build/uap10.0/Microsoft.AppCenter.Crashes.targets",
@@ -652,7 +652,7 @@
         "lib/Xamarin.iOS10/Microsoft.AppCenter.Crashes.iOS.Bindings.dll",
         "lib/netstandard1.0/Microsoft.AppCenter.Crashes.dll",
         "lib/portable-net45+win8+wpa81+wp8/Microsoft.AppCenter.Crashes.dll",
-        "microsoft.appcenter.crashes.1.8.0.nupkg.sha512",
+        "microsoft.appcenter.crashes.1.9.0.nupkg.sha512",
         "microsoft.appcenter.crashes.nuspec",
         "ref/uap10.0/Microsoft.AppCenter.Crashes.dll",
         "runtimes/win10-arm/lib/uap10.0/Microsoft.AppCenter.Crashes.dll",
@@ -2641,8 +2641,8 @@
   },
   "projectFileDependencyGroups": {
     ".NETStandard,Version=v2.0": [
-      "Microsoft.AppCenter.Analytics >= 1.8.0",
-      "Microsoft.AppCenter.Crashes >= 1.8.0",
+      "Microsoft.AppCenter.Analytics >= 1.9.0",
+      "Microsoft.AppCenter.Crashes >= 1.9.0",
       "NETStandard.Library >= 2.0.3",
       "Newtonsoft.Json >= 11.0.2",
       "Realm >= 3.1.0",
@@ -2699,11 +2699,11 @@
         "dependencies": {
           "Microsoft.AppCenter.Analytics": {
             "target": "Package",
-            "version": "[1.8.0, )"
+            "version": "[1.9.0, )"
           },
           "Microsoft.AppCenter.Crashes": {
             "target": "Package",
-            "version": "[1.8.0, )"
+            "version": "[1.9.0, )"
           },
           "NETStandard.Library": {
             "suppressParent": "All",

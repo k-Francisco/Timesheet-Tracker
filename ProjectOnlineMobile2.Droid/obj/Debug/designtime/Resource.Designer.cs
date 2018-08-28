@@ -1886,6 +1886,9 @@ namespace ProjectOnlineMobile2.Droid
 			// aapt resource value: 0x7F070075
 			public const int disabled_alpha_material_light = 2131165301;
 			
+			// aapt resource value: 0x7F080002
+			public const int drawer_width = 2131230722;
+			
 			// aapt resource value: 0x7F070076
 			public const int highlight_alpha_material_colored = 2131165302;
 			
@@ -2853,22 +2856,6 @@ namespace ProjectOnlineMobile2.Droid
 			}
 			
 			private Drawable()
-			{
-			}
-		}
-		
-		public partial class Font
-		{
-			
-			// aapt resource value: 0x7F080002
-			public const int drawer_width = 2131230722;
-			
-			static Font()
-			{
-				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
-			}
-			
-			private Font()
 			{
 			}
 		}

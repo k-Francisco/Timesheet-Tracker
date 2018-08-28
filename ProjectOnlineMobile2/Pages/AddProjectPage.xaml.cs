@@ -42,7 +42,7 @@ namespace ProjectOnlineMobile2.Pages
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
-
+            System.Diagnostics.Debug.WriteLine("disappeared!");
             ProjectNameEntry.Text = "";
             ProjectDescriptionEntry.Text = "";
             ProjectDate.Date = DateTime.Now;

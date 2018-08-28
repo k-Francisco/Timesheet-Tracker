@@ -17,19 +17,9 @@
     <menu>
 
       <item
-       android:id="@+id/menu_all_tasks"
+       android:id="@+id/menu_createtask"
        app:showAsAction="never"
-       android:title="@string/menu_all_tasks" />
-
-      <item
-           android:id="@+id/menu_completed_tasks"
-           app:showAsAction="never"
-           android:title="@string/menu_completed" />
-
-      <item
-           android:id="@+id/menu_inprogress_tasks"
-           app:showAsAction="never"
-           android:title="@string/menu_inprogress" />
+       android:title="@string/menu_create_task" />
 
     </menu>
 

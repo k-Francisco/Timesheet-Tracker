@@ -6,4 +6,22 @@
        android:icon="@mipmap/ic_user"
        app:showAsAction="always"
        android:title="User Info" />
+
+  <item
+    android:id="@+id/empty"
+    android:title="@string/menu_options"
+    android:orderInCategory="101"
+    app:showAsAction="always"
+    android:icon="@mipmap/ic_gear">
+
+    <menu>
+
+      <item
+       android:id="@+id/menu_createproject"
+       app:showAsAction="never"
+       android:title="@string/menu_create_project" />
+      
+    </menu>
+
+  </item>
 </menu>

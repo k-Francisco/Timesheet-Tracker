@@ -11,7 +11,7 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-
+            
             <DataTemplate x:Key="TaskUpdatesTemplate">
                 <ViewCell>
                     <StackLayout Orientation="Vertical"
@@ -21,7 +21,13 @@
                             <TapGestureRecognizer/>
                         </StackLayout.GestureRecognizers>
 
-                        <Label Text="{Binding TaskUpdateTaskName}"/>
+                        <Label Text="{Binding TaskUpdateTaskName}"
+                               FontAttributes="Bold"
+                               FontSize="Large"/>
+                        
+                        
+                        
+                        
                     </StackLayout>
                 </ViewCell>
             </DataTemplate>
@@ -104,7 +110,39 @@
                     </StackLayout>
                 </ViewCell>
             </DataTemplate>
-            
+
+            <DataTemplate x:Key="ProjectTasksHeaderTemplate">
+                <StackLayout CompressedLayout.IsHeadless="True"
+                             Padding="0"
+                             Spacing="8">
+                    <Label Text="Tasks"
+                           FontSize="Medium"
+                           FontAttributes="Bold"/>
+
+                    <BoxView HeightRequest="1"
+                             HorizontalOptions="FillAndExpand"
+                             Color="Green"
+                             Margin="0,0,0,16"/>
+
+                </StackLayout>
+            </DataTemplate>
+
+            <DataTemplate x:Key="UpdatesHeaderTemplate">
+                <StackLayout CompressedLayout.IsHeadless="True"
+                             Padding="0"
+                             Spacing="8">
+                    <Label Text="Pending requests"
+                           FontSize="Medium"
+                           FontAttributes="Bold"/>
+
+                    <BoxView HeightRequest="1"
+                             HorizontalOptions="FillAndExpand"
+                             Color="Green"
+                             Margin="0,0,0,16"/>
+
+                </StackLayout>
+            </DataTemplate>
+
         </ResourceDictionary>
     </ContentPage.Resources>
     
@@ -126,6 +164,11 @@
                         <Label Text="Project Details"
                                FontAttributes="Bold"
                                FontSize="Medium"/>
+
+                        <BoxView HeightRequest="1"
+                             HorizontalOptions="FillAndExpand"
+                             Color="Green"
+                             Margin="0,8,0,0"/>
 
                         <Grid CompressedLayout.IsHeadless="True"
 						  Margin="0,16,0,0"
@@ -260,50 +303,34 @@
                 <Frame HasShadow="True"
 				   CornerRadius="8">
 
-                    <StackLayout CompressedLayout.IsHeadless="True"
-							 Orientation="Vertical"
-							 Spacing="16">
-
-                        <Label Text="Project Tasks"
-                               FontAttributes="Bold"
-                               FontSize="Medium"/>
-
-                        <controls:CustomListView
+                    <controls:CustomListView
                                   x:Name="ProjectTasksList"
                                   HasUnevenRows="True"
                                   SeparatorVisibility="None"
-                                  ItemTemplate="{StaticResource ProjectTasksTemplate}">
-                            <x:Arguments>
-                                <ListViewCachingStrategy>RecycleElementAndDataTemplate</ListViewCachingStrategy>
-                            </x:Arguments>
-                        </controls:CustomListView>
-
-                    </StackLayout>
+                                  ItemTemplate="{StaticResource ProjectTasksTemplate}"
+                                  Header=""
+                                  HeaderTemplate="{StaticResource ProjectTasksHeaderTemplate}">
+                        <x:Arguments>
+                            <ListViewCachingStrategy>RecycleElementAndDataTemplate</ListViewCachingStrategy>
+                        </x:Arguments>
+                    </controls:CustomListView>
 
                 </Frame>
 
                 <Frame HasShadow="True"
 				   CornerRadius="8">
 
-                    <StackLayout CompressedLayout.IsHeadless="True"
-							 Orientation="Vertical"
-							 Spacing="16">
-
-                        <Label Text="Project Tasks"
-                               FontAttributes="Bold"
-                               FontSize="Medium"/>
-
-                        <controls:CustomListView
+                    <controls:CustomListView
                                   x:Name="TaskUpdatesList"
                                   HasUnevenRows="True"
                                   SeparatorVisibility="None"
-                                  ItemTemplate="{StaticResource TaskUpdatesTemplate}">
-                            <x:Arguments>
-                                <ListViewCachingStrategy>RecycleElementAndDataTemplate</ListViewCachingStrategy>
-                            </x:Arguments>
-                        </controls:CustomListView>
-
-                    </StackLayout>
+                                  ItemTemplate="{StaticResource TaskUpdatesTemplate}"
+                                  Header=""
+                                  HeaderTemplate="{StaticResource UpdatesHeaderTemplate}">
+                        <x:Arguments>
+                            <ListViewCachingStrategy>RecycleElementAndDataTemplate</ListViewCachingStrategy>
+                        </x:Arguments>
+                    </controls:CustomListView>
 
                 </Frame>
 

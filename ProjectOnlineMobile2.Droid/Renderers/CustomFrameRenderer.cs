@@ -29,7 +29,23 @@ namespace ProjectOnlineMobile2.Droid.Renderers
 
             if (e.NewElement != null)
             {
+                var frame = (CustomFrame)Element;
+                this.LongClickable = true;
+                this.LongClick += delegate {
+                    if (frame.LongPressCommand != null)
+                    {
+                        if (frame.LongPressCommand.CanExecute(Element.BindingContext))
+                        {
+                            frame.LongPressCommand.Execute(frame.CommandParameter ?? Element.BindingContext);
+                            System.Diagnostics.Debug.WriteLine("Long press");
+                        }
+                    }
+                };
+
+                
+
                 ViewGroup.SetBackgroundResource(Resource.Drawable.frame_shadow);
+
             }
         }
     }

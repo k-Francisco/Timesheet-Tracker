@@ -56,11 +56,6 @@ namespace ProjectOnlineMobile2.iOS
                 _projectNavController.PushViewController(_projectInfoController, true);
             });
 
-            MessagingCenter.Instance.Subscribe<String>(this, "ExitWorkPage", (s) =>
-            {
-                _timesheetNavController.PopViewController(true);
-            });
-
             MessagingCenter.Instance.Subscribe<String>(this, "TimesheetStatus", (status) =>
             {
                 SetTimesheetStatus(status);
@@ -320,86 +315,86 @@ namespace ProjectOnlineMobile2.iOS
                 MessagingCenter.Instance.Send<String>("", "SaveTimesheetWorkChanges");
             }));
 
-            alertController.AddAction(UIAlertAction.Create("Send Progress", UIAlertActionStyle.Default, alert =>
-            {
-                if (currentAlertView != null)
-                    currentAlertView.DismissWithClickedButtonIndex(-1, true);
+            //alertController.AddAction(UIAlertAction.Create("Send Progress", UIAlertActionStyle.Default, alert =>
+            //{
+            //    if (currentAlertView != null)
+            //        currentAlertView.DismissWithClickedButtonIndex(-1, true);
 
-                var sendProgressAlertView = new UIAlertView()
-                {
-                    Title = "Comment",
-                };
-                sendProgressAlertView.AlertViewStyle = UIAlertViewStyle.PlainTextInput;
+            //    var sendProgressAlertView = new UIAlertView()
+            //    {
+            //        Title = "Comment",
+            //    };
+            //    sendProgressAlertView.AlertViewStyle = UIAlertViewStyle.PlainTextInput;
 
-                sendProgressAlertView.AddButton("Send");
-                sendProgressAlertView.AddButton("Cancel");
-                sendProgressAlertView.DismissWithClickedButtonIndex(1, true);
-                sendProgressAlertView.Clicked += (sender, args) =>
-                {
-                    if (args.ButtonIndex == 0)
-                    {
-                        if (!string.IsNullOrWhiteSpace(sendProgressAlertView.GetTextField(0).Text))
-                        {
-                            MessagingCenter.Instance.Send<String>(sendProgressAlertView.GetTextField(0).Text, "SendProgress");
-                        }
-                    }
-                };
-                sendProgressAlertView.Show();
-                currentAlertView = sendProgressAlertView;
-            }));
+            //    sendProgressAlertView.AddButton("Send");
+            //    sendProgressAlertView.AddButton("Cancel");
+            //    sendProgressAlertView.DismissWithClickedButtonIndex(1, true);
+            //    sendProgressAlertView.Clicked += (sender, args) =>
+            //    {
+            //        if (args.ButtonIndex == 0)
+            //        {
+            //            if (!string.IsNullOrWhiteSpace(sendProgressAlertView.GetTextField(0).Text))
+            //            {
+            //                MessagingCenter.Instance.Send<String>(sendProgressAlertView.GetTextField(0).Text, "SendProgress");
+            //            }
+            //        }
+            //    };
+            //    sendProgressAlertView.Show();
+            //    currentAlertView = sendProgressAlertView;
+            //}));
 
-            alertController.AddAction(UIAlertAction.Create("Edit Line", UIAlertActionStyle.Default, alert =>
-            {
-                if (currentAlertView != null)
-                    currentAlertView.DismissWithClickedButtonIndex(-1, true);
+            //alertController.AddAction(UIAlertAction.Create("Edit Line", UIAlertActionStyle.Default, alert =>
+            //{
+            //    if (currentAlertView != null)
+            //        currentAlertView.DismissWithClickedButtonIndex(-1, true);
 
-                var updateLineAlertView = new UIAlertView()
-                {
-                    Title = "Update Line",
-                };
-                updateLineAlertView.AlertViewStyle = UIAlertViewStyle.PlainTextInput;
-                updateLineAlertView.GetTextField(0).Placeholder = "Comment";
+            //    var updateLineAlertView = new UIAlertView()
+            //    {
+            //        Title = "Update Line",
+            //    };
+            //    updateLineAlertView.AlertViewStyle = UIAlertViewStyle.PlainTextInput;
+            //    updateLineAlertView.GetTextField(0).Placeholder = "Comment";
 
-                updateLineAlertView.AddButton("Update");
-                updateLineAlertView.AddButton("Cancel");
-                updateLineAlertView.DismissWithClickedButtonIndex(1, true);
-                updateLineAlertView.Clicked += (sender, args) =>
-                {
-                    if (args.ButtonIndex == 0)
-                    {
-                        if (!string.IsNullOrWhiteSpace(updateLineAlertView.GetTextField(0).Text))
-                        {
-                            MessagingCenter.Instance.Send<String>(updateLineAlertView.GetTextField(0).Text, "UpdateTimesheetLine");
-                        }
-                    }
-                };
-                updateLineAlertView.Show();
-                currentAlertView = updateLineAlertView;
-            }));
+            //    updateLineAlertView.AddButton("Update");
+            //    updateLineAlertView.AddButton("Cancel");
+            //    updateLineAlertView.DismissWithClickedButtonIndex(1, true);
+            //    updateLineAlertView.Clicked += (sender, args) =>
+            //    {
+            //        if (args.ButtonIndex == 0)
+            //        {
+            //            if (!string.IsNullOrWhiteSpace(updateLineAlertView.GetTextField(0).Text))
+            //            {
+            //                MessagingCenter.Instance.Send<String>(updateLineAlertView.GetTextField(0).Text, "UpdateTimesheetLine");
+            //            }
+            //        }
+            //    };
+            //    updateLineAlertView.Show();
+            //    currentAlertView = updateLineAlertView;
+            //}));
 
-            alertController.AddAction(UIAlertAction.Create("Delete Line", UIAlertActionStyle.Default, alert =>
-            {
-                if (currentAlertView != null)
-                    currentAlertView.DismissWithClickedButtonIndex(-1, true);
+            //alertController.AddAction(UIAlertAction.Create("Delete Line", UIAlertActionStyle.Default, alert =>
+            //{
+            //    if (currentAlertView != null)
+            //        currentAlertView.DismissWithClickedButtonIndex(-1, true);
 
-                var deleteLineAlertView = new UIAlertView()
-                {
-                    Title = "Do you really want to delete this line?",
-                };
-                deleteLineAlertView.AlertViewStyle = UIAlertViewStyle.Default;
-                deleteLineAlertView.AddButton("Delete");
-                deleteLineAlertView.AddButton("Cancel");
-                deleteLineAlertView.DismissWithClickedButtonIndex(1, true);
-                deleteLineAlertView.Clicked += (sender, args) =>
-                {
-                    if (args.ButtonIndex == 0)
-                    {
-                        MessagingCenter.Instance.Send<String>("", "DeleteTimesheetLine");
-                    }
-                };
-                deleteLineAlertView.Show();
-                currentAlertView = deleteLineAlertView;
-            }));
+            //    var deleteLineAlertView = new UIAlertView()
+            //    {
+            //        Title = "Do you really want to delete this line?",
+            //    };
+            //    deleteLineAlertView.AlertViewStyle = UIAlertViewStyle.Default;
+            //    deleteLineAlertView.AddButton("Delete");
+            //    deleteLineAlertView.AddButton("Cancel");
+            //    deleteLineAlertView.DismissWithClickedButtonIndex(1, true);
+            //    deleteLineAlertView.Clicked += (sender, args) =>
+            //    {
+            //        if (args.ButtonIndex == 0)
+            //        {
+            //            MessagingCenter.Instance.Send<String>("", "DeleteTimesheetLine");
+            //        }
+            //    };
+            //    deleteLineAlertView.Show();
+            //    currentAlertView = deleteLineAlertView;
+            //}));
 
             alertController.AddAction(UIAlertAction.Create("Close", UIAlertActionStyle.Cancel, alert =>
             {
@@ -457,10 +452,10 @@ namespace ProjectOnlineMobile2.iOS
                 MessagingCenter.Instance.Send<String>("", "OpenPeriodPicker");
             }));
 
-            alertController.AddAction(UIAlertAction.Create("Add Line", UIAlertActionStyle.Default, alert =>
-            {
-                MessagingCenter.Instance.Send<String>("", "OpenProjectPicker");
-            }));
+            //alertController.AddAction(UIAlertAction.Create("Add Line", UIAlertActionStyle.Default, alert =>
+            //{
+            //    MessagingCenter.Instance.Send<String>("", "OpenProjectPicker");
+            //}));
 
             alertController.AddAction(UIAlertAction.Create("Submit Timesheet", UIAlertActionStyle.Default, alert =>
             {
@@ -511,21 +506,6 @@ namespace ProjectOnlineMobile2.iOS
             var alertController = UIAlertController.Create(null,
                 null,
                 UIAlertControllerStyle.ActionSheet);
-
-            alertController.AddAction(UIAlertAction.Create("All Tasks", UIAlertActionStyle.Default, alert =>
-            {
-                MessagingCenter.Instance.Send<String>("All", "SortTasks");
-            }));
-
-            alertController.AddAction(UIAlertAction.Create("Completed Tasks", UIAlertActionStyle.Default, alert =>
-            {
-                MessagingCenter.Instance.Send<String>("Completed", "SortTasks");
-            }));
-
-            alertController.AddAction(UIAlertAction.Create("In Progress Tasks", UIAlertActionStyle.Default, alert =>
-            {
-                MessagingCenter.Instance.Send<String>("In Progress", "SortTasks");
-            }));
 
             alertController.AddAction(UIAlertAction.Create("Create Task", UIAlertActionStyle.Default, alert =>
             {

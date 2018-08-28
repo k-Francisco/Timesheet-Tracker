@@ -9,4 +9,10 @@
   <string name="menu_completed">Completed</string>
   <string name="menu_user_info">User Info</string>
   <string name="menu_options">Options</string>
+  <string name="menu_create_project">Create Project</string>
+  <string name="menu_create_task">Create Task</string>
+  <string name="menu_edit_project">Edit Project</string>
+  <string name="menu_edit_task">Edit Task</string>
+  <string name="menu_delete_project">Delete Project</string>
+  <string name="menu_delete_task">Delete Task</string>
 </resources>

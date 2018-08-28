@@ -54,7 +54,6 @@ namespace ProjectOnlineMobile2.Services
                         });
                     }
                 }
-                realm.Refresh();
 
                 foreach (var item in resourcesFromServer.D.Results)
                 {
@@ -114,12 +113,11 @@ namespace ProjectOnlineMobile2.Services
                         realm.Write(() =>
                         {
                             realm.Remove(item);
-                            displayedProjects.Remove(item);
                             localProjects.Remove(item);
+                            displayedProjects.Remove(item);
                         });
                     }
                 }
-                realm.Refresh();
 
                 foreach (var item in projects.D.Results)
                 {
@@ -196,7 +194,6 @@ namespace ProjectOnlineMobile2.Services
                         });
                     }
                 }
-                realm.Refresh();
 
                 foreach (var item in tasksFromServer)
                 {
@@ -284,7 +281,6 @@ namespace ProjectOnlineMobile2.Services
                         });
                     }
                 }
-                realm.Refresh();
 
                 foreach (var item in periodsFromServer)
                 {
@@ -345,7 +341,6 @@ namespace ProjectOnlineMobile2.Services
                         });
                     }
                 }
-                realm.Refresh();
 
                 foreach (var item in linesFromServer)
                 {
@@ -432,7 +427,6 @@ namespace ProjectOnlineMobile2.Services
                         });
                     }
                 }
-                realm.Refresh();
 
                 foreach (var item in lineWorkModelsFromServer)
                 {
@@ -491,7 +485,6 @@ namespace ProjectOnlineMobile2.Services
                         });
                     }
                 }
-                realm.Refresh();
 
                 foreach (var item in updatesFromServer.D.Results)
                 {

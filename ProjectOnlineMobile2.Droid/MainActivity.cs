@@ -33,8 +33,10 @@ namespace ProjectOnlineMobile2.Droid
         DialogHelper dialogHelper;
 
         Fragment _homepageFragment, _projectsFragment, _tasksFragment, _timesheetFragment, _timesheetWorkFragment;
+        Fragment _addProjectFragment, _addTaskFragment, _editTaskFragment, _projectInfoFragment;
 
         public string UserName, UserEmail, TimesheetPeriod, TimesheetLineComment, TimesheetStatus;
+        private int _pastFragmentId = 0;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -70,10 +72,6 @@ namespace ProjectOnlineMobile2.Droid
                 dialogHelper.DisplayAddTimesheetLineDialog();
             });
 
-            MessagingCenter.Instance.Subscribe<String>(this,"ExitWorkPage",(s)=> {
-                exitWorkPage();
-            });
-
             toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             if (toolbar != null)
             {
@@ -92,6 +90,11 @@ namespace ProjectOnlineMobile2.Droid
             _projectsFragment = new ProjectPage().CreateSupportFragment(this);
             _tasksFragment = new TasksPage().CreateSupportFragment(this);
             _timesheetFragment = new TimesheetPage().CreateSupportFragment(this);
+
+            _addProjectFragment = new AddProjectPage().CreateSupportFragment(this);
+            _addTaskFragment = new AddTaskPage().CreateSupportFragment(this);
+            _editTaskFragment = new EditTaskPage().CreateSupportFragment(this);
+            _projectInfoFragment = new ProjectInfoPage().CreateSupportFragment(this);
 
             dialogHelper = new DialogHelper(this);
 
@@ -123,23 +126,8 @@ namespace ProjectOnlineMobile2.Droid
             //s[0] = message
             //s[1] = affirm button message
             //s[2] = cancel button message
-            //s[3] = identifier
-            //s[4] = period id
 
-            if (parameters.Length > 2)
-            {
-                if (!string.IsNullOrEmpty(parameters[3]))
-                {
-                    if (parameters[3].Equals("CreateTimesheet"))
-                    {
-                        dialogHelper.DisplayCreateTimesheetDialog(parameters[0], parameters[4], parameters[1], parameters[2]);
-                    }
-                }
-            }
-            else
-            {
-                Toast.MakeText(this, parameters[0], ToastLength.Short).Show();
-            }
+            Toast.MakeText(this, parameters[0], ToastLength.Short).Show();
         }
 
         private void exitWorkPage()
@@ -151,11 +139,13 @@ namespace ProjectOnlineMobile2.Droid
             InputMethodManager imm = InputMethodManager.FromContext(this.ApplicationContext);
             imm.HideSoftInputFromInputMethod(this.Window.DecorView.WindowToken, HideSoftInputFlags.NotAlways);
 
-            LoadFragment(Resource.Id.menu_timesheets);
+            LoadFragment(_pastFragmentId);
         }
 
         private void PushTimesheetWorkPage(ProjectOnlineMobile2.Models2.LineModel.LineModel timesheetLine)
         {
+            _pastFragmentId = Resource.Id.menu_timesheets;
+
             TimesheetLineComment = timesheetLine.Comment;
 
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
@@ -172,6 +162,25 @@ namespace ProjectOnlineMobile2.Droid
                 .Replace(Resource.Id.content_frame, _timesheetWorkFragment)
                 .Commit();
 
+        }
+
+        private void PushAddProjectPage()
+        {
+            _pastFragmentId = Resource.Id.menu_projects;
+
+            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+            toolbar.Title = "Create Project";
+            bottomNavigation.Visibility = ViewStates.Gone;
+
+            if (menu != null)
+            {
+                menu.Clear();
+                MenuInflater.Inflate(Resource.Menu.add_project_menu, menu);
+            }
+
+            SupportFragmentManager.BeginTransaction()
+                .Replace(Resource.Id.content_frame, _addProjectFragment)
+                .Commit();
         }
 
         private void BottomNavigation_NavigationItemSelected(object sender, BottomNavigationView.NavigationItemSelectedEventArgs e)
@@ -248,163 +257,21 @@ namespace ProjectOnlineMobile2.Droid
             {
                 MessagingCenter.Instance.Send<String>("", "RecallTimesheet");
             }
-            else if(item.ItemId == Resource.Id.menu_add_line)
+            else if(item.ItemId == Resource.Id.menu_createproject)
             {
-                MessagingCenter.Instance.Send<String>("", "OpenProjectPicker");
+                PushAddProjectPage();
             }
-            else if(item.ItemId == Resource.Id.menu_all_tasks)
+            else if(item.ItemId == Resource.Id.menu_createtask)
             {
-                MessagingCenter.Instance.Send<String>(GetString(Resource.String.menu_all_tasks), "SortTasks");
-            }
-            else if(item.ItemId == Resource.Id.menu_inprogress_tasks)
-            {
-                MessagingCenter.Instance.Send<String>(GetString(Resource.String.menu_inprogress), "SortTasks");
-            }
-            else if(item.ItemId == Resource.Id.menu_completed_tasks)
-            {
-                MessagingCenter.Instance.Send<String>(GetString(Resource.String.menu_completed), "SortTasks");
+                //create task
             }
             else if (item.ItemId == Resource.Id.menu_save)
             {
                 MessagingCenter.Instance.Send<String>("", "SaveTimesheetWorkChanges");
             }
-            else if (item.ItemId == Resource.Id.menu_edit)
-            {
-                dialogHelper.DisplayUpdateLineDialog(TimesheetLineComment);
-            }
-            else if (item.ItemId == Resource.Id.menu_delete)
-            {
-                dialogHelper.DisplayConfirmationDialog("Do you really want to delete this line?", "Delete", "Cancel");
-            }
-            else if (item.ItemId == Resource.Id.menu_send_progress)
-            {
-                dialogHelper.DisplaySendProgressDialog();
-            }
 
 
             return true;
-        }
-
-        private async void doDummyFunc()
-        {
-            
-            try
-            {
-
-                const string PROJECT_LIST_GUID = "c04edc6b-c06e-479c-a11c-41f5aef38d16";
-                //const string TIMESHEET_PERIODS_ID = "d2c6bb8d-490e-4d27-a9cf-bed646b7d28a";
-
-                var core = new SpevoCore.Services.SharepointApiWrapper();
-
-                //var body = "{'__metadata':{'type':'SP.Data.TimesheetPeriodsListItem'},'Title':'" + "1" + "'," +
-                //           "'Period_x0020_Id':'" + Guid.NewGuid().ToString() + "'," +
-                //           "'Start':'" + DateTime.Now.Date + "'," +
-                //           "'End':'" + DateTime.Now.AddDays(1).Date + "'}";
-
-                //var contents = new System.Net.Http.StringContent(body);
-                //contents.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json;odata=verbose");
-
-                //var formDigest = await core.GetFormDigest();
-
-                //var getList = await core.GetListByTitle("Projects");
-                //string query = "projectName,projectDescription,ProjectStartDate,projectFinishDate,projectDuration,projectPercentComplete,projectWork,projectActualWork,projectRemainingWork,projectStatus,projectOwnerName/Name&$expand=projectOwnerName/Name";
-                string query = "items?$select=projectName,projectDescription,ProjectStartDate,projectFinishDate,projectDuration,projectPercentComplete,projectWork,projectActualWork,projectRemainingWork,projectStatus,projectOwnerName/Name&$expand=projectOwnerName/Name";
-                var getListItems = await core.GetListItemsByListGuid(PROJECT_LIST_GUID,query);
-                System.Diagnostics.Debug.WriteLine("",getListItems.RequestMessage.RequestUri.ToString());
-                //var add = await core.AddListItemByListGuid(formDigest.D.GetContextWebInformation.FormDigestValue, TIMESHEET_PERIODS_ID, contents);
-                ////var updated = await core.UpdateListItemByListGuid(formDigest.D.GetContextWebInformation.FormDigestValue, PROJECT_LIST_GUID, contents, "4");
-                ////var deleted = await core.DeleteListItemByListGuid(formDigest.D.GetContextWebInformation.FormDigestValue, PROJECT_LIST_GUID, "4");
-
-                if (getListItems.IsSuccessStatusCode)
-                    System.Diagnostics.Debug.WriteLine("doDummyFunc", await getListItems.Content.ReadAsStringAsync());
-                else
-                    System.Diagnostics.Debug.WriteLine("doDummyFunc", getListItems.StatusCode + " ang status code");
-
-                //DateTime date = new DateTime(2018, 12, 23, 0, 0, 0);
-                //DateTime end = new DateTime(2018, 12, 31, 23, 59, 59);
-                //int weekNumber = 52;
-                //var formDigest = await core.GetFormDigest();
-                //while (DateTime.Compare(date, end) <= 0)
-                //{
-                //    if (weekNumber < 52)
-                //    {
-                //        //System.Diagnostics.Debug.WriteLine("start of week " + weekNumber.ToString(), date.ToLongDateString() + " " + date.ToLongTimeString());
-                //        var startDate = date;
-
-                //        if (date.DayOfWeek.ToString().Equals("Sunday"))
-                //            date = date.AddDays(6);
-                //        else if (date.DayOfWeek.ToString().Equals("Monday"))
-                //            date = date.AddDays(5);
-                //        else if (date.DayOfWeek.ToString().Equals("Tuesday"))
-                //            date = date.AddDays(4);
-                //        else if (date.DayOfWeek.ToString().Equals("Wednesday"))
-                //            date = date.AddDays(3);
-                //        else if (date.DayOfWeek.ToString().Equals("Thursday"))
-                //            date = date.AddDays(2);
-                //        else if (date.DayOfWeek.ToString().Equals("Friday"))
-                //            date = date.AddDays(1);
-
-                //        date = date.AddHours(23);
-                //        date = date.AddMinutes(59);
-                //        date = date.AddSeconds(59);
-                //        //System.Diagnostics.Debug.WriteLine("end of week " + weekNumber.ToString(), date.ToLongDateString() + " " + date.ToLongTimeString());
-                //        var endDate = date;
-
-                //        var body = "{'__metadata':{'type':'SP.Data.TimesheetPeriodsListItem'},'Title':'" + weekNumber.ToString() + "'," +
-                //                   "'Period_x0020_Id':'" + Guid.NewGuid().ToString() + "'," +
-                //                   "'Start':'" + startDate + "'," +
-                //                   "'End':'" + endDate + "'}";
-
-                //        var contents = new System.Net.Http.StringContent(body);
-                //        contents.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json;odata=verbose");
-
-                //        var add = await core.AddListItemByListGuid(formDigest.D.GetContextWebInformation.FormDigestValue, TIMESHEET_PERIODS_ID, contents);
-
-                //        if (add.IsSuccessStatusCode)
-                //            System.Diagnostics.Debug.WriteLine("doDummyFunc", "success ang week " + weekNumber.ToString());
-                //        else
-                //            System.Diagnostics.Debug.WriteLine("doDummyFunc", "failed ang week " + weekNumber.ToString() + " :" + add.StatusCode);
-
-                //        date = date.AddSeconds(1);
-                //        weekNumber += 1;
-                //    }
-                //    else
-                //    {
-                //        var difference = end.Date - date.Date;
-                //        int days = (int)difference.TotalDays;
-                //        //System.Diagnostics.Debug.WriteLine("start of week " + weekNumber.ToString(), date.ToLongDateString() + " " + date.ToLongTimeString());
-                //        var startDate = date;
-                //        date = date.AddDays(days);
-                //        date = date.AddHours(23);
-                //        date = date.AddMinutes(59);
-                //        date = date.AddSeconds(59);
-                //        //System.Diagnostics.Debug.WriteLine("end of week " + weekNumber.ToString(), date.ToLongDateString() + " " + date.ToLongTimeString());
-                //        var endDate = date;
-
-                //        var body = "{'__metadata':{'type':'SP.Data.TimesheetPeriodsListItem'},'Title':'" + weekNumber.ToString() + "'," +
-                //                   "'Period_x0020_Id':'" + Guid.NewGuid().ToString() + "'," +
-                //                   "'Start':'" + startDate + "'," +
-                //                   "'End':'" + endDate + "'}";
-
-                //        var contents = new System.Net.Http.StringContent(body);
-                //        contents.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json;odata=verbose");
-
-                //        var add = await core.AddListItemByListGuid(formDigest.D.GetContextWebInformation.FormDigestValue, TIMESHEET_PERIODS_ID, contents);
-
-                //        if (add.IsSuccessStatusCode)
-                //            System.Diagnostics.Debug.WriteLine("doDummyFunc", "success ang week " + weekNumber.ToString());
-                //        else
-                //            System.Diagnostics.Debug.WriteLine("doDummyFunc", "failed ang week " + weekNumber.ToString() + " :" + add.StatusCode);
-
-                //        break;
-                //    }
-                //}
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("doDummyFunc", e.Message);
-            }
-            
         }
     }
 }

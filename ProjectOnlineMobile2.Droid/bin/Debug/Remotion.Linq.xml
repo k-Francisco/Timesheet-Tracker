@@ -587,6 +587,111 @@
             </para>
             </remarks>
         </member>
+        <member name="T:Remotion.Linq.Clauses.ResultOperators.AsQueryableResultOperator">
+            <summary>
+            Represents the transformation of a sequence to a query data source. 
+            This is a result operator, operating on the whole result set of a query.
+            </summary>
+            <example>
+            In C#, the "AsQueryable" call in the following example corresponds to a <see cref="T:Remotion.Linq.Clauses.ResultOperators.AsQueryableResultOperator"/>.
+            <code>
+            var query = (from s in Students
+                         select s).AsQueryable();
+            </code>
+            </example>
+        </member>
+        <member name="T:Remotion.Linq.Clauses.ResultOperators.SequenceTypePreservingResultOperatorBase">
+            <summary>
+            Represents a <see cref="T:Remotion.Linq.Clauses.ResultOperators.SequenceFromSequenceResultOperatorBase"/> that is executed on a sequence, returning a new sequence with the same
+            item type as its result.
+            </summary>
+        </member>
+        <member name="T:Remotion.Linq.Clauses.ResultOperators.SequenceFromSequenceResultOperatorBase">
+            <summary>
+            Represents a <see cref="T:Remotion.Linq.Clauses.ResultOperatorBase"/> that is executed on a sequence, returning a new sequence as its result.
+            </summary>
+        </member>
+        <member name="T:Remotion.Linq.Clauses.ResultOperatorBase">
+            <summary>
+            Represents an operation that is executed on the result set of the query, aggregating, filtering, or restricting the number of result items
+            before the query result is returned.
+            </summary>
+        </member>
+        <member name="M:Remotion.Linq.Clauses.ResultOperatorBase.ExecuteInMemory(Remotion.Linq.Clauses.StreamedData.IStreamedData)">
+            <summary>
+            Executes this result operator in memory, on a given input. Executing result operators in memory should only be 
+            performed if the target query system does not support the operator.
+            </summary>
+            <param name="input">The input for the result operator. This must match the type of <see cref="T:Remotion.Linq.Clauses.StreamedData.IStreamedData"/> expected by the operator.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Remotion.Linq.Clauses.ResultOperatorBase.GetOutputDataInfo(Remotion.Linq.Clauses.StreamedData.IStreamedDataInfo)">
+            <summary>
+            Gets information about the data streamed out of this <see cref="T:Remotion.Linq.Clauses.ResultOperatorBase"/>. This contains the result type a query would have if 
+            it ended with this <see cref="T:Remotion.Linq.Clauses.ResultOperatorBase"/>, and it optionally includes an <see cref="P:Remotion.Linq.Clauses.StreamedData.StreamedSequenceInfo.ItemExpression"/> describing
+            the streamed sequence's items.
+            </summary>
+            <param name="inputInfo">Information about the data produced by the preceding <see cref="T:Remotion.Linq.Clauses.ResultOperatorBase"/>, or the <see cref="T:Remotion.Linq.Clauses.SelectClause"/>
+            of the query if no previous <see cref="T:Remotion.Linq.Clauses.ResultOperatorBase"/> exists.</param>
+            <returns>Gets information about the data streamed out of this <see cref="T:Remotion.Linq.Clauses.ResultOperatorBase"/>.</returns>
+        </member>
+        <member name="M:Remotion.Linq.Clauses.ResultOperatorBase.Clone(Remotion.Linq.Clauses.CloneContext)">
+            <summary>
+            Clones this item, registering its clone with the <paramref name="cloneContext"/> if it is a query source clause.
+            </summary>
+            <param name="cloneContext">The clones of all query source clauses are registered with this <see cref="T:Remotion.Linq.Clauses.CloneContext"/>.</param>
+            <returns>A clone of this item.</returns>
+        </member>
+        <member name="M:Remotion.Linq.Clauses.ResultOperatorBase.Accept(Remotion.Linq.IQueryModelVisitor,Remotion.Linq.QueryModel,System.Int32)">
+            <summary>
+            Accepts the specified visitor by calling its <see cref="M:Remotion.Linq.IQueryModelVisitor.VisitResultOperator(Remotion.Linq.Clauses.ResultOperatorBase,Remotion.Linq.QueryModel,System.Int32)"/> method.
+            </summary>
+            <param name="visitor">The visitor to accept.</param>
+            <param name="queryModel">The query model in whose context this clause is visited.</param>
+            <param name="index">The index of this item in the <paramref name="queryModel"/>'s <see cref="P:Remotion.Linq.QueryModel.ResultOperators"/> collection.</param>
+        </member>
+        <member name="M:Remotion.Linq.Clauses.ResultOperatorBase.TransformExpressions(System.Func{System.Linq.Expressions.Expression,System.Linq.Expressions.Expression})">
+            <summary>
+            Transforms all the expressions in this item via the given <paramref name="transformation"/> delegate. Subclasses must apply the 
+            <paramref name="transformation"/> to any expressions they hold. If a subclass does not hold any expressions, it shouldn't do anything
+            in the implementation of this method.
+            </summary>
+            <param name="transformation">The transformation object. This delegate is called for each <see cref="T:System.Linq.Expressions.Expression"/> within this
+            item, and those expressions will be replaced with what the delegate returns.</param>
+        </member>
+        <member name="M:Remotion.Linq.Clauses.ResultOperatorBase.InvokeExecuteMethod(System.Reflection.MethodInfo,System.Object)">
+            <summary>
+            Invokes the given <paramref name="method"/> via reflection on the given <paramref name="input"/>.
+            </summary>
+            <param name="input">The input to invoke the method with.</param>
+            <param name="method">The method to be invoked.</param>
+            <returns>The result of the invocation</returns>
+        </member>
+        <member name="M:Remotion.Linq.Clauses.ResultOperatorBase.GetConstantValueFromExpression``1(System.String,System.Linq.Expressions.Expression)">
+            <summary>
+            Gets the constant value of the given expression, assuming it is a <see cref="T:System.Linq.Expressions.ConstantExpression"/>. If it is
+            not, an <see cref="T:System.InvalidOperationException"/> is thrown.
+            </summary>
+            <typeparam name="T">The expected value type. If the value is not of this type, an <see cref="T:System.InvalidOperationException"/> is thrown.</typeparam>
+            <param name="expressionName">A string describing the value; this will be included in the exception message if an exception is thrown.</param>
+            <param name="expression">The expression whose value to get.</param>
+            <returns>
+            The constant value of the given <paramref name="expression"/>.
+            </returns>
+        </member>
+        <member name="M:Remotion.Linq.Clauses.ResultOperators.AsQueryableResultOperator.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Remotion.Linq.Clauses.ResultOperators.AsQueryableResultOperator"/>.
+            </summary>
+        </member>
+        <member name="T:Remotion.Linq.Clauses.ResultOperators.AsQueryableResultOperator.ISupportedByIQueryModelVistor">
+            <summary>
+            A marker interface that must be implemented by the <see cref="T:Remotion.Linq.IQueryModelVisitor"/> if the visitor supports the <see cref="T:Remotion.Linq.Clauses.ResultOperators.AsQueryableResultOperator"/>.
+            </summary>
+            <remarks>
+            Note that the interface will become obsolete with v3.0.0. See also RMLNQ-117.
+            </remarks>
+        </member>
         <member name="T:Remotion.Linq.Parsing.ExpressionVisitors.TreeEvaluation.EvaluatableExpressionFilterBase">
             <summary>
             Base class for typical implementations of the <see cref="T:Remotion.Linq.Parsing.ExpressionVisitors.TreeEvaluation.IEvaluatableExpressionFilter"/>.
@@ -616,6 +721,130 @@
             Implementation of the null-object pattern for <see cref="T:Remotion.Linq.Parsing.ExpressionVisitors.TreeEvaluation.IEvaluatableExpressionFilter"/>.
             </summary>
             <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="T:Remotion.Linq.Parsing.Structure.IntermediateModel.AsQueryableExpressionNode">
+            <summary>
+            Represents a <see cref="T:System.Linq.Expressions.MethodCallExpression"/> for <see cref="M:System.Linq.Queryable.AsQueryable``1(System.Collections.Generic.IEnumerable{``0})"/> or <see cref="M:System.Linq.Queryable.AsQueryable(System.Collections.IEnumerable)"/>.
+            It is generated by <see cref="T:Remotion.Linq.Parsing.Structure.ExpressionTreeParser"/> when an <see cref="T:System.Linq.Expressions.Expression"/> tree is parsed.
+            When this node is used, it will not modify the <see cref="T:Remotion.Linq.QueryModel"/>, i.e. the call to <see cref="M:System.Linq.Queryable.AsQueryable``1(System.Collections.Generic.IEnumerable{``0})"/> 
+            will be removed given how it is transparent to the process of executing the query.
+            </summary>
+        </member>
+        <member name="T:Remotion.Linq.Parsing.Structure.IntermediateModel.ResultOperatorExpressionNodeBase">
+            <summary>
+            Acts as a base class for <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/>s standing for <see cref="T:System.Linq.Expressions.MethodCallExpression"/>s that operate on the result of the query
+            rather than representing actual clauses, such as <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.CountExpressionNode"/> or <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.DistinctExpressionNode"/>.
+            </summary>
+        </member>
+        <member name="T:Remotion.Linq.Parsing.Structure.IntermediateModel.MethodCallExpressionNodeBase">
+            <summary>
+            Base class for <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/> implementations that represent instantiations of <see cref="T:System.Linq.Expressions.MethodCallExpression"/>.
+            </summary>
+        </member>
+        <member name="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode">
+            <summary>
+            Interface for classes representing structural parts of an <see cref="T:System.Linq.Expressions.Expression"/> tree.
+            </summary>
+        </member>
+        <member name="M:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode.Resolve(System.Linq.Expressions.ParameterExpression,System.Linq.Expressions.Expression,Remotion.Linq.Parsing.Structure.IntermediateModel.ClauseGenerationContext)">
+            <summary>
+            Resolves the specified <paramref name="expressionToBeResolved"/> by replacing any occurrence of <paramref name="inputParameter"/>
+            by the result of the projection of this <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/>. The result is an <see cref="T:System.Linq.Expressions.Expression"/> that goes all the
+            way to an <see cref="T:Remotion.Linq.Clauses.Expressions.QuerySourceReferenceExpression"/>.
+            </summary>
+            <param name="inputParameter">The parameter representing the input data streaming into an <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/>. This is replaced
+            by the projection data coming out of this <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/>.</param>
+            <param name="expressionToBeResolved">The expression to be resolved. Any occurrence of <paramref name="inputParameter"/> in this expression
+            is replaced.</param>
+            <param name="clauseGenerationContext">Context information used during the current parsing process. This structure maps 
+            <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IQuerySourceExpressionNode"/>s  to the clauses created from them. Implementers that also implement 
+            <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IQuerySourceExpressionNode"/> (such as  <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.MainSourceExpressionNode"/> or <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.SelectManyExpressionNode"/>) must add 
+            their clauses to the mapping in <see cref="M:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode.Apply(Remotion.Linq.QueryModel,Remotion.Linq.Parsing.Structure.IntermediateModel.ClauseGenerationContext)"/> if they want to be able to implement <see cref="M:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode.Resolve(System.Linq.Expressions.ParameterExpression,System.Linq.Expressions.Expression,Remotion.Linq.Parsing.Structure.IntermediateModel.ClauseGenerationContext)"/> correctly.</param>
+            <returns>An equivalent of <paramref name="expressionToBeResolved"/> with each occurrence of <paramref name="inputParameter"/> replaced by
+            the projection data streaming out of this <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/>.</returns>
+            <exception cref="T:System.InvalidOperationException">
+            This node does not support this operation because it does not stream any data to subsequent nodes.
+            </exception>
+        </member>
+        <member name="M:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode.Apply(Remotion.Linq.QueryModel,Remotion.Linq.Parsing.Structure.IntermediateModel.ClauseGenerationContext)">
+            <summary>
+            Applies this <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/> to the specified query model. Nodes can add or replace clauses, add or replace expressions, 
+            add or replace <see cref="T:Remotion.Linq.Clauses.ResultOperatorBase"/> objects, or even create a completely new <see cref="T:Remotion.Linq.QueryModel"/>, depending on their semantics.
+            </summary>
+            <param name="queryModel">The query model this node should be applied to.</param>
+            <param name="clauseGenerationContext">Context information used during the current parsing process. This structure maps 
+            <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IQuerySourceExpressionNode"/>s to the clauses created from them. Implementers that 
+            also implement <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IQuerySourceExpressionNode"/> (such as 
+            <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.MainSourceExpressionNode"/> or <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.SelectManyExpressionNode"/>) must add their clauses to the mapping in 
+            <see cref="M:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode.Apply(Remotion.Linq.QueryModel,Remotion.Linq.Parsing.Structure.IntermediateModel.ClauseGenerationContext)"/> in order to be able to implement <see cref="M:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode.Resolve(System.Linq.Expressions.ParameterExpression,System.Linq.Expressions.Expression,Remotion.Linq.Parsing.Structure.IntermediateModel.ClauseGenerationContext)"/> correctly.</param>
+            <returns>The modified <paramref name="queryModel"/> or a new <see cref="T:Remotion.Linq.QueryModel"/> that reflects the changes made by this node.</returns>
+            <remarks>
+            For <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.MainSourceExpressionNode"/> objects, which mark the end of an <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/> chain, this method must not be called.
+            Instead, use <see cref="M:Remotion.Linq.Parsing.Structure.IntermediateModel.MainSourceExpressionNode.CreateMainFromClause(Remotion.Linq.Parsing.Structure.IntermediateModel.ClauseGenerationContext)"/> to generate a <see cref="T:Remotion.Linq.Clauses.MainFromClause"/> and instantiate a new 
+            <see cref="T:Remotion.Linq.QueryModel"/> with that clause.
+            </remarks>
+        </member>
+        <member name="P:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode.Source">
+            <summary>
+            Gets the source <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/> that streams data into this node.
+            </summary>
+            <value>The source <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/>, or <see langword="null"/> if this node is the end of the chain.</value>
+        </member>
+        <member name="P:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode.AssociatedIdentifier">
+            <summary>
+            Gets the identifier associated with this <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/>. <see cref="T:Remotion.Linq.Parsing.Structure.ExpressionTreeParser"/> tries to find the identifier
+            that was originally associated with this node in the query written by the user by analyzing the parameter names of the next expression in the 
+            method call chain.
+            </summary>
+            <value>The associated identifier.</value>
+        </member>
+        <member name="M:Remotion.Linq.Parsing.Structure.IntermediateModel.MethodCallExpressionNodeBase.WrapQueryModelAfterEndOfQuery(Remotion.Linq.QueryModel,Remotion.Linq.Parsing.Structure.IntermediateModel.ClauseGenerationContext)">
+            <summary>
+            Wraps the <paramref name="queryModel"/> into a subquery after a node that indicates the end of the query (
+            <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.ResultOperatorExpressionNodeBase"/> or <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.GroupByExpressionNode"/>). Override this method
+            when implementing a <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/> that does not need a subquery to be created if it occurs after the query end.
+            </summary>
+            <remarks>
+            <para>
+            When an ordinary node follows a result operator or group node, it cannot simply append its clauses to the <paramref name="queryModel"/> 
+            because semantically, the result operator (or grouping) must be executed _before_ the clause. Therefore, in such scenarios, we wrap 
+            the current query model into a <see cref="T:Remotion.Linq.Clauses.Expressions.SubQueryExpression"/> that we put into the <see cref="T:Remotion.Linq.Clauses.MainFromClause"/> of a new 
+            <see cref="T:Remotion.Linq.QueryModel"/>.
+            </para>
+            <para>
+            This method also changes the <see cref="P:Remotion.Linq.Parsing.Structure.IntermediateModel.MethodCallExpressionNodeBase.Source"/> of this node because logically, all <see cref="M:Remotion.Linq.Parsing.Structure.IntermediateModel.MethodCallExpressionNodeBase.Resolve(System.Linq.Expressions.ParameterExpression,System.Linq.Expressions.Expression,Remotion.Linq.Parsing.Structure.IntermediateModel.ClauseGenerationContext)"/> operations must be handled
+            by the new <see cref="T:Remotion.Linq.Clauses.MainFromClause"/> holding the <see cref="T:Remotion.Linq.Clauses.Expressions.SubQueryExpression"/>. For example, consider the following call chain:
+            <code>
+            MainSource (...)
+              .Select (x =&gt; x)
+              .Distinct ()
+              .Select (x =&gt; x)
+            </code>
+            
+            Naively, the last Select node would resolve (via Distinct and Select) to the <see cref="T:Remotion.Linq.Clauses.MainFromClause"/> created by the initial MainSource.
+            After this method is executed, however, that <see cref="T:Remotion.Linq.Clauses.MainFromClause"/> is part of the sub query, and a new <see cref="T:Remotion.Linq.Clauses.MainFromClause"/> 
+            has been created to hold it. Therefore, we replace the chain as follows:
+            <code>
+            MainSource (MainSource (...).Select (x =&gt; x).Distinct ())
+              .Select (x =&gt; x)
+            </code>
+            
+            Now, the last Select node resolves to the new <see cref="T:Remotion.Linq.Clauses.MainFromClause"/>.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:Remotion.Linq.Parsing.Structure.IntermediateModel.MethodCallExpressionNodeBase.SetResultTypeOverride(Remotion.Linq.QueryModel)">
+            <summary>
+            Sets the result type override of the given <see cref="T:Remotion.Linq.QueryModel"/>.
+            </summary>
+            <param name="queryModel">The query model to set the <see cref="P:Remotion.Linq.QueryModel.ResultTypeOverride"/> of.</param>
+            <remarks>
+            By default, the result type override is set to <see cref="P:Remotion.Linq.Parsing.Structure.IntermediateModel.MethodCallExpressionNodeBase.NodeResultType"/> in the <see cref="M:Remotion.Linq.Parsing.Structure.IntermediateModel.MethodCallExpressionNodeBase.Apply(Remotion.Linq.QueryModel,Remotion.Linq.Parsing.Structure.IntermediateModel.ClauseGenerationContext)"/> method. This ensures that the query
+            model represents the type of the query correctly. Specific node parsers can override this method to set the 
+            <see cref="P:Remotion.Linq.QueryModel.ResultTypeOverride"/> to another value, or to clear it (set it to <see langword="null"/>). Do not leave the
+            <see cref="P:Remotion.Linq.QueryModel.ResultTypeOverride"/> unchanged when overriding this method, as a source node might have set it to a value that doesn't 
+            fit this node.
+            </remarks>
         </member>
         <member name="T:Remotion.Linq.Utilities.ExpressionExtensions">
             <summary>
@@ -693,74 +922,6 @@
             <summary>
             Represents a <see cref="T:Remotion.Linq.Clauses.ResultOperatorBase"/> that is executed on a sequence, returning a scalar value or single item as its result.
             </summary>
-        </member>
-        <member name="T:Remotion.Linq.Clauses.ResultOperatorBase">
-            <summary>
-            Represents an operation that is executed on the result set of the query, aggregating, filtering, or restricting the number of result items
-            before the query result is returned.
-            </summary>
-        </member>
-        <member name="M:Remotion.Linq.Clauses.ResultOperatorBase.ExecuteInMemory(Remotion.Linq.Clauses.StreamedData.IStreamedData)">
-            <summary>
-            Executes this result operator in memory, on a given input. Executing result operators in memory should only be 
-            performed if the target query system does not support the operator.
-            </summary>
-            <param name="input">The input for the result operator. This must match the type of <see cref="T:Remotion.Linq.Clauses.StreamedData.IStreamedData"/> expected by the operator.</param>
-            <returns>The result of the operator.</returns>
-        </member>
-        <member name="M:Remotion.Linq.Clauses.ResultOperatorBase.GetOutputDataInfo(Remotion.Linq.Clauses.StreamedData.IStreamedDataInfo)">
-            <summary>
-            Gets information about the data streamed out of this <see cref="T:Remotion.Linq.Clauses.ResultOperatorBase"/>. This contains the result type a query would have if 
-            it ended with this <see cref="T:Remotion.Linq.Clauses.ResultOperatorBase"/>, and it optionally includes an <see cref="P:Remotion.Linq.Clauses.StreamedData.StreamedSequenceInfo.ItemExpression"/> describing
-            the streamed sequence's items.
-            </summary>
-            <param name="inputInfo">Information about the data produced by the preceding <see cref="T:Remotion.Linq.Clauses.ResultOperatorBase"/>, or the <see cref="T:Remotion.Linq.Clauses.SelectClause"/>
-            of the query if no previous <see cref="T:Remotion.Linq.Clauses.ResultOperatorBase"/> exists.</param>
-            <returns>Gets information about the data streamed out of this <see cref="T:Remotion.Linq.Clauses.ResultOperatorBase"/>.</returns>
-        </member>
-        <member name="M:Remotion.Linq.Clauses.ResultOperatorBase.Clone(Remotion.Linq.Clauses.CloneContext)">
-            <summary>
-            Clones this item, registering its clone with the <paramref name="cloneContext"/> if it is a query source clause.
-            </summary>
-            <param name="cloneContext">The clones of all query source clauses are registered with this <see cref="T:Remotion.Linq.Clauses.CloneContext"/>.</param>
-            <returns>A clone of this item.</returns>
-        </member>
-        <member name="M:Remotion.Linq.Clauses.ResultOperatorBase.Accept(Remotion.Linq.IQueryModelVisitor,Remotion.Linq.QueryModel,System.Int32)">
-            <summary>
-            Accepts the specified visitor by calling its <see cref="M:Remotion.Linq.IQueryModelVisitor.VisitResultOperator(Remotion.Linq.Clauses.ResultOperatorBase,Remotion.Linq.QueryModel,System.Int32)"/> method.
-            </summary>
-            <param name="visitor">The visitor to accept.</param>
-            <param name="queryModel">The query model in whose context this clause is visited.</param>
-            <param name="index">The index of this item in the <paramref name="queryModel"/>'s <see cref="P:Remotion.Linq.QueryModel.ResultOperators"/> collection.</param>
-        </member>
-        <member name="M:Remotion.Linq.Clauses.ResultOperatorBase.TransformExpressions(System.Func{System.Linq.Expressions.Expression,System.Linq.Expressions.Expression})">
-            <summary>
-            Transforms all the expressions in this item via the given <paramref name="transformation"/> delegate. Subclasses must apply the 
-            <paramref name="transformation"/> to any expressions they hold. If a subclass does not hold any expressions, it shouldn't do anything
-            in the implementation of this method.
-            </summary>
-            <param name="transformation">The transformation object. This delegate is called for each <see cref="T:System.Linq.Expressions.Expression"/> within this
-            item, and those expressions will be replaced with what the delegate returns.</param>
-        </member>
-        <member name="M:Remotion.Linq.Clauses.ResultOperatorBase.InvokeExecuteMethod(System.Reflection.MethodInfo,System.Object)">
-            <summary>
-            Invokes the given <paramref name="method"/> via reflection on the given <paramref name="input"/>.
-            </summary>
-            <param name="input">The input to invoke the method with.</param>
-            <param name="method">The method to be invoked.</param>
-            <returns>The result of the invocation</returns>
-        </member>
-        <member name="M:Remotion.Linq.Clauses.ResultOperatorBase.GetConstantValueFromExpression``1(System.String,System.Linq.Expressions.Expression)">
-            <summary>
-            Gets the constant value of the given expression, assuming it is a <see cref="T:System.Linq.Expressions.ConstantExpression"/>. If it is
-            not, an <see cref="T:System.InvalidOperationException"/> is thrown.
-            </summary>
-            <typeparam name="T">The expected value type. If the value is not of this type, an <see cref="T:System.InvalidOperationException"/> is thrown.</typeparam>
-            <param name="expressionName">A string describing the value; this will be included in the exception message if an exception is thrown.</param>
-            <param name="expression">The expression whose value to get.</param>
-            <returns>
-            The constant value of the given <paramref name="expression"/>.
-            </returns>
         </member>
         <member name="T:Remotion.Linq.Clauses.ResultOperators.AnyResultOperator">
             <summary>
@@ -952,17 +1113,6 @@
             Can be <see langword="null"/>.
             </summary>
             <value>The result selector.</value>
-        </member>
-        <member name="T:Remotion.Linq.Clauses.ResultOperators.SequenceTypePreservingResultOperatorBase">
-            <summary>
-            Represents a <see cref="T:Remotion.Linq.Clauses.ResultOperators.SequenceFromSequenceResultOperatorBase"/> that is executed on a sequence, returning a new sequence with the same
-            item type as its result.
-            </summary>
-        </member>
-        <member name="T:Remotion.Linq.Clauses.ResultOperators.SequenceFromSequenceResultOperatorBase">
-            <summary>
-            Represents a <see cref="T:Remotion.Linq.Clauses.ResultOperatorBase"/> that is executed on a sequence, returning a new sequence as its result.
-            </summary>
         </member>
         <member name="T:Remotion.Linq.Clauses.ResultOperators.ConcatResultOperator">
             <summary>
@@ -2229,122 +2379,6 @@
             Acts as a base class for <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.UnionExpressionNode"/> and <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.ConcatExpressionNode"/>, i.e., for node parsers for set operations
             acting as an <see cref="T:Remotion.Linq.Clauses.IQuerySource"/>.
             </summary>
-        </member>
-        <member name="T:Remotion.Linq.Parsing.Structure.IntermediateModel.ResultOperatorExpressionNodeBase">
-            <summary>
-            Acts as a base class for <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/>s standing for <see cref="T:System.Linq.Expressions.MethodCallExpression"/>s that operate on the result of the query
-            rather than representing actual clauses, such as <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.CountExpressionNode"/> or <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.DistinctExpressionNode"/>.
-            </summary>
-        </member>
-        <member name="T:Remotion.Linq.Parsing.Structure.IntermediateModel.MethodCallExpressionNodeBase">
-            <summary>
-            Base class for <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/> implementations that represent instantiations of <see cref="T:System.Linq.Expressions.MethodCallExpression"/>.
-            </summary>
-        </member>
-        <member name="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode">
-            <summary>
-            Interface for classes representing structural parts of an <see cref="T:System.Linq.Expressions.Expression"/> tree.
-            </summary>
-        </member>
-        <member name="M:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode.Resolve(System.Linq.Expressions.ParameterExpression,System.Linq.Expressions.Expression,Remotion.Linq.Parsing.Structure.IntermediateModel.ClauseGenerationContext)">
-            <summary>
-            Resolves the specified <paramref name="expressionToBeResolved"/> by replacing any occurrence of <paramref name="inputParameter"/>
-            by the result of the projection of this <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/>. The result is an <see cref="T:System.Linq.Expressions.Expression"/> that goes all the
-            way to an <see cref="T:Remotion.Linq.Clauses.Expressions.QuerySourceReferenceExpression"/>.
-            </summary>
-            <param name="inputParameter">The parameter representing the input data streaming into an <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/>. This is replaced
-            by the projection data coming out of this <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/>.</param>
-            <param name="expressionToBeResolved">The expression to be resolved. Any occurrence of <paramref name="inputParameter"/> in this expression
-            is replaced.</param>
-            <param name="clauseGenerationContext">Context information used during the current parsing process. This structure maps 
-            <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IQuerySourceExpressionNode"/>s  to the clauses created from them. Implementers that also implement 
-            <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IQuerySourceExpressionNode"/> (such as  <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.MainSourceExpressionNode"/> or <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.SelectManyExpressionNode"/>) must add 
-            their clauses to the mapping in <see cref="M:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode.Apply(Remotion.Linq.QueryModel,Remotion.Linq.Parsing.Structure.IntermediateModel.ClauseGenerationContext)"/> if they want to be able to implement <see cref="M:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode.Resolve(System.Linq.Expressions.ParameterExpression,System.Linq.Expressions.Expression,Remotion.Linq.Parsing.Structure.IntermediateModel.ClauseGenerationContext)"/> correctly.</param>
-            <returns>An equivalent of <paramref name="expressionToBeResolved"/> with each occurrence of <paramref name="inputParameter"/> replaced by
-            the projection data streaming out of this <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/>.</returns>
-            <exception cref="T:System.InvalidOperationException">
-            This node does not support this operation because it does not stream any data to subsequent nodes.
-            </exception>
-        </member>
-        <member name="M:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode.Apply(Remotion.Linq.QueryModel,Remotion.Linq.Parsing.Structure.IntermediateModel.ClauseGenerationContext)">
-            <summary>
-            Applies this <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/> to the specified query model. Nodes can add or replace clauses, add or replace expressions, 
-            add or replace <see cref="T:Remotion.Linq.Clauses.ResultOperatorBase"/> objects, or even create a completely new <see cref="T:Remotion.Linq.QueryModel"/>, depending on their semantics.
-            </summary>
-            <param name="queryModel">The query model this node should be applied to.</param>
-            <param name="clauseGenerationContext">Context information used during the current parsing process. This structure maps 
-            <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IQuerySourceExpressionNode"/>s to the clauses created from them. Implementers that 
-            also implement <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IQuerySourceExpressionNode"/> (such as 
-            <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.MainSourceExpressionNode"/> or <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.SelectManyExpressionNode"/>) must add their clauses to the mapping in 
-            <see cref="M:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode.Apply(Remotion.Linq.QueryModel,Remotion.Linq.Parsing.Structure.IntermediateModel.ClauseGenerationContext)"/> in order to be able to implement <see cref="M:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode.Resolve(System.Linq.Expressions.ParameterExpression,System.Linq.Expressions.Expression,Remotion.Linq.Parsing.Structure.IntermediateModel.ClauseGenerationContext)"/> correctly.</param>
-            <returns>The modified <paramref name="queryModel"/> or a new <see cref="T:Remotion.Linq.QueryModel"/> that reflects the changes made by this node.</returns>
-            <remarks>
-            For <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.MainSourceExpressionNode"/> objects, which mark the end of an <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/> chain, this method must not be called.
-            Instead, use <see cref="M:Remotion.Linq.Parsing.Structure.IntermediateModel.MainSourceExpressionNode.CreateMainFromClause(Remotion.Linq.Parsing.Structure.IntermediateModel.ClauseGenerationContext)"/> to generate a <see cref="T:Remotion.Linq.Clauses.MainFromClause"/> and instantiate a new 
-            <see cref="T:Remotion.Linq.QueryModel"/> with that clause.
-            </remarks>
-        </member>
-        <member name="P:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode.Source">
-            <summary>
-            Gets the source <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/> that streams data into this node.
-            </summary>
-            <value>The source <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/>, or <see langword="null"/> if this node is the end of the chain.</value>
-        </member>
-        <member name="P:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode.AssociatedIdentifier">
-            <summary>
-            Gets the identifier associated with this <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/>. <see cref="T:Remotion.Linq.Parsing.Structure.ExpressionTreeParser"/> tries to find the identifier
-            that was originally associated with this node in the query written by the user by analyzing the parameter names of the next expression in the 
-            method call chain.
-            </summary>
-            <value>The associated identifier.</value>
-        </member>
-        <member name="M:Remotion.Linq.Parsing.Structure.IntermediateModel.MethodCallExpressionNodeBase.WrapQueryModelAfterEndOfQuery(Remotion.Linq.QueryModel,Remotion.Linq.Parsing.Structure.IntermediateModel.ClauseGenerationContext)">
-            <summary>
-            Wraps the <paramref name="queryModel"/> into a subquery after a node that indicates the end of the query (
-            <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.ResultOperatorExpressionNodeBase"/> or <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.GroupByExpressionNode"/>). Override this method
-            when implementing a <see cref="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IExpressionNode"/> that does not need a subquery to be created if it occurs after the query end.
-            </summary>
-            <remarks>
-            <para>
-            When an ordinary node follows a result operator or group node, it cannot simply append its clauses to the <paramref name="queryModel"/> 
-            because semantically, the result operator (or grouping) must be executed _before_ the clause. Therefore, in such scenarios, we wrap 
-            the current query model into a <see cref="T:Remotion.Linq.Clauses.Expressions.SubQueryExpression"/> that we put into the <see cref="T:Remotion.Linq.Clauses.MainFromClause"/> of a new 
-            <see cref="T:Remotion.Linq.QueryModel"/>.
-            </para>
-            <para>
-            This method also changes the <see cref="P:Remotion.Linq.Parsing.Structure.IntermediateModel.MethodCallExpressionNodeBase.Source"/> of this node because logically, all <see cref="M:Remotion.Linq.Parsing.Structure.IntermediateModel.MethodCallExpressionNodeBase.Resolve(System.Linq.Expressions.ParameterExpression,System.Linq.Expressions.Expression,Remotion.Linq.Parsing.Structure.IntermediateModel.ClauseGenerationContext)"/> operations must be handled
-            by the new <see cref="T:Remotion.Linq.Clauses.MainFromClause"/> holding the <see cref="T:Remotion.Linq.Clauses.Expressions.SubQueryExpression"/>. For example, consider the following call chain:
-            <code>
-            MainSource (...)
-              .Select (x =&gt; x)
-              .Distinct ()
-              .Select (x =&gt; x)
-            </code>
-            
-            Naively, the last Select node would resolve (via Distinct and Select) to the <see cref="T:Remotion.Linq.Clauses.MainFromClause"/> created by the initial MainSource.
-            After this method is executed, however, that <see cref="T:Remotion.Linq.Clauses.MainFromClause"/> is part of the sub query, and a new <see cref="T:Remotion.Linq.Clauses.MainFromClause"/> 
-            has been created to hold it. Therefore, we replace the chain as follows:
-            <code>
-            MainSource (MainSource (...).Select (x =&gt; x).Distinct ())
-              .Select (x =&gt; x)
-            </code>
-            
-            Now, the last Select node resolves to the new <see cref="T:Remotion.Linq.Clauses.MainFromClause"/>.
-            </para>
-            </remarks>
-        </member>
-        <member name="M:Remotion.Linq.Parsing.Structure.IntermediateModel.MethodCallExpressionNodeBase.SetResultTypeOverride(Remotion.Linq.QueryModel)">
-            <summary>
-            Sets the result type override of the given <see cref="T:Remotion.Linq.QueryModel"/>.
-            </summary>
-            <param name="queryModel">The query model to set the <see cref="P:Remotion.Linq.QueryModel.ResultTypeOverride"/> of.</param>
-            <remarks>
-            By default, the result type override is set to <see cref="P:Remotion.Linq.Parsing.Structure.IntermediateModel.MethodCallExpressionNodeBase.NodeResultType"/> in the <see cref="M:Remotion.Linq.Parsing.Structure.IntermediateModel.MethodCallExpressionNodeBase.Apply(Remotion.Linq.QueryModel,Remotion.Linq.Parsing.Structure.IntermediateModel.ClauseGenerationContext)"/> method. This ensures that the query
-            model represents the type of the query correctly. Specific node parsers can override this method to set the 
-            <see cref="P:Remotion.Linq.QueryModel.ResultTypeOverride"/> to another value, or to clear it (set it to <see langword="null"/>). Do not leave the
-            <see cref="P:Remotion.Linq.QueryModel.ResultTypeOverride"/> unchanged when overriding this method, as a source node might have set it to a value that doesn't 
-            fit this node.
-            </remarks>
         </member>
         <member name="T:Remotion.Linq.Parsing.Structure.IntermediateModel.IQuerySourceExpressionNode">
             <summary>

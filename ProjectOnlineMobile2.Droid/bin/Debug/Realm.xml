@@ -339,6 +339,21 @@
             Whether the <see cref="T:Realms.Realm"/> had any updates. Note that this may return true even if no data has actually changed.
             </returns>
         </member>
+        <member name="M:Realms.Realm.RefreshAsync">
+            <summary>
+            Asynchronously wait for the <see cref="T:Realms.Realm"/> instance and outstanding objects to get updated
+            to point to the most recent persisted version.
+            </summary>
+            <remarks>
+            On worker threads (where the SynchronizationContext) is null, this will call the blocking <see cref="M:Realms.Realm.Refresh"/>
+            method instead. On the main thread (or other threads that have SynchronizationContext), this will wait until
+            the instance automatically updates to resolve the task. Note that you must keep a reference to the Realm
+            until the returned task is resolved.
+            </remarks>
+            <returns>
+            Whether the <see cref="T:Realms.Realm"/> had any updates. Note that this may return true even if no data has actually changed.
+            </returns>
+        </member>
         <member name="M:Realms.Realm.All``1">
             <summary>
             Extract an iterable set of objects for direct use or further query.
@@ -1293,9 +1308,17 @@
         </member>
         <member name="P:Realms.ChangeSet.ModifiedIndices">
             <summary>
-            Gets the indices in the new version of the <see cref="T:Realms.IRealmCollection`1"/> which were modified.
+            Gets the indices in the *old* version of the <see cref="T:Realms.IRealmCollection`1"/> which were modified.
             This means that either the property of an object at that index was modified or the property of
             of an object it's related to has changed.
+            </summary>
+            <value>An array, containing the indices of the modified objects.</value>
+        </member>
+        <member name="P:Realms.ChangeSet.NewModifiedIndices">
+            <summary>
+            Gets the indices in the *new* version of the <see cref="T:Realms.IRealmCollection`1"/> which were modified.
+            Conceptually, it contains the same entries as <see cref="P:Realms.ChangeSet.ModifiedIndices"/> but after the insertions
+            and deletions have been accounted for.
             </summary>
             <value>An array, containing the indices of the modified objects.</value>
         </member>

@@ -22,11 +22,6 @@
            android:title="Period Details" />
 
       <item
-           android:id="@+id/menu_add_line"
-           app:showAsAction="never"
-           android:title="Add Timesheet Line" />
-
-      <item
            android:id="@+id/menu_submit_timesheet"
            app:showAsAction="never"
            android:title="Submit Timesheet" />

@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETStandard,Version=v2.0/",
-    "signature": "5b7ed23fc6e3f0a36135ffbead1f54f1ba53c520"
+    "signature": "db06b1168490dc3709ebd92d93bce6d1ec45ae95"
   },
   "compilationOptions": {},
   "targets": {
@@ -9,8 +9,8 @@
     ".NETStandard,Version=v2.0/": {
       "ProjectOnlineMobile2/1.0.0": {
         "dependencies": {
-          "Microsoft.AppCenter.Analytics": "1.8.0",
-          "Microsoft.AppCenter.Crashes": "1.8.0",
+          "Microsoft.AppCenter.Analytics": "1.9.0",
+          "Microsoft.AppCenter.Crashes": "1.9.0",
           "NETStandard.Library": "2.0.3",
           "Newtonsoft.Json": "11.0.2",
           "Realm": "3.1.0",
@@ -24,25 +24,34 @@
         }
       },
       "Fody/3.0.3": {},
-      "Microsoft.AppCenter/1.8.0": {
+      "Microsoft.AppCenter/1.9.0": {
         "runtime": {
-          "lib/netstandard1.0/Microsoft.AppCenter.dll": {}
+          "lib/netstandard1.0/Microsoft.AppCenter.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "1.9.0.0"
+          }
         }
       },
-      "Microsoft.AppCenter.Analytics/1.8.0": {
+      "Microsoft.AppCenter.Analytics/1.9.0": {
         "dependencies": {
-          "Microsoft.AppCenter": "1.8.0"
+          "Microsoft.AppCenter": "1.9.0"
         },
         "runtime": {
-          "lib/netstandard1.0/Microsoft.AppCenter.Analytics.dll": {}
+          "lib/netstandard1.0/Microsoft.AppCenter.Analytics.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "1.9.0.0"
+          }
         }
       },
-      "Microsoft.AppCenter.Crashes/1.8.0": {
+      "Microsoft.AppCenter.Crashes/1.9.0": {
         "dependencies": {
-          "Microsoft.AppCenter": "1.8.0"
+          "Microsoft.AppCenter": "1.9.0"
         },
         "runtime": {
-          "lib/netstandard1.0/Microsoft.AppCenter.Crashes.dll": {}
+          "lib/netstandard1.0/Microsoft.AppCenter.Crashes.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "1.9.0.0"
+          }
         }
       },
       "Microsoft.NETCore.Platforms/1.1.0": {},
@@ -54,7 +63,10 @@
       },
       "Newtonsoft.Json/11.0.2": {
         "runtime": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "11.0.0.0",
+            "fileVersion": "11.0.2.21924"
+          }
         }
       },
       "Realm/3.1.0": {
@@ -63,7 +75,10 @@
           "Realm.Database": "3.1.0"
         },
         "runtime": {
-          "lib/netstandard1.4/Realm.Sync.dll": {}
+          "lib/netstandard1.4/Realm.Sync.dll": {
+            "assemblyVersion": "3.1.0.0",
+            "fileVersion": "3.1.0.0"
+          }
         }
       },
       "Realm.Database/3.1.0": {
@@ -76,12 +91,18 @@
           "System.Runtime.CompilerServices.Unsafe": "4.4.0"
         },
         "runtime": {
-          "lib/netstandard1.4/Realm.dll": {}
+          "lib/netstandard1.4/Realm.dll": {
+            "assemblyVersion": "3.1.0.0",
+            "fileVersion": "3.1.0.0"
+          }
         }
       },
       "Realm.DataBinding/1.2.0": {
         "runtime": {
-          "lib/netstandard1.0/Realm.DataBinding.dll": {}
+          "lib/netstandard1.0/Realm.DataBinding.dll": {
+            "assemblyVersion": "1.2.0.0",
+            "fileVersion": "1.2.0.0"
+          }
         }
       },
       "Refit/4.6.30": {
@@ -89,7 +110,10 @@
           "Newtonsoft.Json": "11.0.2"
         },
         "runtime": {
-          "lib/netstandard2.0/Refit.dll": {}
+          "lib/netstandard2.0/Refit.dll": {
+            "assemblyVersion": "4.6.0.0",
+            "fileVersion": "4.6.30.58542"
+          }
         }
       },
       "Remotion.Linq/2.1.2": {
@@ -107,7 +131,10 @@
           "System.Threading": "4.0.11"
         },
         "runtime": {
-          "lib/netstandard1.0/Remotion.Linq.dll": {}
+          "lib/netstandard1.0/Remotion.Linq.dll": {
+            "assemblyVersion": "2.1.0.0",
+            "fileVersion": "2.1.2.30000"
+          }
         }
       },
       "System.Collections/4.0.11": {
@@ -149,7 +176,10 @@
           "System.Runtime.Extensions": "4.1.0"
         },
         "runtime": {
-          "lib/netstandard1.6/System.Linq.dll": {}
+          "lib/netstandard1.6/System.Linq.dll": {
+            "assemblyVersion": "4.1.0.0",
+            "fileVersion": "1.0.24212.1"
+          }
         }
       },
       "System.Linq.Expressions/4.1.0": {
@@ -173,7 +203,10 @@
           "System.Threading": "4.0.11"
         },
         "runtime": {
-          "lib/netstandard1.6/System.Linq.Expressions.dll": {}
+          "lib/netstandard1.6/System.Linq.Expressions.dll": {
+            "assemblyVersion": "4.1.0.0",
+            "fileVersion": "1.0.24212.1"
+          }
         }
       },
       "System.Linq.Queryable/4.0.1": {
@@ -188,7 +221,10 @@
           "System.Runtime": "4.3.0"
         },
         "runtime": {
-          "lib/netstandard1.3/System.Linq.Queryable.dll": {}
+          "lib/netstandard1.3/System.Linq.Queryable.dll": {
+            "assemblyVersion": "4.0.1.0",
+            "fileVersion": "1.0.24212.1"
+          }
         }
       },
       "System.ObjectModel/4.0.12": {
@@ -200,7 +236,10 @@
           "System.Threading": "4.0.11"
         },
         "runtime": {
-          "lib/netstandard1.3/System.ObjectModel.dll": {}
+          "lib/netstandard1.3/System.ObjectModel.dll": {
+            "assemblyVersion": "4.0.12.0",
+            "fileVersion": "1.0.24212.1"
+          }
         }
       },
       "System.Reflection/4.3.0": {
@@ -221,7 +260,10 @@
           "System.Runtime": "4.3.0"
         },
         "runtime": {
-          "lib/netstandard1.3/System.Reflection.Emit.dll": {}
+          "lib/netstandard1.3/System.Reflection.Emit.dll": {
+            "assemblyVersion": "4.0.1.0",
+            "fileVersion": "1.0.24212.1"
+          }
         }
       },
       "System.Reflection.Emit.ILGeneration/4.0.1": {
@@ -231,7 +273,10 @@
           "System.Runtime": "4.3.0"
         },
         "runtime": {
-          "lib/netstandard1.3/System.Reflection.Emit.ILGeneration.dll": {}
+          "lib/netstandard1.3/System.Reflection.Emit.ILGeneration.dll": {
+            "assemblyVersion": "4.0.1.0",
+            "fileVersion": "1.0.24212.1"
+          }
         }
       },
       "System.Reflection.Emit.Lightweight/4.0.1": {
@@ -242,7 +287,10 @@
           "System.Runtime": "4.3.0"
         },
         "runtime": {
-          "lib/netstandard1.3/System.Reflection.Emit.Lightweight.dll": {}
+          "lib/netstandard1.3/System.Reflection.Emit.Lightweight.dll": {
+            "assemblyVersion": "4.0.1.0",
+            "fileVersion": "1.0.24212.1"
+          }
         }
       },
       "System.Reflection.Extensions/4.0.1": {
@@ -266,7 +314,10 @@
           "System.Runtime": "4.3.0"
         },
         "runtime": {
-          "lib/netstandard1.5/System.Reflection.TypeExtensions.dll": {}
+          "lib/netstandard1.5/System.Reflection.TypeExtensions.dll": {
+            "assemblyVersion": "4.1.1.0",
+            "fileVersion": "4.6.24705.1"
+          }
         }
       },
       "System.Resources.ResourceManager/4.0.1": {
@@ -286,7 +337,10 @@
       },
       "System.Runtime.CompilerServices.Unsafe/4.4.0": {
         "runtime": {
-          "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll": {}
+          "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll": {
+            "assemblyVersion": "4.0.3.0",
+            "fileVersion": "0.0.0.0"
+          }
         }
       },
       "System.Runtime.Extensions/4.1.0": {
@@ -309,7 +363,10 @@
           "System.Threading.Tasks": "4.3.0"
         },
         "runtime": {
-          "lib/netstandard1.3/System.Threading.dll": {}
+          "lib/netstandard1.3/System.Threading.dll": {
+            "assemblyVersion": "4.0.11.0",
+            "fileVersion": "1.0.24212.1"
+          }
         }
       },
       "System.Threading.Tasks/4.3.0": {
@@ -324,8 +381,14 @@
           "NETStandard.Library": "2.0.3"
         },
         "runtime": {
-          "lib/netstandard1.0/Plugin.Connectivity.Abstractions.dll": {},
-          "lib/netstandard1.0/Plugin.Connectivity.dll": {}
+          "lib/netstandard1.0/Plugin.Connectivity.Abstractions.dll": {
+            "assemblyVersion": "3.2.0.0",
+            "fileVersion": "3.2.0.0"
+          },
+          "lib/netstandard1.0/Plugin.Connectivity.dll": {
+            "assemblyVersion": "3.2.0.0",
+            "fileVersion": "3.2.0.0"
+          }
         }
       },
       "Xam.Plugins.Settings/3.1.1": {
@@ -333,15 +396,30 @@
           "NETStandard.Library": "2.0.3"
         },
         "runtime": {
-          "lib/netstandard1.0/Plugin.Settings.Abstractions.dll": {},
-          "lib/netstandard1.0/Plugin.Settings.dll": {}
+          "lib/netstandard1.0/Plugin.Settings.Abstractions.dll": {
+            "assemblyVersion": "3.1.1.0",
+            "fileVersion": "3.1.1.0"
+          },
+          "lib/netstandard1.0/Plugin.Settings.dll": {
+            "assemblyVersion": "3.1.1.0",
+            "fileVersion": "3.1.1.0"
+          }
         }
       },
       "Xamarin.Forms/3.1.0.697729": {
         "runtime": {
-          "lib/netstandard2.0/Xamarin.Forms.Core.dll": {},
-          "lib/netstandard2.0/Xamarin.Forms.Platform.dll": {},
-          "lib/netstandard2.0/Xamarin.Forms.Xaml.dll": {}
+          "lib/netstandard2.0/Xamarin.Forms.Core.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.0.0"
+          },
+          "lib/netstandard2.0/Xamarin.Forms.Platform.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          },
+          "lib/netstandard2.0/Xamarin.Forms.Xaml.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.0.0"
+          }
         }
       },
       "SpevoCore/1.0.0": {
@@ -369,26 +447,26 @@
       "path": "fody/3.0.3",
       "hashPath": "fody.3.0.3.nupkg.sha512"
     },
-    "Microsoft.AppCenter/1.8.0": {
+    "Microsoft.AppCenter/1.9.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-V9ZPAVnnv8gTSxp2N1Wb39pbd5nSSuCvjpruFq27r0azRkhqLhOu+2mNgGOoX9LP/UiOrtoy3PY/y4LNAoI76g==",
-      "path": "microsoft.appcenter/1.8.0",
-      "hashPath": "microsoft.appcenter.1.8.0.nupkg.sha512"
+      "sha512": "sha512-jUCmustijWMUCKlY2kzMUuPqcoVxCSJBR2FpjUQsR7kUTdrPvoKgfPeSr/b6eF5g3nLRbl6GRW7StnnY7yMh+Q==",
+      "path": "microsoft.appcenter/1.9.0",
+      "hashPath": "microsoft.appcenter.1.9.0.nupkg.sha512"
     },
-    "Microsoft.AppCenter.Analytics/1.8.0": {
+    "Microsoft.AppCenter.Analytics/1.9.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-uj6b7qxKyONSZmqjgryApE4Sq23DC1j8wPJc1QA7BF1Nfa/e92bnKP497bs31xugjBSGwtSMH8hUhi/vH+tukA==",
-      "path": "microsoft.appcenter.analytics/1.8.0",
-      "hashPath": "microsoft.appcenter.analytics.1.8.0.nupkg.sha512"
+      "sha512": "sha512-bHXciKGX6WOZlxomjB/gfC+M191TFMN07mjzEUjBj1agNJ3wG8d8fOC7WZKBRbWN8APZ7OyNfZaKCPFGzyPcJw==",
+      "path": "microsoft.appcenter.analytics/1.9.0",
+      "hashPath": "microsoft.appcenter.analytics.1.9.0.nupkg.sha512"
     },
-    "Microsoft.AppCenter.Crashes/1.8.0": {
+    "Microsoft.AppCenter.Crashes/1.9.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-paVrOYaErMz9+k6wQvW9m8TEauARlVW7iX9y/QGm1f6PIHiezPNWkzLhMsnpbbWZBk+wv/H296jW/BoAxOEbzg==",
-      "path": "microsoft.appcenter.crashes/1.8.0",
-      "hashPath": "microsoft.appcenter.crashes.1.8.0.nupkg.sha512"
+      "sha512": "sha512-TE1huyfrNaMOXjr+zAtX5hZ5TQVsWlCKyjIeNkLXT5TBRW54TpmEXEAOw6oOvqP61qDDT5RKUNeptSAd7qSQxQ==",
+      "path": "microsoft.appcenter.crashes/1.9.0",
+      "hashPath": "microsoft.appcenter.crashes.1.9.0.nupkg.sha512"
     },
     "Microsoft.NETCore.Platforms/1.1.0": {
       "type": "package",

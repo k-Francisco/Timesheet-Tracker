@@ -26,7 +26,10 @@
       },
       "Newtonsoft.Json/11.0.2": {
         "runtime": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "11.0.0.0",
+            "fileVersion": "11.0.2.21924"
+          }
         }
       },
       "Refit/4.6.30": {
@@ -34,7 +37,10 @@
           "Newtonsoft.Json": "11.0.2"
         },
         "runtime": {
-          "lib/netstandard2.0/Refit.dll": {}
+          "lib/netstandard2.0/Refit.dll": {
+            "assemblyVersion": "4.6.0.0",
+            "fileVersion": "4.6.30.58542"
+          }
         }
       },
       "Xam.Plugins.Settings/3.1.1": {
@@ -42,8 +48,14 @@
           "NETStandard.Library": "2.0.3"
         },
         "runtime": {
-          "lib/netstandard1.0/Plugin.Settings.Abstractions.dll": {},
-          "lib/netstandard1.0/Plugin.Settings.dll": {}
+          "lib/netstandard1.0/Plugin.Settings.Abstractions.dll": {
+            "assemblyVersion": "3.1.1.0",
+            "fileVersion": "3.1.1.0"
+          },
+          "lib/netstandard1.0/Plugin.Settings.dll": {
+            "assemblyVersion": "3.1.1.0",
+            "fileVersion": "3.1.1.0"
+          }
         }
       }
     }
