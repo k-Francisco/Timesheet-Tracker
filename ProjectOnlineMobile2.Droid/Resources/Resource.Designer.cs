@@ -3292,8 +3292,8 @@ namespace ProjectOnlineMobile2.Droid
 			// aapt resource value: 0x7f09007e
 			public const int edit_query = 2131296382;
 			
-			// aapt resource value: 0x7f0900d5
-			public const int empty = 2131296469;
+			// aapt resource value: 0x7f0900d7
+			public const int empty = 2131296471;
 			
 			// aapt resource value: 0x7f090030
 			public const int end = 2131296304;
@@ -3388,38 +3388,44 @@ namespace ProjectOnlineMobile2.Droid
 			// aapt resource value: 0x7f0900c0
 			public const int media_actions = 2131296448;
 			
-			// aapt resource value: 0x7f0900d6
-			public const int menu_createproject = 2131296470;
-			
-			// aapt resource value: 0x7f0900d7
-			public const int menu_createtask = 2131296471;
-			
 			// aapt resource value: 0x7f0900d8
-			public const int menu_period_details = 2131296472;
+			public const int menu_createproject = 2131296472;
 			
-			// aapt resource value: 0x7f0900d1
-			public const int menu_projects = 2131296465;
+			// aapt resource value: 0x7f0900d9
+			public const int menu_createtask = 2131296473;
+			
+			// aapt resource value: 0x7f0900d5
+			public const int menu_edit_task = 2131296469;
 			
 			// aapt resource value: 0x7f0900da
-			public const int menu_recall_timesheet = 2131296474;
+			public const int menu_period_details = 2131296474;
 			
-			// aapt resource value: 0x7f0900db
-			public const int menu_save = 2131296475;
+			// aapt resource value: 0x7f0900d2
+			public const int menu_projects = 2131296466;
+			
+			// aapt resource value: 0x7f0900dc
+			public const int menu_recall_timesheet = 2131296476;
+			
+			// aapt resource value: 0x7f0900dd
+			public const int menu_save = 2131296477;
 			
 			// aapt resource value: 0x7f0900d0
 			public const int menu_save_project = 2131296464;
 			
-			// aapt resource value: 0x7f0900d9
-			public const int menu_submit_timesheet = 2131296473;
+			// aapt resource value: 0x7f0900d1
+			public const int menu_save_task = 2131296465;
 			
-			// aapt resource value: 0x7f0900d2
-			public const int menu_tasks = 2131296466;
+			// aapt resource value: 0x7f0900db
+			public const int menu_submit_timesheet = 2131296475;
 			
 			// aapt resource value: 0x7f0900d3
-			public const int menu_timesheets = 2131296467;
+			public const int menu_tasks = 2131296467;
 			
 			// aapt resource value: 0x7f0900d4
-			public const int menu_userinfo = 2131296468;
+			public const int menu_timesheets = 2131296468;
+			
+			// aapt resource value: 0x7f0900d6
+			public const int menu_userinfo = 2131296470;
 			
 			// aapt resource value: 0x7f0900cd
 			public const int message = 2131296461;
@@ -4074,19 +4080,25 @@ namespace ProjectOnlineMobile2.Droid
 			public const int add_project_menu = 2131755008;
 			
 			// aapt resource value: 0x7f100001
-			public const int bottom_navigation_main = 2131755009;
+			public const int add_task_menu = 2131755009;
 			
 			// aapt resource value: 0x7f100002
-			public const int projects_menu = 2131755010;
+			public const int bottom_navigation_main = 2131755010;
 			
 			// aapt resource value: 0x7f100003
-			public const int tasks_menu = 2131755011;
+			public const int edit_task_menu = 2131755011;
 			
 			// aapt resource value: 0x7f100004
-			public const int timesheet_menu = 2131755012;
+			public const int projects_menu = 2131755012;
 			
 			// aapt resource value: 0x7f100005
-			public const int work_page_menu = 2131755013;
+			public const int tasks_menu = 2131755013;
+			
+			// aapt resource value: 0x7f100006
+			public const int timesheet_menu = 2131755014;
+			
+			// aapt resource value: 0x7f100007
+			public const int work_page_menu = 2131755015;
 			
 			static Menu()
 			{

@@ -30,6 +30,18 @@ namespace ProjectOnlineMobile2.Droid.Renderers
             if (e.NewElement != null)
             {
                 var frame = (CustomFrame)Element;
+
+                this.Clickable = true;
+                this.Click += delegate {
+                    if(frame.Command != null)
+                    {
+                        if (frame.Command.CanExecute(Element.BindingContext))
+                        {
+                            frame.Command.Execute(frame.CommandParameter ?? Element.BindingContext);
+                        }
+                    }
+                };
+
                 this.LongClickable = true;
                 this.LongClick += delegate {
                     if (frame.LongPressCommand != null)
@@ -37,15 +49,11 @@ namespace ProjectOnlineMobile2.Droid.Renderers
                         if (frame.LongPressCommand.CanExecute(Element.BindingContext))
                         {
                             frame.LongPressCommand.Execute(frame.CommandParameter ?? Element.BindingContext);
-                            System.Diagnostics.Debug.WriteLine("Long press");
                         }
                     }
                 };
 
-                
-
                 ViewGroup.SetBackgroundResource(Resource.Drawable.frame_shadow);
-
             }
         }
     }

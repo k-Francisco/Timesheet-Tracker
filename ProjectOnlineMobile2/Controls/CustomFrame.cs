@@ -7,6 +7,8 @@ namespace ProjectOnlineMobile2.Controls
     {
         public static readonly BindableProperty LongPressCommandProperty =
             BindableProperty.Create(nameof(LongPressCommand), typeof(ICommand), typeof(CustomFrame), default(ICommand));
+        public static readonly BindableProperty CommandProperty =
+            BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(CustomFrame), default(ICommand));
         public static readonly BindableProperty CommandParameterProperty = 
             BindableProperty.Create(nameof(CommandParameter), typeof(object), typeof(CustomFrame), default(object));
 
@@ -14,6 +16,12 @@ namespace ProjectOnlineMobile2.Controls
         {
             get { return (ICommand)GetValue(LongPressCommandProperty); }
             set { SetValue(LongPressCommandProperty, value); }
+        }
+
+        public ICommand Command
+        {
+            get { return (ICommand)GetValue(CommandProperty); }
+            set { SetValue(CommandProperty, value); }
         }
 
         public object CommandParameter

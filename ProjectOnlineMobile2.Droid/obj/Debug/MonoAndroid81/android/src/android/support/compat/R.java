@@ -3409,7 +3409,7 @@ containing a value of this type.
         public static int design_navigation_view=0x7f090095;
         public static int disableHome=0x7f090020;
         public static int edit_query=0x7f09007e;
-        public static int empty=0x7f0900d4;
+        public static int empty=0x7f0900d7;
         public static int end=0x7f090030;
         public static int end_padder=0x7f0900cc;
         public static int enterAlways=0x7f09003f;
@@ -3441,21 +3441,19 @@ containing a value of this type.
         public static int main_content=0x7f09009a;
         public static int masked=0x7f0900cf;
         public static int media_actions=0x7f0900c0;
-        public static int menu_add_line=0x7f0900d9;
-        public static int menu_all_tasks=0x7f0900d5;
-        public static int menu_completed_tasks=0x7f0900d6;
-        public static int menu_delete=0x7f0900df;
-        public static int menu_edit=0x7f0900de;
-        public static int menu_inprogress_tasks=0x7f0900d7;
-        public static int menu_period_details=0x7f0900d8;
-        public static int menu_projects=0x7f0900d0;
-        public static int menu_recall_timesheet=0x7f0900db;
-        public static int menu_save=0x7f0900dc;
-        public static int menu_send_progress=0x7f0900dd;
-        public static int menu_submit_timesheet=0x7f0900da;
-        public static int menu_tasks=0x7f0900d1;
-        public static int menu_timesheets=0x7f0900d2;
-        public static int menu_userinfo=0x7f0900d3;
+        public static int menu_createproject=0x7f0900d8;
+        public static int menu_createtask=0x7f0900d9;
+        public static int menu_edit_task=0x7f0900d5;
+        public static int menu_period_details=0x7f0900da;
+        public static int menu_projects=0x7f0900d2;
+        public static int menu_recall_timesheet=0x7f0900dc;
+        public static int menu_save=0x7f0900dd;
+        public static int menu_save_project=0x7f0900d0;
+        public static int menu_save_task=0x7f0900d1;
+        public static int menu_submit_timesheet=0x7f0900db;
+        public static int menu_tasks=0x7f0900d3;
+        public static int menu_timesheets=0x7f0900d4;
+        public static int menu_userinfo=0x7f0900d6;
         public static int message=0x7f0900cd;
         public static int middle=0x7f090031;
         public static int mini=0x7f090053;
@@ -3663,11 +3661,14 @@ containing a value of this type.
         public static int tooltip=0x7f040044;
     }
     public static final class menu {
-        public static int bottom_navigation_main=0x7f100000;
-        public static int projects_menu=0x7f100001;
-        public static int tasks_menu=0x7f100002;
-        public static int timesheet_menu=0x7f100003;
-        public static int work_page_menu=0x7f100004;
+        public static int add_project_menu=0x7f100000;
+        public static int add_task_menu=0x7f100001;
+        public static int bottom_navigation_main=0x7f100002;
+        public static int edit_task_menu=0x7f100003;
+        public static int projects_menu=0x7f100004;
+        public static int tasks_menu=0x7f100005;
+        public static int timesheet_menu=0x7f100006;
+        public static int work_page_menu=0x7f100007;
     }
     public static final class mipmap {
         public static int ic_gear=0x7f030000;
@@ -3713,6 +3714,12 @@ containing a value of this type.
         public static int character_counter_pattern=0x7f0a0035;
         public static int menu_all_tasks=0x7f0a0040;
         public static int menu_completed=0x7f0a0042;
+        public static int menu_create_project=0x7f0a0045;
+        public static int menu_create_task=0x7f0a0046;
+        public static int menu_delete_project=0x7f0a0049;
+        public static int menu_delete_task=0x7f0a004a;
+        public static int menu_edit_project=0x7f0a0047;
+        public static int menu_edit_task=0x7f0a0048;
         public static int menu_inprogress=0x7f0a0041;
         public static int menu_options=0x7f0a0044;
         public static int menu_user_info=0x7f0a0043;

@@ -155,6 +155,9 @@ D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.Droid\obj\Debug\MonoA
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.Droid\obj\Debug\MonoAndroid81\res\drawable-xhdpi\event_busy.png
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.Droid\obj\Debug\MonoAndroid81\res\drawable-xxhdpi\event_available.png
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.Droid\obj\Debug\MonoAndroid81\res\drawable-xxhdpi\event_busy.png
+D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.Droid\obj\Debug\MonoAndroid81\res\menu\add_project_menu.xml
+D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.Droid\obj\Debug\MonoAndroid81\res\menu\add_task_menu.xml
+D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.Droid\obj\Debug\MonoAndroid81\res\menu\edit_task_menu.xml
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.Droid\obj\Debug\MonoAndroid81\R.cs.flag
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.Droid\obj\Debug\MonoAndroid81\R.txt
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.Droid\obj\Debug\MonoAndroid81\uploadflags.txt
@@ -238,7 +241,6 @@ D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.Droid\obj\Debug\MonoA
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.Droid\obj\Debug\MonoAndroid81\android\assets\System.Xml.pdb
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.Droid\obj\Debug\MonoAndroid81\android\assets\Xamarin.Forms.Core.pdb
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.Droid\obj\Debug\MonoAndroid81\android\assets\Xamarin.Forms.Xaml.pdb
-D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.Droid\obj\Debug\MonoAndroid81\res\menu\add_project_menu.xml
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.Droid\bin\Debug\ProjectOnlineMobile2.Droid.dll
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.Droid\obj\Debug\MonoAndroid81\linksrc\ProjectOnlineMobile2.pdb
 D:\Xamarin Projects\Timesheet-Tracker\ProjectOnlineMobile2.Droid\obj\Debug\MonoAndroid81\linksrc\ProjectOnlineMobile2.Droid.dll.mdb

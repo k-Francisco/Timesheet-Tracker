@@ -78,42 +78,6 @@ namespace ProjectOnlineMobile2.Droid
             dialog.Show();
         }
 
-        public void DisplayAddTimesheetLineDialog()
-        {
-            LinearLayout linearLayout = new LinearLayout(_activity);
-            linearLayout.Orientation = Orientation.Vertical;
-            linearLayout.SetPadding(16, 16, 16, 16);
-
-            EditText taskName = new EditText(_activity);
-            taskName.Hint = "Task Name";
-
-            EditText comment = new EditText(_activity);
-            comment.Hint = "Comment";
-
-            linearLayout.AddView(taskName);
-            linearLayout.AddView(comment);
-
-            AlertDialog.Builder alert = new AlertDialog.Builder(_activity);
-            alert.SetTitle("Add Line");
-            alert.SetView(linearLayout);
-
-            alert.SetPositiveButton("Add", (senderAlert, args) => {
-
-                if (!string.IsNullOrWhiteSpace(taskName.Text))
-                {
-                    string[] lineDetails = { taskName.Text, comment.Text };
-                    MessagingCenter.Instance.Send<String[]>(lineDetails, "AddTimesheetLine");
-                }
-            });
-
-            alert.SetNegativeButton("Cancel", (senderAlert, args) => {
-
-            });
-
-            Dialog dialog = alert.Create();
-            dialog.Show();
-        }
-
         public void DisplayCreateTimesheetDialog(string message, string periodId, string positiveButton, string negativeButton)
         {
             AlertDialog.Builder alert = new AlertDialog.Builder(_activity);

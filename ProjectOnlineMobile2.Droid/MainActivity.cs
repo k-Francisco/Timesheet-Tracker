@@ -68,8 +68,12 @@ namespace ProjectOnlineMobile2.Droid
                 PushTimesheetWorkPage(timesheetLine);
             });
 
-            MessagingCenter.Instance.Subscribe<String>(this, "AddTimesheetLineDialog", (s)=> {
-                dialogHelper.DisplayAddTimesheetLineDialog();
+            MessagingCenter.Instance.Subscribe<string>(this, "ShowProjectDetails", (projectName) => {
+                ShowProjectDetails(projectName);
+            });
+
+            MessagingCenter.Instance.Subscribe<string>(this, "ShowEditTaskPage", (s)=> {
+                PushOtherPages(Resource.Id.menu_tasks, "Edit task", Resource.Menu.edit_task_menu, _editTaskFragment);
             });
 
             toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
@@ -78,7 +82,7 @@ namespace ProjectOnlineMobile2.Droid
                 SetSupportActionBar(toolbar);
                 SupportActionBar.SetDisplayHomeAsUpEnabled(false);
                 SupportActionBar.SetHomeButtonEnabled(false);
-                toolbar.NavigationClick += (sender,e) => { exitWorkPage(); };
+                toolbar.NavigationClick += (sender,e) => { GoBack(); };
             }
 
             bottomNavigation = FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
@@ -99,6 +103,21 @@ namespace ProjectOnlineMobile2.Droid
             dialogHelper = new DialogHelper(this);
 
             LoadFragment(Resource.Id.menu_projects);
+        }
+
+        private void ShowProjectDetails(string projectName)
+        {
+            _pastFragmentId = Resource.Id.menu_projects;
+
+            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+            toolbar.Title = projectName;
+            bottomNavigation.Visibility = ViewStates.Gone;
+
+            menu.Clear();
+
+            SupportFragmentManager.BeginTransaction()
+                .Replace(Resource.Id.content_frame, _projectInfoFragment)
+                .Commit();
         }
 
         private void SetTimesheetStatus(string status)
@@ -130,7 +149,7 @@ namespace ProjectOnlineMobile2.Droid
             Toast.MakeText(this, parameters[0], ToastLength.Short).Show();
         }
 
-        private void exitWorkPage()
+        private void GoBack()
         {
             SupportActionBar.SetDisplayHomeAsUpEnabled(false);
             toolbar.Title = "Timesheet Tracker";
@@ -164,22 +183,22 @@ namespace ProjectOnlineMobile2.Droid
 
         }
 
-        private void PushAddProjectPage()
+        private void PushOtherPages(int pastFragmentId, string toolbarTitle, int pageMenu, Fragment fragment)
         {
-            _pastFragmentId = Resource.Id.menu_projects;
+            _pastFragmentId = pastFragmentId;
 
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
-            toolbar.Title = "Create Project";
+            toolbar.Title = toolbarTitle;
             bottomNavigation.Visibility = ViewStates.Gone;
 
             if (menu != null)
             {
                 menu.Clear();
-                MenuInflater.Inflate(Resource.Menu.add_project_menu, menu);
+                MenuInflater.Inflate(pageMenu, menu);
             }
 
             SupportFragmentManager.BeginTransaction()
-                .Replace(Resource.Id.content_frame, _addProjectFragment)
+                .Replace(Resource.Id.content_frame, fragment)
                 .Commit();
         }
 
@@ -259,11 +278,23 @@ namespace ProjectOnlineMobile2.Droid
             }
             else if(item.ItemId == Resource.Id.menu_createproject)
             {
-                PushAddProjectPage();
+                PushOtherPages(Resource.Id.menu_projects, "Create Project", Resource.Menu.add_project_menu, _addProjectFragment);
+            }
+            else if(item.ItemId == Resource.Id.menu_save_project)
+            {
+                MessagingCenter.Instance.Send<string>(string.Empty, "SaveProject");
             }
             else if(item.ItemId == Resource.Id.menu_createtask)
             {
-                //create task
+                PushOtherPages(Resource.Id.menu_tasks, "Create Task", Resource.Menu.add_task_menu, _addTaskFragment);
+            }
+            else if (item.ItemId == Resource.Id.menu_save_task)
+            {
+                MessagingCenter.Instance.Send<string>(string.Empty, "SaveTask");
+            }
+            else if (item.ItemId == Resource.Id.menu_edit_task)
+            {
+                MessagingCenter.Instance.Send<string>(string.Empty, "SaveEditedTask");
             }
             else if (item.ItemId == Resource.Id.menu_save)
             {

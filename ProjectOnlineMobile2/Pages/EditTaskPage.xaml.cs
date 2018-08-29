@@ -16,6 +16,8 @@ namespace ProjectOnlineMobile2.Pages
 		{
 			InitializeComponent ();
 
+            viewModel = BindingContext as TasksPageViewModel;
+
             MessagingCenter.Instance.Subscribe<string>(this, "SaveEditedTask", (s) => {
                 ValidateEntries();
             });

@@ -3,6 +3,7 @@ using Plugin.Connectivity;
 using ProjectOnlineMobile2.Services;
 using Realms;
 using SpevoCore.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -63,20 +64,27 @@ namespace ProjectOnlineMobile2.ViewModels
 
         public async void GetTaskUpdates()
         {
-            if (IsConnectedToInternet())
+            try
             {
-                var apiResponse = await SPapi.GetListItemsByListGuid(TASK_UPDATE_LIST_GUID);
-
-                var ensure = apiResponse.EnsureSuccessStatusCode();
-
-                if (ensure.IsSuccessStatusCode)
+                if (IsConnectedToInternet())
                 {
-                    var taskUpdatesList = JsonConvert.DeserializeObject<TaskUpdatesRoot>(await apiResponse.Content.ReadAsStringAsync());
+                    var apiResponse = await SPapi.GetListItemsByListGuid(TASK_UPDATE_LIST_GUID);
 
-                    var localUpdates = realm.All<TaskUpdatesModel>().ToList();
+                    var ensure = apiResponse.EnsureSuccessStatusCode();
 
-                    syncDataService.SyncTaskUpdates(taskUpdatesList, localUpdates);
+                    if (ensure.IsSuccessStatusCode)
+                    {
+                        var taskUpdatesList = JsonConvert.DeserializeObject<TaskUpdatesRoot>(await apiResponse.Content.ReadAsStringAsync());
+
+                        var localUpdates = realm.All<TaskUpdatesModel>().ToList();
+
+                        syncDataService.SyncTaskUpdates(taskUpdatesList, localUpdates);
+                    }
                 }
+            }
+            catch(Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message, "GetTaskUpdates");
             }
         }
     }

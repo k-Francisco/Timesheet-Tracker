@@ -3409,7 +3409,7 @@ containing a value of this type.
         public static final int design_navigation_view=0x7f090095;
         public static final int disableHome=0x7f090020;
         public static final int edit_query=0x7f09007e;
-        public static final int empty=0x7f0900d5;
+        public static final int empty=0x7f0900d7;
         public static final int end=0x7f090030;
         public static final int end_padder=0x7f0900cc;
         public static final int enterAlways=0x7f09003f;
@@ -3441,17 +3441,19 @@ containing a value of this type.
         public static final int main_content=0x7f09009a;
         public static final int masked=0x7f0900cf;
         public static final int media_actions=0x7f0900c0;
-        public static final int menu_createproject=0x7f0900d6;
-        public static final int menu_createtask=0x7f0900d7;
-        public static final int menu_period_details=0x7f0900d8;
-        public static final int menu_projects=0x7f0900d1;
-        public static final int menu_recall_timesheet=0x7f0900da;
-        public static final int menu_save=0x7f0900db;
+        public static final int menu_createproject=0x7f0900d8;
+        public static final int menu_createtask=0x7f0900d9;
+        public static final int menu_edit_task=0x7f0900d5;
+        public static final int menu_period_details=0x7f0900da;
+        public static final int menu_projects=0x7f0900d2;
+        public static final int menu_recall_timesheet=0x7f0900dc;
+        public static final int menu_save=0x7f0900dd;
         public static final int menu_save_project=0x7f0900d0;
-        public static final int menu_submit_timesheet=0x7f0900d9;
-        public static final int menu_tasks=0x7f0900d2;
-        public static final int menu_timesheets=0x7f0900d3;
-        public static final int menu_userinfo=0x7f0900d4;
+        public static final int menu_save_task=0x7f0900d1;
+        public static final int menu_submit_timesheet=0x7f0900db;
+        public static final int menu_tasks=0x7f0900d3;
+        public static final int menu_timesheets=0x7f0900d4;
+        public static final int menu_userinfo=0x7f0900d6;
         public static final int message=0x7f0900cd;
         public static final int middle=0x7f090031;
         public static final int mini=0x7f090053;
@@ -3660,11 +3662,13 @@ containing a value of this type.
     }
     public static final class menu {
         public static final int add_project_menu=0x7f100000;
-        public static final int bottom_navigation_main=0x7f100001;
-        public static final int projects_menu=0x7f100002;
-        public static final int tasks_menu=0x7f100003;
-        public static final int timesheet_menu=0x7f100004;
-        public static final int work_page_menu=0x7f100005;
+        public static final int add_task_menu=0x7f100001;
+        public static final int bottom_navigation_main=0x7f100002;
+        public static final int edit_task_menu=0x7f100003;
+        public static final int projects_menu=0x7f100004;
+        public static final int tasks_menu=0x7f100005;
+        public static final int timesheet_menu=0x7f100006;
+        public static final int work_page_menu=0x7f100007;
     }
     public static final class mipmap {
         public static final int ic_gear=0x7f030000;

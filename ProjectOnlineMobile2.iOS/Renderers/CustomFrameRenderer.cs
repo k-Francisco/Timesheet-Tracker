@@ -20,8 +20,23 @@ namespace ProjectOnlineMobile2.iOS.Renderers
         {
             base.OnElementChanged(e);
 
+            var frame = (CustomFrame)Element;
+
+            var tappedGestureRecognizer = new UITapGestureRecognizer((tap)=> {
+                tap.NumberOfTapsRequired = 1;
+                if (frame.Command != null)
+                {
+                    if (frame.Command.CanExecute(Element.BindingContext))
+                    {
+                        frame.Command.Execute(frame.CommandParameter ?? Element.BindingContext);
+                    }
+                }
+            });
+
+            this.RemoveGestureRecognizer(tappedGestureRecognizer);
+            this.AddGestureRecognizer(tappedGestureRecognizer);
+
             var longPressGestureRecognizer = new UILongPressGestureRecognizer((longpress)=> {
-                var frame = (CustomFrame)Element;
                 if(frame.LongPressCommand != null)
                 {
                     if (longpress.State == UIGestureRecognizerState.Began &&

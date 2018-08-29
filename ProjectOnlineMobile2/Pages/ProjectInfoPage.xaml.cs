@@ -61,6 +61,13 @@ namespace ProjectOnlineMobile2.Pages
 
                 ProjectTasksList.ItemsSource = Tasks;
                 ProjectTasksList.HeightRequest = Tasks.Count * 80;
+
+                if (!updates.Any())
+                    TaskUpdatesList.IsVisible = false;
+
+                if (!Tasks.Any())
+                    ProjectTasksList.IsVisible = false;
+                
             }
         }
 
@@ -69,6 +76,8 @@ namespace ProjectOnlineMobile2.Pages
             base.OnDisappearing();
 
             Tasks.Clear();
+            TaskUpdatesList.IsVisible = true;
+            ProjectTasksList.IsVisible = true;
         }
 
     }

@@ -18,7 +18,7 @@
                         <StackLayout.GestureRecognizers>
                             <TapGestureRecognizer/>
                         </StackLayout.GestureRecognizers>
-                        
+
                         <controls:CustomFrame HasShadow="True"
                                               BackgroundColor="White"
                                               CornerRadius="4"
@@ -26,13 +26,8 @@
                                               Margin="16,8,16,8"
                                               HorizontalOptions="FillAndExpand"
                                               LongPressCommand="{Binding Path=BindingContext.ProjectLongPressCommand, Source={x:Reference mainLayout}}"
+                                              Command="{Binding Path=BindingContext.ProjectTappedCommand, Source={x:Reference mainLayout}}"
                                               CommandParameter="{Binding .}">
-
-                            <controls:CustomFrame.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Path=BindingContext.ProjectTappedCommand, Source={x:Reference mainLayout}}"
-                                                  CommandParameter="{Binding .}"
-                                                  NumberOfTapsRequired="1"/>
-                            </controls:CustomFrame.GestureRecognizers>
 
                             <StackLayout Margin="0"
                                          Padding="0"

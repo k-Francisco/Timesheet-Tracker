@@ -293,6 +293,8 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\event_available.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\event_busy.png" />
     <AndroidResource Include="Resources\menu\add_project_menu.xml" />
+    <AndroidResource Include="Resources\menu\add_task_menu.xml" />
+    <AndroidResource Include="Resources\menu\edit_task_menu.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProjectOnlineMobile2\ProjectOnlineMobile2.csproj">

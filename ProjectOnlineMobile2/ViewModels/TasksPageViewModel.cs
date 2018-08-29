@@ -247,7 +247,7 @@ namespace ProjectOnlineMobile2.ViewModels
                         MessagingCenter.Instance.Send<string>(string.Empty, "DismissModalViewController");
                         Debug.WriteLine(ensure.StatusCode.ToString(), "ADD TASK");
 
-                        await Task.Delay(1500);
+                        await Task.Delay(3000);
                         GetTaskUpdates();
                     }
                     else
@@ -307,7 +307,7 @@ namespace ProjectOnlineMobile2.ViewModels
 
                         Debug.WriteLine("SUCCESS", "EDIT TASK");
 
-                        await Task.Delay(1500);
+                        await Task.Delay(3000);
                         GetTaskUpdates();
                     }
                     else
