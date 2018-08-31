@@ -76,6 +76,10 @@ namespace ProjectOnlineMobile2.Droid
                 PushOtherPages(Resource.Id.menu_tasks, "Edit task", Resource.Menu.edit_task_menu, _editTaskFragment);
             });
 
+            MessagingCenter.Instance.Subscribe<ProjectOnlineMobile2.Models2.LineModel.LineModel>(this, "EditComment", (line)=> {
+                dialogHelper.DisplayUpdateLineDialog(line.Comment, line.ID.ToString());
+            });
+
             toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             if (toolbar != null)
             {

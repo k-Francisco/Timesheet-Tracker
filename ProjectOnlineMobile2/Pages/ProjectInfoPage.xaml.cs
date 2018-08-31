@@ -7,6 +7,7 @@ using ProjectOnlineMobile2.ViewModels;
 using Realms;
 using System.Linq;
 using System.Collections.Generic;
+using ProjectOnlineMobile2.Models2;
 
 namespace ProjectOnlineMobile2.Pages
 {
@@ -48,6 +49,10 @@ namespace ProjectOnlineMobile2.Pages
                               .Where(p => p.TaskUpdateProjectNameId == project.ID)
                               .ToList();
 
+                var user = _realm.All<UserModel>()
+                            .FirstOrDefault()
+                            .UserName;
+
                 TaskUpdatesList.ItemsSource = updates;
 
                 var localTasks = _realm.All<AssignmentsModel>()
@@ -60,9 +65,9 @@ namespace ProjectOnlineMobile2.Pages
                 }
 
                 ProjectTasksList.ItemsSource = Tasks;
-                ProjectTasksList.HeightRequest = Tasks.Count * 80;
+                ProjectTasksList.HeightRequest = Tasks.Count * 85;
 
-                if (!updates.Any())
+                if (!updates.Any() && project.OwnerName.Equals(user))
                     TaskUpdatesList.IsVisible = false;
 
                 if (!Tasks.Any())

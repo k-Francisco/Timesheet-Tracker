@@ -205,30 +205,40 @@ namespace ProjectOnlineMobile2.ViewModels
 
                     string body = "", listId = "", message = "";
 
-                    if(parameters[0].Equals("Enterprise Project"))
-                    {
-                        body = "{'__metadata':{'type':'SP.Data.TaskUpdateRequestsListItem'}," +
-                               "'TaskUpdateTaskName':'" + parameters[1] + "'," +
-                               "'TaskUpdateStartDate':'" + parameters[2] + "'," +
-                               "'TaskUpdateProjectNameId':'" + parameters[3] + "'," +
-                               "'TaskUpdateResourceNameId':'" + parameters[4] + "'}";
-
-                        listId = TASK_UPDATE_LIST_GUID;
-
-                        message = "The task has been sent and is waiting for approval";
-                    }
-                    else if(parameters[0].Equals("Task List Project"))
-                    {
-                        body = "{'__metadata':{'type':'SP.Data.TasksListItem'}," +
+                    body = "{'__metadata':{'type':'SP.Data.TasksListItem'}," +
                                "'TaskName':'" + parameters[0] + "'," +
                                "'TaskStartDate':'" + parameters[1] + "'," +
                                "'ProjectNameId':'" + parameters[2] + "'," +
                                "'ResourceNameId':'" + parameters[3] + "'}";
+                       
+                    listId = ASSIGNMENTS_LIST_GUID;
 
-                        listId = ASSIGNMENTS_LIST_GUID;
+                    message = "Successfully created the task";
 
-                        message = "Successfully created the task";
-                    }
+                    //if (parameters[0].Equals("Enterprise Project"))
+                    //{
+                    //    body = "{'__metadata':{'type':'SP.Data.TaskUpdateRequestsListItem'}," +
+                    //           "'TaskUpdateTaskName':'" + parameters[1] + "'," +
+                    //           "'TaskUpdateStartDate':'" + parameters[2] + "'," +
+                    //           "'TaskUpdateProjectNameId':'" + parameters[3] + "'," +
+                    //           "'TaskUpdateResourceNameId':'" + parameters[4] + "'}";
+
+                    //    listId = TASK_UPDATE_LIST_GUID;
+
+                    //    message = "The task has been sent and is waiting for approval";
+                    //}
+                    //else if(parameters[0].Equals("Task List Project"))
+                    //{
+                    //    body = "{'__metadata':{'type':'SP.Data.TasksListItem'}," +
+                    //           "'TaskName':'" + parameters[0] + "'," +
+                    //           "'TaskStartDate':'" + parameters[1] + "'," +
+                    //           "'ProjectNameId':'" + parameters[2] + "'," +
+                    //           "'ResourceNameId':'" + parameters[3] + "'}";
+
+                    //    listId = ASSIGNMENTS_LIST_GUID;
+
+                    //    message = "Successfully created the task";
+                    //}
 
                     var item = new StringContent(body);
                     item.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json;odata=verbose");
@@ -287,6 +297,8 @@ namespace ProjectOnlineMobile2.ViewModels
                     "'TaskStartDate':'" + parameters[2] + "'," +
                     "'TaskWork':'" + parameters[3] + "'," +
                     "'TaskActualWork':'" + parameters[4] + "'}";
+
+                    Debug.WriteLine(body);
 
                     var item = new StringContent(body);
                     item.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json;odata=verbose");

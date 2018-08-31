@@ -116,6 +116,10 @@
                 <StackLayout CompressedLayout.IsHeadless="True"
                              Padding="0"
                              Spacing="8">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer/>
+                    </StackLayout.GestureRecognizers>
+                    
                     <Label Text="Tasks"
                            FontSize="Medium"
                            FontAttributes="Bold"
@@ -133,6 +137,10 @@
                 <StackLayout CompressedLayout.IsHeadless="True"
                              Padding="0"
                              Spacing="8">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer/>
+                    </StackLayout.GestureRecognizers>
+                    
                     <Label Text="Pending requests"
                            FontSize="Medium"
                            FontAttributes="Bold"
@@ -330,7 +338,8 @@
 
                 <Frame HasShadow="True"
 				       CornerRadius="8"
-                       BackgroundColor="White">
+                       BackgroundColor="White"
+                       IsVisible="False">
 
                     <controls:CustomListView
                                   x:Name="TaskUpdatesList"

@@ -3139,9 +3139,6 @@ namespace ProjectOnlineMobile2.Droid
 			// aapt resource value: 0x7F0C0011
 			public const int action_mode_close_button = 2131492881;
 			
-			// aapt resource value: 0x7F020014
-			public const int action_search = 2130837524;
-			
 			// aapt resource value: 0x7F0C0004
 			public const int action_text = 2131492868;
 			
@@ -3312,6 +3309,9 @@ namespace ProjectOnlineMobile2.Droid
 			
 			// aapt resource value: 0x7F020018
 			public const int menu_createtask = 2130837528;
+			
+			// aapt resource value: 0x7F020014
+			public const int menu_edit_task = 2130837524;
 			
 			// aapt resource value: 0x7F020019
 			public const int menu_period_details = 2130837529;

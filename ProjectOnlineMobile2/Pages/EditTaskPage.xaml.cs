@@ -111,8 +111,8 @@ namespace ProjectOnlineMobile2.Pages
                     var parameters = new string[] { assignment.ID.ToString(),
                                                     previewTaskName.Text,
                                                     previewTaskStartDate.Text,
-                                                    previewWork.Text,
-                                                    previewActualHours.Text
+                                                    previewWork.Text.Replace("h", ""),
+                                                    previewActualHours.Text.Replace("h", "")
                                                   };
                     viewModel.EditTask(parameters);
                 }

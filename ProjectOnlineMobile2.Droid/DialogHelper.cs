@@ -58,6 +58,7 @@ namespace ProjectOnlineMobile2.Droid
             dialog.Show();
         }
 
+        //no use
         public void DisplaySubmitTimesheetDialog()
         {
             EditText comment = new EditText(_activity);
@@ -71,22 +72,6 @@ namespace ProjectOnlineMobile2.Droid
             });
 
             alert.SetNegativeButton("Cancel", (senderAlert, args) => {
-
-            });
-
-            Dialog dialog = alert.Create();
-            dialog.Show();
-        }
-
-        public void DisplayCreateTimesheetDialog(string message, string periodId, string positiveButton, string negativeButton)
-        {
-            AlertDialog.Builder alert = new AlertDialog.Builder(_activity);
-            alert.SetMessage(message);
-            alert.SetPositiveButton(positiveButton, (senderAlert, args) => {
-                MessagingCenter.Instance.Send<String>(periodId, "CreateTimesheet");
-            });
-
-            alert.SetNegativeButton(negativeButton, (senderAlert, args) => {
 
             });
 
@@ -113,7 +98,8 @@ namespace ProjectOnlineMobile2.Droid
             dialog.Show();
         }
 
-        public void DisplayUpdateLineDialog(string recentComment)
+
+        public void DisplayUpdateLineDialog(string recentComment, string lineId)
         {
             LinearLayout linearLayout = new LinearLayout(_activity);
             linearLayout.Orientation = Orientation.Vertical;
@@ -132,7 +118,7 @@ namespace ProjectOnlineMobile2.Droid
 
                 if (!string.IsNullOrWhiteSpace(comment.Text))
                 {
-                    MessagingCenter.Instance.Send<String>(comment.Text, "UpdateTimesheetLine");
+                    MessagingCenter.Instance.Send<string[]>(new string[] { lineId, comment.Text }, "SaveEditedComment");
                 }
             });
 
@@ -144,6 +130,7 @@ namespace ProjectOnlineMobile2.Droid
             dialog.Show();
         }
 
+        //no use
         public void DisplaySendProgressDialog()
         {
             EditText comment = new EditText(_activity);
