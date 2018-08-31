@@ -1,23 +1,17 @@
 ﻿using Android.App;
+using Android.Content.PM;
 using Android.OS;
-
 using Android.Support.Design.Widget;
 using Android.Support.V7.App;
 using Android.Views;
-using Android.Support.V7.Widget;
+using Android.Views.InputMethods;
+using Android.Widget;
+using ProjectOnlineMobile2.Pages;
+using System;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.Android;
 using Fragment = Android.Support.V4.App.Fragment;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
-using Xamarin.Forms;
-using System;
-using ProjectOnlineMobile2.Pages;
-using Xamarin.Forms.Platform.Android;
-using Android.Widget;
-using Android.Content;
-using ProjectOnlineMobile2.Models.TLL;
-using Newtonsoft.Json;
-using Android.Content.PM;
-using Android.Views.InputMethods;
-using System.Threading.Tasks;
 
 namespace ProjectOnlineMobile2.Droid
 {
@@ -26,21 +20,19 @@ namespace ProjectOnlineMobile2.Droid
               ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : AppCompatActivity
     {
+        private BottomNavigationView bottomNavigation;
+        private IMenu menu;
+        private Toolbar toolbar;
+        private DialogHelper dialogHelper;
 
-        BottomNavigationView bottomNavigation;
-        IMenu menu;
-        Toolbar toolbar;
-        DialogHelper dialogHelper;
-
-        Fragment _homepageFragment, _projectsFragment, _tasksFragment, _timesheetFragment, _timesheetWorkFragment;
-        Fragment _addProjectFragment, _addTaskFragment, _editTaskFragment, _projectInfoFragment;
+        private Fragment _homepageFragment, _projectsFragment, _tasksFragment, _timesheetFragment, _timesheetWorkFragment;
+        private Fragment _addProjectFragment, _addTaskFragment, _editTaskFragment, _projectInfoFragment;
 
         public string UserName, UserEmail, TimesheetPeriod, TimesheetLineComment, TimesheetStatus;
         private int _pastFragmentId = 0;
 
         protected override void OnCreate(Bundle bundle)
         {
-
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.main);
 
@@ -51,32 +43,39 @@ namespace ProjectOnlineMobile2.Droid
                 DisplayAlert(s);
             });
 
-            MessagingCenter.Instance.Subscribe<ProjectOnlineMobile2.Models2.UserModel>(this, "UserInfo", (userInfo)=> {
+            MessagingCenter.Instance.Subscribe<ProjectOnlineMobile2.Models2.UserModel>(this, "UserInfo", (userInfo) =>
+            {
                 UserName = userInfo.UserName;
                 UserEmail = userInfo.UserEmail;
             });
 
-            MessagingCenter.Instance.Subscribe<String>(this, "TimesheetPeriod", (tsp) => {
+            MessagingCenter.Instance.Subscribe<String>(this, "TimesheetPeriod", (tsp) =>
+            {
                 TimesheetPeriod = tsp;
             });
 
-            MessagingCenter.Instance.Subscribe<String>(this, "TimesheetStatus", (status) => {
+            MessagingCenter.Instance.Subscribe<String>(this, "TimesheetStatus", (status) =>
+            {
                 SetTimesheetStatus(status);
             });
 
-            MessagingCenter.Instance.Subscribe<ProjectOnlineMobile2.Models2.LineModel.LineModel>(this, "PushTimesheetWorkPage", (timesheetLine) => {
+            MessagingCenter.Instance.Subscribe<ProjectOnlineMobile2.Models2.LineModel.LineModel>(this, "PushTimesheetWorkPage", (timesheetLine) =>
+            {
                 PushTimesheetWorkPage(timesheetLine);
             });
 
-            MessagingCenter.Instance.Subscribe<string>(this, "ShowProjectDetails", (projectName) => {
+            MessagingCenter.Instance.Subscribe<string>(this, "ShowProjectDetails", (projectName) =>
+            {
                 ShowProjectDetails(projectName);
             });
 
-            MessagingCenter.Instance.Subscribe<string>(this, "ShowEditTaskPage", (s)=> {
+            MessagingCenter.Instance.Subscribe<string>(this, "ShowEditTaskPage", (s) =>
+            {
                 PushOtherPages(Resource.Id.menu_tasks, "Edit task", Resource.Menu.edit_task_menu, _editTaskFragment);
             });
 
-            MessagingCenter.Instance.Subscribe<ProjectOnlineMobile2.Models2.LineModel.LineModel>(this, "EditComment", (line)=> {
+            MessagingCenter.Instance.Subscribe<ProjectOnlineMobile2.Models2.LineModel.LineModel>(this, "EditComment", (line) =>
+            {
                 dialogHelper.DisplayUpdateLineDialog(line.Comment, line.ID.ToString());
             });
 
@@ -86,7 +85,7 @@ namespace ProjectOnlineMobile2.Droid
                 SetSupportActionBar(toolbar);
                 SupportActionBar.SetDisplayHomeAsUpEnabled(false);
                 SupportActionBar.SetHomeButtonEnabled(false);
-                toolbar.NavigationClick += (sender,e) => { GoBack(); };
+                toolbar.NavigationClick += (sender, e) => { GoBack(); };
             }
 
             bottomNavigation = FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
@@ -184,7 +183,6 @@ namespace ProjectOnlineMobile2.Droid
             SupportFragmentManager.BeginTransaction()
                 .Replace(Resource.Id.content_frame, _timesheetWorkFragment)
                 .Commit();
-
         }
 
         private void PushOtherPages(int pastFragmentId, string toolbarTitle, int pageMenu, Fragment fragment)
@@ -211,21 +209,21 @@ namespace ProjectOnlineMobile2.Droid
             LoadFragment(e.Item.ItemId);
         }
 
-        Fragment fragment = null;
-        void LoadFragment(int id)
+        private Fragment fragment = null;
+
+        private void LoadFragment(int id)
         {
-            
-            if(id == Resource.Id.menu_projects)
+            if (id == Resource.Id.menu_projects)
             {
                 fragment = _projectsFragment;
 
-                if(menu != null)
+                if (menu != null)
                 {
                     menu.Clear();
                     MenuInflater.Inflate(Resource.Menu.projects_menu, menu);
                 }
             }
-            else if(id == Resource.Id.menu_tasks)
+            else if (id == Resource.Id.menu_tasks)
             {
                 fragment = _tasksFragment;
 
@@ -235,7 +233,7 @@ namespace ProjectOnlineMobile2.Droid
                     MenuInflater.Inflate(Resource.Menu.tasks_menu, menu);
                 }
             }
-            else if(id == Resource.Id.menu_timesheets)
+            else if (id == Resource.Id.menu_timesheets)
             {
                 fragment = _timesheetFragment;
 
@@ -245,7 +243,7 @@ namespace ProjectOnlineMobile2.Droid
                     MenuInflater.Inflate(Resource.Menu.timesheet_menu, menu);
                 }
             }
-            
+
             if (fragment == null)
                 return;
 
@@ -263,32 +261,31 @@ namespace ProjectOnlineMobile2.Droid
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
-
-            if(item.ItemId == Resource.Id.menu_userinfo)
+            if (item.ItemId == Resource.Id.menu_userinfo)
             {
                 dialogHelper.DisplayUserInfo(UserName, UserEmail);
             }
-            else if(item.ItemId == Resource.Id.menu_period_details)
+            else if (item.ItemId == Resource.Id.menu_period_details)
             {
                 dialogHelper.DisplayPeriodDetails(TimesheetPeriod, TimesheetStatus);
             }
-            else if(item.ItemId == Resource.Id.menu_submit_timesheet)
+            else if (item.ItemId == Resource.Id.menu_submit_timesheet)
             {
                 dialogHelper.DisplaySubmitTimesheetDialog();
             }
-            else if(item.ItemId == Resource.Id.menu_recall_timesheet)
+            else if (item.ItemId == Resource.Id.menu_recall_timesheet)
             {
                 MessagingCenter.Instance.Send<String>("", "RecallTimesheet");
             }
-            else if(item.ItemId == Resource.Id.menu_createproject)
+            else if (item.ItemId == Resource.Id.menu_createproject)
             {
                 PushOtherPages(Resource.Id.menu_projects, "Create Project", Resource.Menu.add_project_menu, _addProjectFragment);
             }
-            else if(item.ItemId == Resource.Id.menu_save_project)
+            else if (item.ItemId == Resource.Id.menu_save_project)
             {
                 MessagingCenter.Instance.Send<string>(string.Empty, "SaveProject");
             }
-            else if(item.ItemId == Resource.Id.menu_createtask)
+            else if (item.ItemId == Resource.Id.menu_createtask)
             {
                 PushOtherPages(Resource.Id.menu_tasks, "Create Task", Resource.Menu.add_task_menu, _addTaskFragment);
             }
@@ -305,9 +302,7 @@ namespace ProjectOnlineMobile2.Droid
                 MessagingCenter.Instance.Send<String>("", "SaveTimesheetWorkChanges");
             }
 
-
             return true;
         }
     }
 }
-

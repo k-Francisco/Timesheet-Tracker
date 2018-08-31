@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <_BundleResourceWithLogicalName Include="obj\iPhone\Release\ibtool\LaunchScreen.nib">
+      <LogicalName>LaunchScreen.nib</LogicalName>
+      <Optimize>false</Optimize>
+    </_BundleResourceWithLogicalName>
+    <_BundleResourceWithLogicalName Include="obj\iPhone\Release\ibtool-link\Main.storyboardc\3478-view-3479.nib">
+      <LogicalName>Main.storyboardc/3478-view-3479.nib</LogicalName>
+      <Optimize>false</Optimize>
+    </_BundleResourceWithLogicalName>
+    <_BundleResourceWithLogicalName Include="obj\iPhone\Release\ibtool-link\Main.storyboardc\Info.plist">
+      <LogicalName>Main.storyboardc/Info.plist</LogicalName>
+      <Optimize>false</Optimize>
+    </_BundleResourceWithLogicalName>
+    <_BundleResourceWithLogicalName Include="obj\iPhone\Release\ibtool-link\Main.storyboardc\LoginController.nib">
+      <LogicalName>Main.storyboardc/LoginController.nib</LogicalName>
+      <Optimize>false</Optimize>
+    </_BundleResourceWithLogicalName>
+    <_BundleResourceWithLogicalName Include="obj\iPhone\Release\ibtool-link\Main.storyboardc\TabBarController.nib">
+      <LogicalName>Main.storyboardc/TabBarController.nib</LogicalName>
+      <Optimize>false</Optimize>
+    </_BundleResourceWithLogicalName>
+    <_BundleResourceWithLogicalName Include="obj\iPhone\Release\ibtool-link\MyLaunchScreen.storyboardc\228-view-229.nib">
+      <LogicalName>MyLaunchScreen.storyboardc/228-view-229.nib</LogicalName>
+      <Optimize>false</Optimize>
+    </_BundleResourceWithLogicalName>
+    <_BundleResourceWithLogicalName Include="obj\iPhone\Release\ibtool-link\MyLaunchScreen.storyboardc\Info.plist">
+      <LogicalName>MyLaunchScreen.storyboardc/Info.plist</LogicalName>
+      <Optimize>false</Optimize>
+    </_BundleResourceWithLogicalName>
+    <_BundleResourceWithLogicalName Include="obj\iPhone\Release\ibtool-link\MyLaunchScreen.storyboardc\UIViewController-228.nib">
+      <LogicalName>MyLaunchScreen.storyboardc/UIViewController-228.nib</LogicalName>
+      <Optimize>false</Optimize>
+    </_BundleResourceWithLogicalName>
+  </ItemGroup>
+</Project>

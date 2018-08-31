@@ -22,7 +22,7 @@ namespace ProjectOnlineMobile2.Droid
         {
             base.OnCreate(savedInstanceState);
 
-            AppCenter.Start("ec0adfc6-d2b4-45e6-b4a3-fe05df1b76e6", typeof(Analytics), typeof(Crashes));
+            AppCenter.Start("4078bace-6237-4483-aaaf-42d97bfe4564", typeof(Analytics), typeof(Crashes));
 
             SetContentView(Resource.Layout.activity_login);
             this.Window.AddFlags(WindowManagerFlags.Fullscreen);

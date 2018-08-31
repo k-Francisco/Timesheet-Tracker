@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETStandard,Version=v2.0/",
-    "signature": "4525e95b0aa58bf4dd07c48b09eae4615066750c"
+    "signature": "a88b3da279bfc7dc7e20a9613954052fbf085245"
   },
   "compilationOptions": {},
   "targets": {
@@ -9,9 +9,9 @@
     ".NETStandard,Version=v2.0/": {
       "SpevoCore/1.0.0": {
         "dependencies": {
-          "NETStandard.Library": "2.0.1",
+          "NETStandard.Library": "2.0.3",
           "Newtonsoft.Json": "11.0.2",
-          "Refit": "4.5.6",
+          "Refit": "4.6.30",
           "Xam.Plugins.Settings": "3.1.1"
         },
         "runtime": {
@@ -19,31 +19,43 @@
         }
       },
       "Microsoft.NETCore.Platforms/1.1.0": {},
-      "NETStandard.Library/2.0.1": {
+      "NETStandard.Library/2.0.3": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.0"
         }
       },
       "Newtonsoft.Json/11.0.2": {
         "runtime": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "11.0.0.0",
+            "fileVersion": "11.0.2.21924"
+          }
         }
       },
-      "Refit/4.5.6": {
+      "Refit/4.6.30": {
         "dependencies": {
           "Newtonsoft.Json": "11.0.2"
         },
         "runtime": {
-          "lib/netstandard2.0/Refit.dll": {}
+          "lib/netstandard2.0/Refit.dll": {
+            "assemblyVersion": "4.6.0.0",
+            "fileVersion": "4.6.30.58542"
+          }
         }
       },
       "Xam.Plugins.Settings/3.1.1": {
         "dependencies": {
-          "NETStandard.Library": "2.0.1"
+          "NETStandard.Library": "2.0.3"
         },
         "runtime": {
-          "lib/netstandard1.0/Plugin.Settings.Abstractions.dll": {},
-          "lib/netstandard1.0/Plugin.Settings.dll": {}
+          "lib/netstandard1.0/Plugin.Settings.Abstractions.dll": {
+            "assemblyVersion": "3.1.1.0",
+            "fileVersion": "3.1.1.0"
+          },
+          "lib/netstandard1.0/Plugin.Settings.dll": {
+            "assemblyVersion": "3.1.1.0",
+            "fileVersion": "3.1.1.0"
+          }
         }
       }
     }
@@ -61,12 +73,12 @@
       "path": "microsoft.netcore.platforms/1.1.0",
       "hashPath": "microsoft.netcore.platforms.1.1.0.nupkg.sha512"
     },
-    "NETStandard.Library/2.0.1": {
+    "NETStandard.Library/2.0.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-oA6nwv9MhEKYvLpjZ0ggSpb1g4CQViDVQjLUcDWg598jtvJbpfeP2reqwI1GLW2TbxC/Ml7xL6BBR1HmKPXlTg==",
-      "path": "netstandard.library/2.0.1",
-      "hashPath": "netstandard.library.2.0.1.nupkg.sha512"
+      "sha512": "sha512-st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
+      "path": "netstandard.library/2.0.3",
+      "hashPath": "netstandard.library.2.0.3.nupkg.sha512"
     },
     "Newtonsoft.Json/11.0.2": {
       "type": "package",
@@ -75,12 +87,12 @@
       "path": "newtonsoft.json/11.0.2",
       "hashPath": "newtonsoft.json.11.0.2.nupkg.sha512"
     },
-    "Refit/4.5.6": {
+    "Refit/4.6.30": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-YJCKmbt/scLyuT25zvONFr/1GJJwEOV44ojJ85Etys1EvwB8O79CZZTkBafRVO1BFgVdC1VDmI0hZNy6v3CoLg==",
-      "path": "refit/4.5.6",
-      "hashPath": "refit.4.5.6.nupkg.sha512"
+      "sha512": "sha512-rl/zMFd4sZqQSERIFi3qMVPShQoB9FUfsO9gq+JUK7jNdbYmTH1xjB7W7TBAFbC+lgZEbLHG4NJ8FR5x0VRW+g==",
+      "path": "refit/4.6.30",
+      "hashPath": "refit.4.6.30.nupkg.sha512"
     },
     "Xam.Plugins.Settings/3.1.1": {
       "type": "package",
